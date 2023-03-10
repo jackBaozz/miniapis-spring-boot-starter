@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
  */
 @Configuration
 // 注意@ConditionalOnProperty注解要放在后面两个注解的前面，这样才会优先通过配置文件判断是否要开启自动装配。
-@ConditionalOnProperty(value = "miniapis.check.enabled", havingValue = "true")
+@ConditionalOnProperty(value = "miniapis.enabled", havingValue = "true")
 @ConditionalOnClass(CheckProperties.class)
 @EnableConfigurationProperties(CheckProperties.class)
 public class CheckAutoConfigure {
