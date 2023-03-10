@@ -19,6 +19,7 @@ package com.bzz.miniapis;
 
 import com.bzz.miniapis.web.R;
 import com.bzz.miniapis.web.TestController;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,8 +48,17 @@ public class MainTest {
     private boolean enabled;
 
 
+    @Value("${miniapis.enabled}")
+    private boolean mainSwitch;
+
+    @Before
+    public void before() {
+        System.out.println("miniapis.enabled=" + mainSwitch);
+    }
+
     @Test
     public void getInfo1() {
+        System.out.println("miniapis.check.enabled=" + enabled);
         assertEquals(true, enabled);
     }
 
