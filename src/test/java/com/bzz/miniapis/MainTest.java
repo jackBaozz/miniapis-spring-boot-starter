@@ -40,7 +40,10 @@ public class MainTest {
     @Autowired
     private TestController testController;
 
-    @Value("${check.enabled}")
+    /**
+     * 只校验功能开关
+     */
+    @Value("${miniapis.check.enabled}")
     private boolean enabled;
 
 

@@ -19,9 +19,9 @@ package com.bzz.miniapis.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
 /**
- * 读取配置文件的信息类
+ * 读取配置文件中的信息
  */
-@ConfigurationProperties("check") // 用于读取配置文件前缀为check的属性
+@ConfigurationProperties("miniapis.check") // 用于读取配置文件前缀为miniapis.check的属性
 public class CheckProperties {
 
     /**
