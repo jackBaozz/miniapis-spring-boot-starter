@@ -32,10 +32,7 @@ public enum Check {
     public String msg;
 
     /**
-     * 函数式接口
-     *
-     * @param Object为传入参数类型
-     * @param Boolean为返回类型
+     * 函数式接口.Object:传入参数类型,Boolean:返回类型
      */
     public Function<Object, Boolean> function;
 

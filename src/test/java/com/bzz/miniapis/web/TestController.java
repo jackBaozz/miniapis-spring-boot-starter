@@ -18,7 +18,8 @@ package com.bzz.miniapis.web;
 
 import com.bzz.miniapis.anotation.DoCheck;
 import com.bzz.miniapis.enums.Check;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,9 +29,10 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * 如果要测试,这里需要引入 spring-boot-starter-web包
  */
-@Slf4j
 @RestController
 public class TestController {
+
+    private final Logger log = LoggerFactory.getLogger(TestController.class);
 
     @DoCheck(value = Check.Email, arg = "email", msg = "邮箱格式不正确！")
     @GetMapping("/test")
