@@ -29,7 +29,19 @@ public class ChatGPTRequestModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public ChatGPTRequestModel() {
+
+    }
+
+    public ChatGPTRequestModel(String originApiUrl, String apiSecretKey) {
+        this.originApiUrl = originApiUrl;
+        this.apiSecretKey = apiSecretKey;
+    }
+
     private String originApiUrl = "https://api.openai.com/v1/chat/completions";
+
+    private String apiSecretKey = "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";
+
 
     /**
      * 代理地址
@@ -264,4 +276,11 @@ public class ChatGPTRequestModel implements Serializable {
         this.user = user;
     }
 
+    public String getApiSecretKey() {
+        return apiSecretKey;
+    }
+
+    public void setApiSecretKey(String apiSecretKey) {
+        this.apiSecretKey = apiSecretKey;
+    }
 }
