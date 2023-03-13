@@ -22,7 +22,7 @@ import java.io.Serializable;
  * 根据文档封装的chatGPT的消息实体
  *
  * @author bzz
- * @see https://platform.openai.com/docs/api-reference/chat
+ *
  * @since 2013.3.16
  */
 public class ChatGPTMessageModel implements Serializable {

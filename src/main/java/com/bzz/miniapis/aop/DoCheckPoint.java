@@ -25,6 +25,7 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
@@ -32,6 +33,7 @@ import java.lang.reflect.Method;
  * aop切面方法（执行校验工作）
  */
 @Aspect
+@Component
 public class DoCheckPoint {
 
     // 记录日志
@@ -105,7 +107,7 @@ public class DoCheckPoint {
     /**
      * 获取方法的所有参数名字
      */
-    private String[] getParamName(ProceedingJoinPoint jp) {
+    public String[] getParamName(ProceedingJoinPoint jp) {
         MethodSignature methodSignature = (MethodSignature) jp.getSignature();
         return methodSignature.getParameterNames();
     }
@@ -117,7 +119,7 @@ public class DoCheckPoint {
      * @param args       被修饰的方法中所有的参数
      * @param paramNames 被修饰的方法中所有的参数名
      */
-    private Object getArgValue(String target, Object[] args, String[] paramNames) {
+    public Object getArgValue(String target, Object[] args, String[] paramNames) {
         // 标记当前遍历的索引（因为args和paramNames是一一对应的）
         int idx = 0;
         // 遍历参数名

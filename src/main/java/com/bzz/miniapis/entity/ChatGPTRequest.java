@@ -26,7 +26,7 @@ import java.util.Map;
  * stop属性比较特殊,如果传了,说明是要打断AI的输出,默认请求不需要传入此属性.在每次序列化之后追加属性
  *
  * @author bzz
- * @see https://platform.openai.com/docs/api-reference/chat
+ *
  * @since 2013.3.16
  */
 public class ChatGPTRequest implements Serializable {

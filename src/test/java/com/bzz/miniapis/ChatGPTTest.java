@@ -17,12 +17,17 @@
 package com.bzz.miniapis;
 
 
+import com.bzz.miniapis.anotation.DoCheck;
+import com.bzz.miniapis.aop.DoCheckPoint;
 import com.bzz.miniapis.callback.ChatGPTApiCallback;
+import com.bzz.miniapis.config.CheckAutoConfigure;
 import com.bzz.miniapis.entity.ChatGPTMessageModel;
 import com.bzz.miniapis.entity.ChatGPTRequest;
 import com.bzz.miniapis.entity.ChatGPTResponse;
 import com.bzz.miniapis.entity.CommonResponse;
+import com.bzz.miniapis.enums.Check;
 import com.bzz.miniapis.service.ChatGPTServiceImpl;
+import com.bzz.miniapis.web.R;
 import com.bzz.miniapis.web.TestController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,27 +36,45 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.servlet.MockMvc;
+
+import java.lang.reflect.Method;
 
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.junit.Assert.*;
 
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {TestController.class})
+@SpringBootTest(classes = {CheckAutoConfigure.class, DoCheckPoint.class, TestController.class})
 @TestPropertySource(locations = "classpath:test.properties")
+@AutoConfigureMockMvc
 public class ChatGPTTest {
+
+
+    //引用
+    @Autowired
+    private MockMvc mockMvc;
+
 
     private static Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .disableHtmlEscaping() //避免转换为Unicode转义字符
             .create();
 
+//    @SpyBean
+//    //@MockBean
+//    TestController testController;
+
     @Autowired
     private TestController testController;
+
+    @Autowired
+    private DoCheckPoint doCheckPoint;
+
 
     private ChatGPTServiceImpl service;
 
@@ -84,14 +107,50 @@ public class ChatGPTTest {
 
         //初始化实现类
         service = new ChatGPTServiceImpl(requestModel);
+
     }
 
 
-    /**
-     * check.enabled=true的时候
-     */
     @Test
-    public void test1() {
+    public void testSendEmailWithCorrectEmailFormat() {
+        String correctEmail = "123456@qq.com";
+        R<String> result = testController.sendEmail(correctEmail);
+        assertEquals("发送成功", result.getData());
+    }
+
+    @Test
+    public void testSendEmailWithIncorrectEmailFormat() {
+        String incorrectEmail = "123456";
+        try {
+            R<String> result = testController.sendEmail(incorrectEmail);
+            //assertEquals(result.getCode() + "", "500");
+            //assertEquals(result.getMsg(), "邮箱格式不正确！");
+        } catch (IllegalArgumentException e) {
+            assertEquals("邮箱格式不正确！", e.getMessage());
+        }
+    }
+
+
+    @Test
+    public void testDoCheckAnnotationOnSendEmailMethod() throws NoSuchMethodException {
+        Method method = TestController.class.getMethod("sendEmail", String.class);
+        assertNotNull(method);
+        DoCheck annotation = method.getAnnotation(DoCheck.class);
+        assertNotNull(annotation);
+        assertEquals(Check.Email, annotation.value());
+        assertEquals("email", annotation.arg());
+        assertEquals("邮箱格式不正确！", annotation.msg());
+    }
+
+
+    @Test
+    public void testSendEmail() {
+        // 初始化待测试对象
+        TestController testController = new TestController();
+
+        // 调用带注解的方法进行测试
+        R<String> result = testController.sendEmail("test");
+
         //是否会将testController加载到Spring application context
         assertThat(testController, notNullValue());
         assertEquals(true, enabled);
@@ -100,10 +159,24 @@ public class ChatGPTTest {
 //        assertEquals(rightR.getCode() + "", "200");
 //        assertEquals(rightR.getMsg(), "操作成功");
 
-//        R<String> wrongR = testController.sendEmail("123456");
-//        assertEquals(wrongR.getCode() + "", "500");
-//        assertEquals(wrongR.getMsg(), "邮箱格式不正确！");
 
+//        Mockito.doReturn(null).when(this.doCheckPoint).doCheck(null);
+//        Mockito.doReturn(null).when(this.testController).sendEmail("123456");
+//        Mockito.verify(this.doCheckPoint, Mockito.times(1)).doCheck(null);
+
+
+        R<String> wrongR = testController.sendEmail("123456");
+        assertEquals(wrongR.getCode() + "", "500");
+        assertEquals(wrongR.getMsg(), "邮箱格式不正确！");
+
+
+    }
+
+    /**
+     * check.enabled=true的时候
+     */
+    @Test
+    public void test2() throws Throwable {
         service.getResponseAsync(new ChatGPTApiCallback() {
             @Override
             public void onSuccess(ChatGPTResponse response) {
@@ -123,7 +196,6 @@ public class ChatGPTTest {
                 System.out.println(gson.toJson(response));
             }
         });
-
     }
 
 
