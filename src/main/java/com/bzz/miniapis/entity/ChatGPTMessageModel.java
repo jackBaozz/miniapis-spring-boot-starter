@@ -23,6 +23,7 @@ import java.io.Serializable;
  *
  * @author bzz
  * @see https://platform.openai.com/docs/api-reference/chat
+ * @since 2013.3.16
  */
 public class ChatGPTMessageModel implements Serializable {
 

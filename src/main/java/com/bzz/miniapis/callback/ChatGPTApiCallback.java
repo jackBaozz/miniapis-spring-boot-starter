@@ -16,15 +16,15 @@
 
 package com.bzz.miniapis.callback;
 
-import com.bzz.miniapis.entity.ChatGPTApiResponse;
+import com.bzz.miniapis.entity.ChatGPTResponse;
 import com.bzz.miniapis.entity.CommonResponse;
 
 public interface ChatGPTApiCallback {
 
-    void onSuccess(ChatGPTApiResponse response);
+    void onSuccess(ChatGPTResponse response);
 
     void onFailure(String errorMessage);
 
-    void onFailure(CommonResponse commonResponse);
+    void onFailure(CommonResponse response);
 
 }

@@ -18,12 +18,14 @@ package com.bzz.miniapis.service;
 
 
 import com.bzz.miniapis.callback.ChatGPTApiCallback;
-import com.bzz.miniapis.entity.ChatGPTApiResponse;
-import com.bzz.miniapis.entity.ChatGPTRequestModel;
+import com.bzz.miniapis.entity.ChatGPTRequest;
+import com.bzz.miniapis.entity.ChatGPTResponse;
 import com.bzz.miniapis.entity.CommonResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -38,28 +40,37 @@ import java.util.concurrent.Executors;
 
 public class ChatGPTServiceImpl {
 
-    public static Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create();
+    private final Logger log = LoggerFactory.getLogger(ChatGPTServiceImpl.class);
 
-    private static final String API_URL = "https://api.openai.com/v1/completions";
-    private static final String API_SECRET_KEY = "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";
+    private static Gson gson = new GsonBuilder()
+            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .disableHtmlEscaping() //避免转换为Unicode转义字符
+            .create();
 
-    private final ChatGPTRequestModel requestModel;
+    private ChatGPTRequest requestModel;
 
     private final ExecutorService executorService;
+
+    public void setRequestModel(ChatGPTRequest requestModel) {
+        this.requestModel = requestModel;
+    }
 
     /**
      * 初始化类对象
      *
      * @param requestModel
      */
-    public ChatGPTServiceImpl(ChatGPTRequestModel requestModel) {
+    public ChatGPTServiceImpl(ChatGPTRequest requestModel) {
         //初始化参数
-        this.requestModel = new ChatGPTRequestModel();
-
+        this.requestModel = requestModel;
         //初始化线程池
         this.executorService = Executors.newCachedThreadPool();
     }
 
+
+    public void getResponseAsync(ChatGPTApiCallback callback) {
+        getResponseAsync(requestModel, callback);
+    }
 
     /**
      * 传入请求对象, 发起API接口调用
@@ -67,50 +78,65 @@ public class ChatGPTServiceImpl {
      * @param requestModel 请求的参数
      * @param callback     callback处理函数,需要调用者实现逻辑
      */
-    public void getResponseAsync(ChatGPTRequestModel requestModel, ChatGPTApiCallback callback) {
-        executorService.submit(() -> {
-            try {
-                CommonResponse commonResponse = postChatGPTResponse(requestModel);
-                if (commonResponse != null) {
-                    if (commonResponse.getStatusCode() == 200) {
-                        Type type = new TypeToken<ChatGPTApiResponse>() {
-                        }.getType();
-                        ChatGPTApiResponse response = gson.fromJson(commonResponse.getResponse(), type);
-                        callback.onSuccess(response);
-                    } else {
-                        callback.onFailure(commonResponse);
-                    }
+    public void getResponseAsync(ChatGPTRequest requestModel, ChatGPTApiCallback callback) {
+        //callback调用
+        try {
+            CommonResponse commonResponse = postChatGPTResponse(requestModel);
+            if (commonResponse != null) {
+                if (commonResponse.getStatusCode() == 200) {
+                    //返回字符串包装为ChatGPTResponse对象
+                    Type type = new TypeToken<ChatGPTResponse>() {
+                    }.getType();
+                    ChatGPTResponse response = gson.fromJson(commonResponse.getResponse(), type);
+                    callback.onSuccess(response);
                 } else {
-                    callback.onFailure("commonResponse is null");
+                    log.error("callback.onFailure --- {" + commonResponse.toString() + "}");
+                    callback.onFailure(commonResponse);
                 }
-            } catch (IOException e) {
-                callback.onFailure(e.getMessage());
+            } else {
+                log.error("callback.onFailure --- {commonResponse is null}");
+                callback.onFailure("commonResponse is null");
             }
-        });
+        } catch (IOException e) {
+            callback.onFailure(e.getMessage());
+        }
+
+        //线程池调用
+//        executorService.submit(() -> {
+//            try {
+//                CommonResponse commonResponse = postChatGPTResponse(requestModel);
+//                if (commonResponse != null) {
+//                    if (commonResponse.getStatusCode() == 200) {
+//                        Type type = new TypeToken<ChatGPTApiResponse>() {
+//                        }.getType();
+//                        ChatGPTApiResponse response = gson.fromJson(commonResponse.getResponse(), type);
+//                        callback.onSuccess(response);
+//                    } else {
+//                        callback.onFailure(commonResponse);
+//                    }
+//                } else {
+//                    callback.onFailure("commonResponse is null");
+//                }
+//            } catch (IOException e) {
+//                callback.onFailure(e.getMessage());
+//            }
+//        });
     }
 
-    private CommonResponse postChatGPTResponse(ChatGPTRequestModel requestModel) throws IOException {
-        URL url = new URL(API_URL);
+    private CommonResponse postChatGPTResponse(ChatGPTRequest requestModel) throws IOException {
+        URL url = new URL(requestModel.getOriginApiUrl());
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
-        conn.setConnectTimeout(10000);//连接超时 单位毫秒
-        conn.setReadTimeout(10000);//读取超时 单位毫秒
+        conn.setConnectTimeout(30000);//连接超时 单位毫秒
+        conn.setReadTimeout(30000);//读取超时 单位毫秒
         // 发送POST请求必须设置如下两行
         conn.setDoOutput(true);
         conn.setDoInput(true);
         conn.setRequestProperty("Charset", "UTF-8");
         conn.setRequestProperty("Content-Type", "application/json");
         conn.setRequestProperty("Authorization", "Bearer " + requestModel.getApiSecretKey());
-
-
-        String prompt = "";
-        String model = requestModel.getModel();
-        int maxTokens = requestModel.getMax_tokens();
-        float temperature = requestModel.getTemperature();
-        int n = requestModel.getN();
-        String stop = requestModel.getStop();
-        String requestBody = String.format("{\"model\": \"%s\", \"max_tokens\": %d, \"temperature\": %f, \"n\": %d, \"stop\": \"%s\"}",
-                model, maxTokens, temperature, n, stop);
+        String requestBody = gson.toJson(requestModel);
+        log.debug("requestBody --- {" + requestBody + "}");
 
         try (OutputStream os = conn.getOutputStream()) {
             byte[] input = requestBody.getBytes("utf-8");
@@ -145,6 +171,7 @@ public class ChatGPTServiceImpl {
             }
             errorReader.close();
         }
+        log.debug("readResponse --- {" + response.toString() + "}");
         return response.toString();
     }
 

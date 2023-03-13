@@ -21,8 +21,11 @@ import java.util.List;
 
 /**
  * ChatGPT返回的大对象
+ *
+ * @author bzz
+ * @since 2013.3.16
  */
-public class ChatGPTApiResponse implements Serializable {
+public class ChatGPTResponse implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -20,6 +20,9 @@ import java.io.Serializable;
 
 /**
  * 通用返回
+ *
+ * @author bzz
+ * @since 2013.3.16
  */
 public class CommonResponse implements Serializable {
 
@@ -57,5 +60,14 @@ public class CommonResponse implements Serializable {
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    @Override
+    public String toString() {
+        return "CommonResponse{" +
+                "statusCode=" + statusCode +
+                ", statusMessage='" + statusMessage + '\'' +
+                ", response='" + response + '\'' +
+                '}';
     }
 }

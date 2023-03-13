@@ -20,33 +20,19 @@ import java.io.Serializable;
 
 /**
  * ChatGPT的最终选择(输出结果)
+ *
+ * @author bzz
+ * @since 2013.3.16
  */
 public class ChatGPTChoicesModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * text :
-     *
-     * This is indeed a test
-     * index : 0
-     * logprobs : null
-     * finish_reason : length
-     */
-
-    private String text;
     private int index;
-    private Object logprobs;
     private String finish_reason;
 
+    private ChatGPTMessageModel message;
 
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
 
     public int getIndex() {
         return index;
@@ -56,19 +42,19 @@ public class ChatGPTChoicesModel implements Serializable {
         this.index = index;
     }
 
-    public Object getLogprobs() {
-        return logprobs;
-    }
-
-    public void setLogprobs(Object logprobs) {
-        this.logprobs = logprobs;
-    }
-
     public String getFinish_reason() {
         return finish_reason;
     }
 
     public void setFinish_reason(String finish_reason) {
         this.finish_reason = finish_reason;
+    }
+
+    public ChatGPTMessageModel getMessage() {
+        return message;
+    }
+
+    public void setMessage(ChatGPTMessageModel message) {
+        this.message = message;
     }
 }

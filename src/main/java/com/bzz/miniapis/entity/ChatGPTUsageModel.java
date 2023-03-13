@@ -20,6 +20,9 @@ import java.io.Serializable;
 
 /**
  * ChatGPT模型的实际用法
+ *
+ * @author bzz
+ * @since 2013.3.16
  */
 public class ChatGPTUsageModel implements Serializable {
 

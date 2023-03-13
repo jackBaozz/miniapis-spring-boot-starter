@@ -22,32 +22,36 @@ import java.util.Map;
 /**
  * 根据文档封装的chatGPT的实体
  *
+ * transient的属性,序列化的时候不会输出这个属性.
+ * stop属性比较特殊,如果传了,说明是要打断AI的输出,默认请求不需要传入此属性.在每次序列化之后追加属性
+ *
  * @author bzz
  * @see https://platform.openai.com/docs/api-reference/chat
+ * @since 2013.3.16
  */
-public class ChatGPTRequestModel implements Serializable {
+public class ChatGPTRequest implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public ChatGPTRequestModel() {
+    public ChatGPTRequest() {
 
     }
 
-    public ChatGPTRequestModel(String originApiUrl, String apiSecretKey) {
+    public ChatGPTRequest(String originApiUrl, String apiSecretKey) {
         this.originApiUrl = originApiUrl;
         this.apiSecretKey = apiSecretKey;
     }
 
-    private String originApiUrl = "https://api.openai.com/v1/chat/completions";
+    private transient String originApiUrl = "https://api.openai.com/v1/chat/completions";
 
-    private String apiSecretKey = "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";
+    private transient String apiSecretKey = "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";
 
 
     /**
      * 代理地址
      * 如果设置了此参数那么此接口地址会优先于
      */
-    private String proxyApiUrl = "";
+    private transient String proxyApiUrl = "";
 
     /**
      * ID of the model to use. Currently, only gpt-3.5-turbo and gpt-3.5-turbo-0301 are supported.
@@ -108,7 +112,7 @@ public class ChatGPTRequestModel implements Serializable {
      * Up to 4 sequences where the API will stop generating further tokens.
      * 最多可以有4个序列，API将停止生成更多的令牌。。
      */
-    private String stop = "stop"; // \n
+    private String stop = "\\n"; // \n
 
     /**
      * The maximum number of tokens allowed for the generated answer.
@@ -283,4 +287,7 @@ public class ChatGPTRequestModel implements Serializable {
     public void setApiSecretKey(String apiSecretKey) {
         this.apiSecretKey = apiSecretKey;
     }
+
 }
+
+

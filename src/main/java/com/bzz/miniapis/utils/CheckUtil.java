@@ -21,6 +21,8 @@ import java.util.regex.Pattern;
 
 /**
  * 校验工具类
+ *
+ * @author bzz
  */
 public class CheckUtil {
 

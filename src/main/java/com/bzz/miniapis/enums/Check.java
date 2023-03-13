@@ -22,6 +22,8 @@ import java.util.function.Function;
 
 /**
  * 校验枚举类
+ *
+ * @author bzz
  */
 public enum Check {
 
