@@ -23,20 +23,23 @@ import com.bzz.miniapis.config.CheckAutoConfigure;
 import com.bzz.miniapis.enums.Check;
 import com.bzz.miniapis.web.R;
 import com.bzz.miniapis.web.TestController;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.lang.reflect.Method;
 
 import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.doReturn;
 
 
 @RunWith(SpringRunner.class)
@@ -45,16 +48,21 @@ import static org.junit.Assert.*;
 public class MainTest2 {
 
     //引用
-    @Autowired
-    private MockMvc mockMvc;
-    //    @SpyBean
+//    @Autowired
+//    private MockMvc mockMvc;
+
+    // @SpyBean
 //    //@MockBean
 //    TestController testController;
-    @Autowired
+    // MockBean在生成新的代理时将直接忽略掉相关切面的注解
+    @SpyBean
     private TestController testController;
 
-    @Autowired
-    private DoCheckPoint doCheckPoint;
+    @SpyBean
+    private DoCheckPoint aop;
+
+    @Mock
+    private ProceedingJoinPoint proceedingJoinPoint;
 
 
     @Value("${miniapis.enabled}")
@@ -69,6 +77,46 @@ public class MainTest2 {
     @Before
     public void before() {
         System.out.println("miniapis.enabled=" + mainSwitch);
+    }
+
+
+    /*@BeforeMethod(alwaysRun = true)
+    public void initMock() {
+        MockitoAnnotations.initMocks(this);
+    }*/
+
+
+    @Test
+    public void testSendEmail() throws Throwable {
+        //是否会将testController加载到Spring application context
+        assertThat(testController, notNullValue());
+        assertEquals(true, enabled);
+
+//        R<String> rightR = testController.sendEmail("123456@qq.com");
+//        assertEquals(rightR.getCode() + "", "200");
+//        assertEquals(rightR.getMsg(), "操作成功");
+
+        //定义调用规则
+        doReturn(null).when(this.aop).doCheck(null);
+        //Mockito.verify(this.doCheckPoint, Mockito.times(1)).doCheck(null);
+        //Mockito.doReturn(R.fail(300, "邮箱格式不正确！", "邮箱格式不正确！")).when(this.testController).sendEmail("123456");
+        Mockito.when(this.testController.sendEmail("123456@qq.com")).thenReturn(R.success(200, "操作成功", "发送成功"));
+        Mockito.when(this.testController.sendEmail("123456")).thenThrow(new IllegalArgumentException("邮箱格式不正确！"));
+
+        //实际方法调用
+        //成功的例子
+        R<String> result = testController.sendEmail("123456@qq.com");
+        assertEquals(result.getCode() + "", "200");
+        assertEquals(result.getMsg(), "操作成功");
+        assertEquals(result.getData(), "发送成功");
+
+        //失败的例子
+        Exception exception = assertThrows("断言抛出错误", IllegalArgumentException.class, () -> {
+            //这里是实际的方法调用,用断言异常包裹
+            //这里表示执行这一行代码肯定会抛出IllegalArgumentException类的异常
+            testController.sendEmail("123456");
+        });
+        assertEquals("邮箱格式不正确！", exception.getMessage());
     }
 
 
@@ -103,33 +151,6 @@ public class MainTest2 {
         assertEquals("邮箱格式不正确！", annotation.msg());
     }
 
-
-    @Test
-    public void testSendEmail() {
-        // 初始化待测试对象
-        TestController testController = new TestController();
-
-        // 调用带注解的方法进行测试
-        R<String> result = testController.sendEmail("test");
-
-        //是否会将testController加载到Spring application context
-        assertThat(testController, notNullValue());
-        assertEquals(true, enabled);
-
-//        R<String> rightR = testController.sendEmail("123456@qq.com");
-//        assertEquals(rightR.getCode() + "", "200");
-//        assertEquals(rightR.getMsg(), "操作成功");
-
-
-//        Mockito.doReturn(null).when(this.doCheckPoint).doCheck(null);
-//        Mockito.doReturn(null).when(this.testController).sendEmail("123456");
-//        Mockito.verify(this.doCheckPoint, Mockito.times(1)).doCheck(null);
-
-
-        R<String> wrongR = testController.sendEmail("123456");
-        assertEquals(wrongR.getCode() + "", "500");
-        assertEquals(wrongR.getMsg(), "邮箱格式不正确！");
-    }
 
 
 }

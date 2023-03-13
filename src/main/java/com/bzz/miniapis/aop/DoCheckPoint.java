@@ -91,6 +91,7 @@ public class DoCheckPoint {
             return jp.proceed(); // 校验成功则放行
         } else {
             // 校验失败抛出异常（带上错误信息msg）并交给调用方捕获（调用方：使用该注解的项目可以定义全局异常捕获，遇到IllegalArgumentException异常则返回对应报错信息）
+            //非法参数
             throw new IllegalArgumentException(msg);
         }
     }
