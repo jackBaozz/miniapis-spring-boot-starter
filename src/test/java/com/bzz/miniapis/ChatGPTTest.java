@@ -20,10 +20,10 @@ package com.bzz.miniapis;
 import com.bzz.miniapis.aop.DoCheckPoint;
 import com.bzz.miniapis.callback.ChatGPTApiCallback;
 import com.bzz.miniapis.config.CheckAutoConfigure;
-import com.bzz.miniapis.entity.ChatGPTMessageModel;
-import com.bzz.miniapis.entity.ChatGPTRequest;
-import com.bzz.miniapis.entity.ChatGPTResponse;
 import com.bzz.miniapis.entity.CommonResponse;
+import com.bzz.miniapis.entity.chatgpt.ChatGPTRequest;
+import com.bzz.miniapis.entity.chatgpt.ChatGPTResponse;
+import com.bzz.miniapis.entity.chatgpt.MessageModel;
 import com.bzz.miniapis.service.ChatGPTServiceImpl;
 import com.bzz.miniapis.web.TestController;
 import com.google.gson.Gson;
@@ -31,6 +31,7 @@ import com.google.gson.GsonBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -53,7 +54,7 @@ public class ChatGPTTest {
 
     private ChatGPTRequest requestModel;
 
-    private ChatGPTMessageModel messageModel;
+    private MessageModel messageModel;
 
 
     @Value("${miniapis.enabled}")
@@ -67,20 +68,19 @@ public class ChatGPTTest {
 
     @Before
     public void before() {
+        //Mockito初始化
+        MockitoAnnotations.initMocks(this);
         System.out.println("miniapis.enabled=" + mainSwitch);
-        //发送的消息
-        messageModel = new ChatGPTMessageModel();
-        messageModel.setRole("user");
-        messageModel.setContent("Hello! how are you?");
+        //询问的问题
+        messageModel = new MessageModel("Hello! how are you?");
 
-        ChatGPTMessageModel[] messages = new ChatGPTMessageModel[]{messageModel};
+        MessageModel[] messages = new MessageModel[]{messageModel};
         requestModel = new ChatGPTRequest();
         //构件请求参数
         requestModel.setMessages(messages);
 
         //初始化实现类
         service = new ChatGPTServiceImpl(requestModel);
-
     }
 
     /**

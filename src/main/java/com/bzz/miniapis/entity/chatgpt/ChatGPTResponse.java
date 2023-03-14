@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bzz.miniapis.entity;
+package com.bzz.miniapis.entity.chatgpt;
 
 import java.io.Serializable;
 import java.util.List;
@@ -42,8 +42,8 @@ public class ChatGPTResponse implements Serializable {
     private String object;
     private int created;
     private String model;
-    private ChatGPTUsageModel usage;
-    private List<ChatGPTChoicesModel> choices;
+    private UsageModel usage;
+    private List<ChoicesModel> choices;
 
 
     public String getId() {
@@ -78,19 +78,19 @@ public class ChatGPTResponse implements Serializable {
         this.model = model;
     }
 
-    public ChatGPTUsageModel getUsage() {
+    public UsageModel getUsage() {
         return usage;
     }
 
-    public void setUsage(ChatGPTUsageModel usage) {
+    public void setUsage(UsageModel usage) {
         this.usage = usage;
     }
 
-    public List<ChatGPTChoicesModel> getChoices() {
+    public List<ChoicesModel> getChoices() {
         return choices;
     }
 
-    public void setChoices(List<ChatGPTChoicesModel> choices) {
+    public void setChoices(List<ChoicesModel> choices) {
         this.choices = choices;
     }
 

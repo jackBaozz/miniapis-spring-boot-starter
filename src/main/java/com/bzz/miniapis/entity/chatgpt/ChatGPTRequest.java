@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.bzz.miniapis.entity;
+package com.bzz.miniapis.entity.chatgpt;
 
 import java.io.Serializable;
 import java.util.Map;
@@ -44,7 +44,7 @@ public class ChatGPTRequest implements Serializable {
 
     private transient String originApiUrl = "https://api.openai.com/v1/chat/completions";
 
-    private transient String apiSecretKey = "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";
+    private transient String apiSecretKey = ""; //Set to your own API_KEY
 
 
     /**
@@ -67,7 +67,7 @@ public class ChatGPTRequest implements Serializable {
      *
      * Required
      */
-    private ChatGPTMessageModel[] messages;
+    private MessageModel[] messages;
 
     /**
      * What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random,
@@ -192,11 +192,11 @@ public class ChatGPTRequest implements Serializable {
         this.model = model;
     }
 
-    public ChatGPTMessageModel[] getMessages() {
+    public MessageModel[] getMessages() {
         return messages;
     }
 
-    public void setMessages(ChatGPTMessageModel[] messages) {
+    public void setMessages(MessageModel[] messages) {
         this.messages = messages;
     }
 

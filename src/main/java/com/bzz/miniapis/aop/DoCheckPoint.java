@@ -86,12 +86,14 @@ public class DoCheckPoint {
 
         // 通过函数式接口传入需要校验的值， 内部会调用工具类的isEmail方法进行校验
         Boolean res = value.function.apply(argValue);
-
         if (res) {
-            return jp.proceed(); // 校验成功则放行
+            // 校验成功则放行
+            return jp.proceed();
         } else {
-            // 校验失败抛出异常（带上错误信息msg）并交给调用方捕获（调用方：使用该注解的项目可以定义全局异常捕获，遇到IllegalArgumentException异常则返回对应报错信息）
-            //非法参数
+            // 参数校验失败抛出异常（带上错误信息msg）并交给调用方捕获（调用方：使用该注解的项目可以定义全局异常捕获，遇到IllegalArgumentException异常则返回对应报错信息）
+            // 这里如果加入web包,那么可以使用全局异常处理@ControllerAdvice来统一封装为R对象返回
+            // 这里为了不引入spring-boot-starter-web组件,需要调用者抓取全局异常单独处理
+            // 这里也可以直接返回封装的R对象
             throw new IllegalArgumentException(msg);
         }
     }

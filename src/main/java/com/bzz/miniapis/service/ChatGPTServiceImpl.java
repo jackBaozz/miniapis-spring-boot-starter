@@ -18,9 +18,9 @@ package com.bzz.miniapis.service;
 
 
 import com.bzz.miniapis.callback.ChatGPTApiCallback;
-import com.bzz.miniapis.entity.ChatGPTRequest;
-import com.bzz.miniapis.entity.ChatGPTResponse;
 import com.bzz.miniapis.entity.CommonResponse;
+import com.bzz.miniapis.entity.chatgpt.ChatGPTRequest;
+import com.bzz.miniapis.entity.chatgpt.ChatGPTResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;

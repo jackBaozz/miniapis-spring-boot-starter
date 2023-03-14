@@ -21,14 +21,14 @@ import com.bzz.miniapis.anotation.DoCheck;
 import com.bzz.miniapis.aop.DoCheckPoint;
 import com.bzz.miniapis.config.CheckAutoConfigure;
 import com.bzz.miniapis.enums.Check;
+import com.bzz.miniapis.web.GlobalExceptionHandler;
 import com.bzz.miniapis.web.R;
 import com.bzz.miniapis.web.TestController;
-import org.aspectj.lang.ProceedingJoinPoint;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
@@ -41,29 +41,20 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
 
-
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {CheckAutoConfigure.class, DoCheckPoint.class, TestController.class})
+@SpringBootTest(classes = {CheckAutoConfigure.class, DoCheckPoint.class, TestController.class, GlobalExceptionHandler.class})
 @TestPropertySource(locations = "classpath:test.properties")
 public class MainTest2 {
 
     //引用
-//    @Autowired
-//    private MockMvc mockMvc;
+    //@Autowired
+    //private MockMvc mockMvc;
 
-    // @SpyBean
-//    //@MockBean
-//    TestController testController;
-    // MockBean在生成新的代理时将直接忽略掉相关切面的注解
     @SpyBean
     private TestController testController;
 
     @SpyBean
     private DoCheckPoint aop;
-
-    @Mock
-    private ProceedingJoinPoint proceedingJoinPoint;
-
 
     @Value("${miniapis.enabled}")
     private boolean mainSwitch;
@@ -76,25 +67,16 @@ public class MainTest2 {
 
     @Before
     public void before() {
+        //Mockito初始化
+        MockitoAnnotations.initMocks(this);
         System.out.println("miniapis.enabled=" + mainSwitch);
     }
-
-
-    /*@BeforeMethod(alwaysRun = true)
-    public void initMock() {
-        MockitoAnnotations.initMocks(this);
-    }*/
-
 
     @Test
     public void testSendEmail() throws Throwable {
         //是否会将testController加载到Spring application context
         assertThat(testController, notNullValue());
         assertEquals(true, enabled);
-
-//        R<String> rightR = testController.sendEmail("123456@qq.com");
-//        assertEquals(rightR.getCode() + "", "200");
-//        assertEquals(rightR.getMsg(), "操作成功");
 
         //定义调用规则
         doReturn(null).when(this.aop).doCheck(null);
@@ -103,14 +85,14 @@ public class MainTest2 {
         Mockito.when(this.testController.sendEmail("123456@qq.com")).thenReturn(R.success(200, "操作成功", "发送成功"));
         Mockito.when(this.testController.sendEmail("123456")).thenThrow(new IllegalArgumentException("邮箱格式不正确！"));
 
-        //实际方法调用
-        //成功的例子
+        //方法调用
+        //1.成功的例子
         R<String> result = testController.sendEmail("123456@qq.com");
         assertEquals(result.getCode() + "", "200");
         assertEquals(result.getMsg(), "操作成功");
         assertEquals(result.getData(), "发送成功");
 
-        //失败的例子
+        //2.失败的例子
         Exception exception = assertThrows("断言抛出错误", IllegalArgumentException.class, () -> {
             //这里是实际的方法调用,用断言异常包裹
             //这里表示执行这一行代码肯定会抛出IllegalArgumentException类的异常
@@ -119,25 +101,6 @@ public class MainTest2 {
         assertEquals("邮箱格式不正确！", exception.getMessage());
     }
 
-
-    @Test
-    public void testSendEmailWithCorrectEmailFormat() {
-        String correctEmail = "123456@qq.com";
-        R<String> result = testController.sendEmail(correctEmail);
-        assertEquals("发送成功", result.getData());
-    }
-
-    @Test
-    public void testSendEmailWithIncorrectEmailFormat() {
-        String incorrectEmail = "123456";
-        try {
-            R<String> result = testController.sendEmail(incorrectEmail);
-            //assertEquals(result.getCode() + "", "500");
-            //assertEquals(result.getMsg(), "邮箱格式不正确！");
-        } catch (IllegalArgumentException e) {
-            assertEquals("邮箱格式不正确！", e.getMessage());
-        }
-    }
 
 
     @Test

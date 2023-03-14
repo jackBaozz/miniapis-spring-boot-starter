@@ -16,8 +16,8 @@
 
 package com.bzz.miniapis.callback;
 
-import com.bzz.miniapis.entity.ChatGPTResponse;
 import com.bzz.miniapis.entity.CommonResponse;
+import com.bzz.miniapis.entity.chatgpt.ChatGPTResponse;
 
 public interface ChatGPTApiCallback {
 

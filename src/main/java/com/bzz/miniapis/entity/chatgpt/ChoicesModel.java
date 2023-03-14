@@ -14,46 +14,47 @@
  * limitations under the License.
  */
 
-package com.bzz.miniapis.entity;
+package com.bzz.miniapis.entity.chatgpt;
 
 import java.io.Serializable;
 
 /**
- * ChatGPT模型的实际用法
+ * ChatGPT的最终选择(输出结果)
  *
  * @author bzz
  * @since 2013.3.16
  */
-public class ChatGPTUsageModel implements Serializable {
+public class ChoicesModel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private int prompt_tokens;
-    private int completion_tokens;
-    private int total_tokens;
+    private int index;
+    private String finish_reason;
+
+    private MessageModel message;
 
 
-    public int getPrompt_tokens() {
-        return prompt_tokens;
+    public int getIndex() {
+        return index;
     }
 
-    public void setPrompt_tokens(int prompt_tokens) {
-        this.prompt_tokens = prompt_tokens;
+    public void setIndex(int index) {
+        this.index = index;
     }
 
-    public int getCompletion_tokens() {
-        return completion_tokens;
+    public String getFinish_reason() {
+        return finish_reason;
     }
 
-    public void setCompletion_tokens(int completion_tokens) {
-        this.completion_tokens = completion_tokens;
+    public void setFinish_reason(String finish_reason) {
+        this.finish_reason = finish_reason;
     }
 
-    public int getTotal_tokens() {
-        return total_tokens;
+    public MessageModel getMessage() {
+        return message;
     }
 
-    public void setTotal_tokens(int total_tokens) {
-        this.total_tokens = total_tokens;
+    public void setMessage(MessageModel message) {
+        this.message = message;
     }
 }
