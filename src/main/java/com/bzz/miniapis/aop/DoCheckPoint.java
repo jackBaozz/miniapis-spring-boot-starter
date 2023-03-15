@@ -18,6 +18,7 @@ package com.bzz.miniapis.aop;
 
 import com.bzz.miniapis.anotation.DoCheck;
 import com.bzz.miniapis.enums.Check;
+import com.bzz.miniapis.exception.MiniapisIllegalParametersException;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -32,8 +33,8 @@ import java.lang.reflect.Method;
 /**
  * aop切面方法（执行校验工作）
  */
-@Aspect
 @Component
+@Aspect
 public class DoCheckPoint {
 
     // 记录日志
@@ -94,7 +95,7 @@ public class DoCheckPoint {
             // 这里如果加入web包,那么可以使用全局异常处理@ControllerAdvice来统一封装为R对象返回
             // 这里为了不引入spring-boot-starter-web组件,需要调用者抓取全局异常单独处理
             // 这里也可以直接返回封装的R对象
-            throw new IllegalArgumentException(msg);
+            throw new MiniapisIllegalParametersException(msg);
         }
     }
 
