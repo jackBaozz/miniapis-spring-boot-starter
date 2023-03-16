@@ -27,7 +27,7 @@
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.bzz.miniapis</groupId>
+    <groupId>com.baozhizhi.miniapis</groupId>
     <artifactId>miniapis-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
     <version>0.0.1-SNAPSHOT</version>
