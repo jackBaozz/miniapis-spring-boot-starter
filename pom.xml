@@ -30,16 +30,9 @@
     <groupId>com.baozhizhi.miniapis</groupId>
     <artifactId>miniapis-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.1-RELEASE</version>
     <packaging>jar</packaging>
     <description>all of ai-apis</description>
-
-    <developers>
-        <developer>
-            <email></email>
-            <name>jackBao</name>
-        </developer>
-    </developers>
 
 
     <properties>
@@ -212,6 +205,12 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
+                    </execution>
+                    <execution>
                         <phase>compile</phase>
                         <goals>
                             <goal>jar</goal>
@@ -222,5 +221,90 @@
         </plugins>
     </build>
 
+
+    <!-- 分发配置 -->
+    <distributionManagement>
+        <snapshotRepository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+        </snapshotRepository>
+        <repository>
+            <id>ossrh</id>
+            <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+        </repository>
+    </distributionManagement>
+
+
+    <profiles>
+        <profile>
+            <id>release</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.7</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>ossrh</serverId>
+                            <nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-release-plugin</artifactId>
+                        <version>2.5.3</version>
+                        <configuration>
+                            <autoVersionSubmodules>true</autoVersionSubmodules>
+                            <useReleaseProfile>false</useReleaseProfile>
+                            <releaseProfiles>release</releaseProfiles>
+                            <goals>deploy</goals>
+                        </configuration>
+                    </plugin>
+                    <!-- gpg签名插件 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.6</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+
+    <scm>
+        <url>scm:https://github.com/jackBaozz/miniapis-spring-boot-starter.git</url>
+        <connection>scm:https://github.com/jackBaozz/miniapis-spring-boot-starter.git</connection>
+        <developerConnection>https://blog.baozhizhi.com/</developerConnection>
+        <tag>0.0.1</tag>
+    </scm>
+
+
+    <developers>
+        <developer>
+            <email></email>
+            <name>jackBao</name>
+        </developer>
+    </developers>
 
 </project>
