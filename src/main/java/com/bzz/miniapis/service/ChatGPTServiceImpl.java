@@ -21,6 +21,7 @@ import com.bzz.miniapis.callback.ChatGPTApiCallback;
 import com.bzz.miniapis.entity.CommonResponse;
 import com.bzz.miniapis.entity.chatgpt.ChatGPTRequest;
 import com.bzz.miniapis.entity.chatgpt.ChatGPTResponse;
+import com.bzz.miniapis.utils.ExceptionUtil;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -81,7 +82,7 @@ public class ChatGPTServiceImpl {
     public void getResponseAsync(ChatGPTRequest requestModel, ChatGPTApiCallback callback) {
         //callback调用
         try {
-            CommonResponse commonResponse = postChatGPTResponse(requestModel);
+            CommonResponse commonResponse = this.postChatGPTResponse(requestModel);
             if (commonResponse != null) {
                 if (commonResponse.getStatusCode() == 200) {
                     //返回字符串包装为ChatGPTResponse对象
@@ -123,34 +124,47 @@ public class ChatGPTServiceImpl {
 //        });
     }
 
-    private CommonResponse postChatGPTResponse(ChatGPTRequest requestModel) throws IOException {
-        URL url = new URL(requestModel.getOriginApiUrl());
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("POST");
-        conn.setConnectTimeout(30000);//连接超时 单位毫秒
-        conn.setReadTimeout(30000);//读取超时 单位毫秒
-        // 发送POST请求必须设置如下两行
-        conn.setDoOutput(true);
-        conn.setDoInput(true);
-        conn.setRequestProperty("Charset", "UTF-8");
-        conn.setRequestProperty("Content-Type", "application/json");
-        conn.setRequestProperty("Authorization", "Bearer " + requestModel.getApiSecretKey());
-        String requestBody = gson.toJson(requestModel);
-        log.debug("requestBody --- {" + requestBody + "}");
 
-        try (OutputStream os = conn.getOutputStream()) {
-            byte[] input = requestBody.getBytes("utf-8");
-            os.write(input, 0, input.length);
+    /**
+     * 使用jdk自带的http客户端去发送post请求
+     *
+     * @param requestModel gtp请求模型
+     * @return CommonResponse 通用Response
+     * @throws IOException
+     */
+    private CommonResponse postChatGPTResponse(ChatGPTRequest requestModel) throws IOException {
+        try {
+            URL url = new URL(requestModel.getOriginApiUrl());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setConnectTimeout(60000);//连接超时 单位毫秒
+            conn.setReadTimeout(60000);//读取超时 单位毫秒
+            // 发送POST请求必须设置如下两行
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            conn.setRequestProperty("Charset", "UTF-8");
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Authorization", "Bearer " + requestModel.getApiSecretKey());
+            String requestBody = gson.toJson(requestModel);
+            log.debug("requestBody --- {" + requestBody + "}");
+
+            try (OutputStream os = conn.getOutputStream()) {
+                byte[] input = requestBody.getBytes("utf-8");
+                os.write(input, 0, input.length);
+            }
+            //获取到返回的内容
+            int statusCode = conn.getResponseCode();
+            String statusMessage = conn.getResponseMessage();
+            //这里读取可能会出错
+            String response = this.readResponse(conn);
+            return new CommonResponse(statusCode, statusMessage, response);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        //获取到返回的内容
-        int statusCode = conn.getResponseCode();
-        String statusMessage = conn.getResponseMessage();
-        String response = readResponse(conn);
-        return new CommonResponse(statusCode, statusMessage, response);
     }
 
     /**
-     * 读取返回的内容
+     * 解析返回的内容
      *
      * @param conn
      * @return string
@@ -158,21 +172,27 @@ public class ChatGPTServiceImpl {
      */
     private String readResponse(HttpURLConnection conn) throws IOException {
         StringBuilder response = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
+        try (BufferedReader correctReader = new BufferedReader(new InputStreamReader(conn.getInputStream(), "utf-8"))) {
             String responseLine;
-            while ((responseLine = br.readLine()) != null) {
+            while ((responseLine = correctReader.readLine()) != null) {
                 response.append(responseLine.trim());
             }
         } catch (IOException e) {
+            log.error("readResponse IOException = {}", ExceptionUtil.simpleMessage(e));
             BufferedReader errorReader = new BufferedReader(new InputStreamReader(conn.getErrorStream(), "utf-8"));
             String errorLine;
             while ((errorLine = errorReader.readLine()) != null) {
                 response.append(errorLine.trim());
             }
             errorReader.close();
+        } finally {
+            if (log.isDebugEnabled()) {
+                log.debug("readResponse = {}", response.toString());
+            }
         }
-        log.debug("readResponse --- {" + response.toString() + "}");
         return response.toString();
     }
+
+
 
 }

@@ -44,7 +44,7 @@ public class ChatGPTRequest implements Serializable {
 
     private transient String originApiUrl = "https://api.openai.com/v1/chat/completions";
 
-    private transient String apiSecretKey = ""; //Set to your own API_KEY
+    private transient String apiSecretKey = ""; //Set your own API_KEY
 
 
     /**
@@ -57,7 +57,7 @@ public class ChatGPTRequest implements Serializable {
      * ID of the model to use. Currently, only gpt-3.5-turbo and gpt-3.5-turbo-0301 are supported.
      * 要使用的模型的ID。目前，只有gpt-3.5-turbo和gpt-3.5-turbo-0301被支持。
      *
-     * Required
+     * Required (必传,使用的模型)
      */
     private String model = "gpt-3.5-turbo-0301";
 
@@ -65,7 +65,7 @@ public class ChatGPTRequest implements Serializable {
      * The messages to generate chat completions for,
      * 要生成聊天完成的消息
      *
-     * Required
+     * Required (必传,发送的消息)
      */
     private MessageModel[] messages;
 

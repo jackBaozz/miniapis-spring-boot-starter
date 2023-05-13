@@ -20,6 +20,8 @@ import java.io.Serializable;
 
 /**
  * 统一封装结果类
+ *
+ * @author bzz
  */
 public class R<T> implements Serializable {
     private Integer code;

@@ -25,9 +25,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * 使用https://github.com/TheoKanning/openai-java的项目封装的另一种JDK实现
+ * 使用https://github.com/TheoKanning/openai-java的项目封装的另一种 chatGPT的实现
  *
- * 未测试, 不知是否是最新接口(谨慎使用)
+ * 注意: 未测试, 不知是否是最新接口(谨慎使用)
  */
 public class OpenAiServiceImpl {
 
