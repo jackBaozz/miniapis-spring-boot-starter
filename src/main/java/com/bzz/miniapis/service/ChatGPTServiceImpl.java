@@ -16,8 +16,8 @@
 
 package com.bzz.miniapis.service;
 
-
 import com.bzz.miniapis.callback.ChatGPTApiCallback;
+import com.bzz.miniapis.config.ChatGPTProperties;
 import com.bzz.miniapis.entity.CommonResponse;
 import com.bzz.miniapis.entity.chatgpt.ChatGPTRequest;
 import com.bzz.miniapis.entity.chatgpt.ChatGPTResponse;
@@ -28,6 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.annotation.PreDestroy;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -38,99 +39,97 @@ import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
-public class ChatGPTServiceImpl {
+/**
+ * ChatGPT 服务实现类
+ *
+ * @author bzz
+ */
+public class ChatGPTServiceImpl implements ChatGPTService {
 
     private final Logger log = LoggerFactory.getLogger(ChatGPTServiceImpl.class);
 
-    private static Gson gson = new GsonBuilder()
+    private static final Gson gson = new GsonBuilder()
             .setDateFormat("yyyy-MM-dd HH:mm:ss")
             .disableHtmlEscaping() //避免转换为Unicode转义字符
             .create();
 
-    private ChatGPTRequest requestModel;
-
+    private final ChatGPTProperties properties;
     private final ExecutorService executorService;
 
-    public void setRequestModel(ChatGPTRequest requestModel) {
-        this.requestModel = requestModel;
-    }
-
-    /**
-     * 初始化类对象
-     *
-     * @param requestModel
-     */
-    public ChatGPTServiceImpl(ChatGPTRequest requestModel) {
-        //初始化参数
-        this.requestModel = requestModel;
-        //初始化线程池
+    public ChatGPTServiceImpl(ChatGPTProperties properties) {
+        this.properties = properties;
         this.executorService = Executors.newCachedThreadPool();
     }
 
+    @Override
+    public ChatGPTResponse getResponse(ChatGPTRequest request) {
+        populateDefaults(request);
+        try {
+            CommonResponse commonResponse = postChatGPTResponse(request);
+            if (commonResponse != null && commonResponse.getStatusCode() == 200) {
+                Type type = new TypeToken<ChatGPTResponse>() {}.getType();
+                return gson.fromJson(commonResponse.getResponse(), type);
+            } else {
+                String errorMsg = commonResponse != null ? commonResponse.toString() : "Response is null";
+                log.error("Sync ChatGPT request failed: {}", errorMsg);
+                throw new RuntimeException("ChatGPT API call failed: " + errorMsg);
+            }
+        } catch (IOException e) {
+            log.error("Sync ChatGPT request exception", e);
+            throw new RuntimeException("ChatGPT API connection error", e);
+        }
+    }
 
-    public void getResponseAsync(ChatGPTApiCallback callback) {
-        getResponseAsync(requestModel, callback);
+    @Override
+    public void getResponseAsync(ChatGPTRequest request, ChatGPTApiCallback callback) {
+        populateDefaults(request);
+        
+        executorService.submit(() -> {
+            try {
+                CommonResponse commonResponse = postChatGPTResponse(request);
+                if (commonResponse != null) {
+                    if (commonResponse.getStatusCode() == 200) {
+                        Type type = new TypeToken<ChatGPTResponse>() {}.getType();
+                        ChatGPTResponse response = gson.fromJson(commonResponse.getResponse(), type);
+                        callback.onSuccess(response);
+                    } else {
+                        log.error("Async callback.onFailure --- {" + commonResponse.toString() + "}");
+                        callback.onFailure(commonResponse);
+                    }
+                } else {
+                    log.error("Async callback.onFailure --- {commonResponse is null}");
+                    callback.onFailure("commonResponse is null");
+                }
+            } catch (IOException e) {
+                log.error("Async ChatGPT request exception", e);
+                callback.onFailure(e.getMessage());
+            }
+        });
     }
 
     /**
-     * 传入请求对象, 发起API接口调用
-     *
-     * @param requestModel 请求的参数
-     * @param callback     callback处理函数,需要调用者实现逻辑
+     * 关闭服务，释放线程池资源
      */
-    public void getResponseAsync(ChatGPTRequest requestModel, ChatGPTApiCallback callback) {
-        //callback调用
-        try {
-            CommonResponse commonResponse = this.postChatGPTResponse(requestModel);
-            if (commonResponse != null) {
-                if (commonResponse.getStatusCode() == 200) {
-                    //返回字符串包装为ChatGPTResponse对象
-                    Type type = new TypeToken<ChatGPTResponse>() {
-                    }.getType();
-                    ChatGPTResponse response = gson.fromJson(commonResponse.getResponse(), type);
-                    callback.onSuccess(response);
-                } else {
-                    log.error("callback.onFailure --- {" + commonResponse.toString() + "}");
-                    callback.onFailure(commonResponse);
-                }
-            } else {
-                log.error("callback.onFailure --- {commonResponse is null}");
-                callback.onFailure("commonResponse is null");
-            }
-        } catch (IOException e) {
-            callback.onFailure(e.getMessage());
+    @PreDestroy
+    public void shutdown() {
+        if (executorService != null && !executorService.isShutdown()) {
+            executorService.shutdown();
         }
-
-        //线程池调用
-//        executorService.submit(() -> {
-//            try {
-//                CommonResponse commonResponse = postChatGPTResponse(requestModel);
-//                if (commonResponse != null) {
-//                    if (commonResponse.getStatusCode() == 200) {
-//                        Type type = new TypeToken<ChatGPTApiResponse>() {
-//                        }.getType();
-//                        ChatGPTApiResponse response = gson.fromJson(commonResponse.getResponse(), type);
-//                        callback.onSuccess(response);
-//                    } else {
-//                        callback.onFailure(commonResponse);
-//                    }
-//                } else {
-//                    callback.onFailure("commonResponse is null");
-//                }
-//            } catch (IOException e) {
-//                callback.onFailure(e.getMessage());
-//            }
-//        });
     }
 
+    private void populateDefaults(ChatGPTRequest request) {
+        if (request.getApiSecretKey() == null || request.getApiSecretKey().isEmpty()) {
+            request.setApiSecretKey(properties.getApiKey());
+        }
+        if (request.getOriginApiUrl() == null || request.getOriginApiUrl().isEmpty() || "https://api.openai.com/v1/chat/completions".equals(request.getOriginApiUrl())) {
+            if (properties.getApiUrl() != null && !properties.getApiUrl().isEmpty()) {
+                request.setOriginApiUrl(properties.getApiUrl());
+            }
+        }
+    }
 
     /**
      * 使用jdk自带的http客户端去发送post请求
-     *
-     * @param requestModel gtp请求模型
-     * @return CommonResponse 通用Response
-     * @throws IOException
      */
     private CommonResponse postChatGPTResponse(ChatGPTRequest requestModel) throws IOException {
         try {
@@ -155,7 +154,6 @@ public class ChatGPTServiceImpl {
             //获取到返回的内容
             int statusCode = conn.getResponseCode();
             String statusMessage = conn.getResponseMessage();
-            //这里读取可能会出错
             String response = this.readResponse(conn);
             return new CommonResponse(statusCode, statusMessage, response);
         } catch (IOException e) {
@@ -165,10 +163,6 @@ public class ChatGPTServiceImpl {
 
     /**
      * 解析返回的内容
-     *
-     * @param conn
-     * @return string
-     * @throws IOException
      */
     private String readResponse(HttpURLConnection conn) throws IOException {
         StringBuilder response = new StringBuilder();
@@ -192,7 +186,4 @@ public class ChatGPTServiceImpl {
         }
         return response.toString();
     }
-
-
-
 }

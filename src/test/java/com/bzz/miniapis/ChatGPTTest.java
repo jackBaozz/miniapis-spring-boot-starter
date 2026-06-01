@@ -17,9 +17,9 @@
 package com.bzz.miniapis;
 
 
-import com.bzz.miniapis.aop.DoCheckPoint;
 import com.bzz.miniapis.callback.ChatGPTApiCallback;
-import com.bzz.miniapis.config.CheckAutoConfigure;
+import com.bzz.miniapis.config.MiniapisAutoConfiguration;
+import com.bzz.miniapis.service.ChatGPTService;
 import com.bzz.miniapis.entity.CommonResponse;
 import com.bzz.miniapis.entity.chatgpt.ChatGPTRequest;
 import com.bzz.miniapis.entity.chatgpt.ChatGPTResponse;
@@ -28,19 +28,16 @@ import com.bzz.miniapis.service.ChatGPTServiceImpl;
 import com.bzz.miniapis.web.TestController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {CheckAutoConfigure.class, DoCheckPoint.class, TestController.class})
+@SpringBootTest(classes = {MiniapisAutoConfiguration.class, TestController.class})
 @TestPropertySource(locations = "classpath:test.properties")
 @AutoConfigureMockMvc
 public class ChatGPTTest {
@@ -50,7 +47,8 @@ public class ChatGPTTest {
             .disableHtmlEscaping() //避免转换为Unicode转义字符
             .create();
 
-    private ChatGPTServiceImpl service;
+    @org.springframework.beans.factory.annotation.Autowired
+    private ChatGPTService service;
 
     private ChatGPTRequest requestModel;
 
@@ -66,10 +64,10 @@ public class ChatGPTTest {
     @Value("${miniapis.check.enabled}")
     private boolean enabled;
 
-    @Before
+    @BeforeEach
     public void before() {
         //Mockito初始化
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         System.out.println("miniapis.enabled=" + mainSwitch);
         //询问的问题
         messageModel = new MessageModel("Hello! how are you?");
@@ -78,9 +76,6 @@ public class ChatGPTTest {
         requestModel = new ChatGPTRequest();
         //构件请求参数
         requestModel.setMessages(messages);
-
-        //初始化实现类
-        service = new ChatGPTServiceImpl(requestModel);
     }
 
     /**
@@ -88,7 +83,7 @@ public class ChatGPTTest {
      */
     @Test
     public void test1() throws Throwable {
-        service.getResponseAsync(new ChatGPTApiCallback() {
+        service.getResponseAsync(requestModel, new ChatGPTApiCallback() {
             @Override
             public void onSuccess(ChatGPTResponse response) {
                 System.out.println("onSuccess ------ ");

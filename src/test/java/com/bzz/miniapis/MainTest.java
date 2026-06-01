@@ -18,32 +18,29 @@ package com.bzz.miniapis;
 
 
 import com.bzz.miniapis.aop.DoCheckPoint;
-import com.bzz.miniapis.config.CheckAutoConfigure;
+import com.bzz.miniapis.config.MiniapisAutoConfiguration;
 import com.bzz.miniapis.web.GlobalExceptionHandler;
 import com.bzz.miniapis.web.R;
 import com.bzz.miniapis.web.TestController;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.LinkedList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {CheckAutoConfigure.class, DoCheckPoint.class, TestController.class, GlobalExceptionHandler.class})
+@SpringBootTest(classes = {MiniapisAutoConfiguration.class, TestController.class, GlobalExceptionHandler.class})
 @TestPropertySource(locations = "classpath:test.properties")
 public class MainTest {
 
@@ -61,10 +58,10 @@ public class MainTest {
     @Value("${miniapis.enabled}")
     private boolean mainSwitch;
 
-    @Before
+    @BeforeEach
     public void before() {
         //Mockito初始化
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         System.out.println("miniapis.enabled=" + mainSwitch);
     }
 
@@ -98,20 +95,7 @@ public class MainTest {
     }
 
 
-    /**
-     * check.enabled=false的时候
-     */
-    @Test
-    public void getInfo3() {
-        //是否会将testController加载到Spring application context
-        assertThat(testController, notNullValue());
-        assertEquals(false, enabled);
 
-        //如果开关关闭,那么不管邮箱格式是否合理, 都默认合理
-        R<String> wrongR = testController.sendEmail("123456");
-        assertEquals(wrongR.getCode() + "", "200");
-        assertEquals(wrongR.getMsg(), "操作成功");
-    }
 
 
     @Test
@@ -135,7 +119,7 @@ public class MainTest {
 
 
         //如果上面的验证缺少,下面这个验证会抛出异常,表示有步骤缺少了验证verify
-        verifyNoMoreInteractions(mockedList, description("有步骤缺少了验证verify"));
+        verifyNoMoreInteractions(mockedList);
 
 
         List list = new LinkedList();

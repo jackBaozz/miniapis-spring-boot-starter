@@ -19,36 +19,30 @@ package com.bzz.miniapis;
 
 import com.bzz.miniapis.anotation.DoCheck;
 import com.bzz.miniapis.aop.DoCheckPoint;
-import com.bzz.miniapis.config.CheckAutoConfigure;
+import com.bzz.miniapis.config.MiniapisAutoConfiguration;
 import com.bzz.miniapis.enums.Check;
 import com.bzz.miniapis.web.GlobalExceptionHandler;
 import com.bzz.miniapis.web.R;
 import com.bzz.miniapis.web.TestController;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import java.lang.reflect.Method;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.doReturn;
 
-@RunWith(SpringRunner.class)
-@SpringBootTest(classes = {CheckAutoConfigure.class, DoCheckPoint.class, TestController.class, GlobalExceptionHandler.class})
+@SpringBootTest(classes = {MiniapisAutoConfiguration.class, TestController.class, GlobalExceptionHandler.class})
 @TestPropertySource(locations = "classpath:test.properties")
-public class MainTest2 {
-
-    //引用
-    //@Autowired
-    //private MockMvc mockMvc;
+public class Main2Test {
 
     @SpyBean
     private TestController testController;
@@ -65,10 +59,10 @@ public class MainTest2 {
     @Value("${miniapis.check.enabled}")
     private boolean enabled;
 
-    @Before
+    @BeforeEach
     public void before() {
         //Mockito初始化
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         System.out.println("miniapis.enabled=" + mainSwitch);
     }
 
@@ -80,8 +74,6 @@ public class MainTest2 {
 
         //定义调用规则
         doReturn(null).when(this.aop).doCheck(null);
-        //Mockito.verify(this.doCheckPoint, Mockito.times(1)).doCheck(null);
-        //Mockito.doReturn(R.fail(300, "邮箱格式不正确！", "邮箱格式不正确！")).when(this.testController).sendEmail("123456");
         Mockito.when(this.testController.sendEmail("123456@qq.com")).thenReturn(R.success(200, "操作成功", "发送成功"));
         Mockito.when(this.testController.sendEmail("123456")).thenThrow(new IllegalArgumentException("邮箱格式不正确！"));
 
@@ -93,15 +85,13 @@ public class MainTest2 {
         assertEquals(result.getData(), "发送成功");
 
         //2.失败的例子
-        Exception exception = assertThrows("断言抛出错误", IllegalArgumentException.class, () -> {
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
             //这里是实际的方法调用,用断言异常包裹
             //这里表示执行这一行代码肯定会抛出IllegalArgumentException类的异常
             testController.sendEmail("123456");
         });
         assertEquals("邮箱格式不正确！", exception.getMessage());
     }
-
-
 
     @Test
     public void testDoCheckAnnotationOnSendEmailMethod() throws NoSuchMethodException {
@@ -113,7 +103,5 @@ public class MainTest2 {
         assertEquals("email", annotation.arg());
         assertEquals("邮箱格式不正确！", annotation.msg());
     }
-
-
 
 }

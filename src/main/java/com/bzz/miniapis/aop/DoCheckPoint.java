@@ -26,7 +26,9 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import com.bzz.miniapis.config.CheckProperties;
 
 import java.lang.reflect.Method;
 
@@ -39,6 +41,9 @@ public class DoCheckPoint {
 
     // 记录日志
     private final Logger log = LoggerFactory.getLogger(DoCheckPoint.class);
+
+    @Autowired(required = false)
+    private CheckProperties checkProperties;
 
     /**
      * 自定义切入点
@@ -53,6 +58,9 @@ public class DoCheckPoint {
      */
     @Around("doCheckPoint()")
     public Object doCheck(ProceedingJoinPoint jp) throws Throwable {
+        if (checkProperties != null && !checkProperties.isEnabled()) {
+            return jp.proceed();
+        }
         // 获取被修饰的方法信息
         Method method = getMethod(jp);
         // 获取方法的所有参数值
