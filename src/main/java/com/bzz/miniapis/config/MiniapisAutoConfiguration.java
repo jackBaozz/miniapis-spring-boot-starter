@@ -21,6 +21,10 @@ import com.bzz.miniapis.sdk.ipify.IpifyClient;
 import com.bzz.miniapis.sdk.placeholder.JsonPlaceholderClient;
 import com.bzz.miniapis.sdk.joke.JokeClient;
 import com.bzz.miniapis.sdk.weather.OpenMeteoClient;
+import com.bzz.miniapis.sdk.catfact.CatFactClient;
+import com.bzz.miniapis.sdk.agify.AgifyClient;
+import com.bzz.miniapis.sdk.coindesk.CoinDeskClient;
+import com.bzz.miniapis.sdk.dogfacts.DogfactsClient;
 import com.bzz.miniapis.service.ChatGPTService;
 import com.bzz.miniapis.service.ChatGPTServiceImpl;
 import com.theokanning.openai.service.OpenAiService;
@@ -48,7 +52,11 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         PlaceholderProperties.class,
         WeatherProperties.class,
         IpifyProperties.class,
-        JokeProperties.class
+        JokeProperties.class,
+        CatFactProperties.class,
+        AgifyProperties.class,
+        CoinDeskProperties.class,
+        DogfactsProperties.class
 })
 public class MiniapisAutoConfiguration {
 
@@ -124,8 +132,49 @@ public class MiniapisAutoConfiguration {
     }
 
     /**
+     * CatFact 客户端 Bean
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.catfact.enabled", havingValue = "true", matchIfMissing = true)
+    public CatFactClient catFactClient(CatFactProperties properties) {
+        return createClient(CatFactClient.class, properties.getUrl());
+    }
+
+    /**
+     * Agify 客户端 Bean
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.agify.enabled", havingValue = "true", matchIfMissing = true)
+    public AgifyClient agifyClient(AgifyProperties properties) {
+        return createClient(AgifyClient.class, properties.getUrl());
+    }
+
+    /**
+     * CoinDesk 客户端 Bean
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.coindesk.enabled", havingValue = "true", matchIfMissing = true)
+    public CoinDeskClient coinDeskClient(CoinDeskProperties properties) {
+        return createClient(CoinDeskClient.class, properties.getUrl());
+    }
+
+    /**
      * 声明式 HTTP 接口客户端创建辅助方法
      */
+
+    /**
+     * Dogfacts 客户端 Bean
+     */
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.dogfacts.enabled", havingValue = "true", matchIfMissing = true)
+    public DogfactsClient dogfactsClient(DogfactsProperties properties) {
+        return createClient(DogfactsClient.class, properties.getUrl());
+    }
+
     private <T> T createClient(Class<T> clientClass, String baseUrl) {
         RestClient restClient = RestClient.builder()
                 .baseUrl(baseUrl)
