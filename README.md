@@ -51,7 +51,34 @@ miniapis:
   openai:
     # OpenAI 官方 SDK 自动装配，只要配置了该 key，会自动向 Spring 容器中注入官方的 OpenAiService 实例
     api-key: "your-openai-sdk-api-key"
-```
+
+  # ==========================================
+  # 以下为集成的 public-apis 免 Key API SDK 配置 (均为可选，默认启用)
+  # ==========================================
+  placeholder:
+    # JSONPlaceholder 客户端开关，默认为 true
+    enabled: true
+    # 接口地址，默认为 https://jsonplaceholder.typicode.com
+    url: "https://jsonplaceholder.typicode.com"
+
+  weather:
+    # Open-Meteo 天气接口开关，默认为 true
+    enabled: true
+    # 接口地址，默认为 https://api.open-meteo.com
+    url: "https://api.open-meteo.com"
+
+  ipify:
+    # ipify IP获取接口开关，默认为 true
+    enabled: true
+    # 接口地址，默认为 https://api.ipify.org
+    url: "https://api.ipify.org"
+
+  joke:
+    # Official Joke API 接口开关，默认为 true
+    enabled: true
+    # 接口地址，默认为 https://official-joke-api.appspot.com
+    url: "https://official-joke-api.appspot.com"
+``````
 
 ---
 
@@ -169,6 +196,98 @@ public class AdvancedAiService {
 
 ---
 
+### 4. 多通道第三方 API 声明式 SDK 支持 (基于 Spring Boot 3.3.0 HTTP Interfaces)
+
+本组件基于 Spring Boot 3.3.x 提供的声明式 HTTP Interfaces (`@HttpExchange` 配合 `RestClient`)，集成了多个来自 `public-apis` 的优质、无需 Key 的公用 API 服务。所有客户端都具备：
+- **可复用/可配置性**：支持在配置文件中一键开启/关闭，并支持自由重写接口的 Base URL；
+- **声明式接口设计**：摒弃传统繁琐的手动 HTTP 请求拼接，完全面向接口及 DTO 开发。
+
+#### 1) JSONPlaceholder 模拟数据服务 (`JsonPlaceholderClient`)
+用于测试及快速演示的 Mock 资源（如文章 posts、评论 comments 等）。
+- **默认服务地址**: `https://jsonplaceholder.typicode.com`
+- **主要方法**:
+  - `Post getPost(Integer id)`: 获取单篇帖子。
+  - `List<Post> getPosts()`: 获取全部帖子。
+  - `List<Comment> getCommentsByPostId(Integer id)`: 获取某帖子的所有评论。
+- **使用示例**:
+```java
+@RestController
+public class DemoController {
+
+    @Autowired
+    private JsonPlaceholderClient jsonPlaceholderClient;
+
+    @GetMapping("/posts")
+    public List<Post> getPosts() {
+        return jsonPlaceholderClient.getPosts();
+    }
+}
+```
+
+#### 2) Open-Meteo 天气预报服务 (`OpenMeteoClient`)
+免费且免 Key 的全球天气预报 API 服务。
+- **默认服务地址**: `https://api.open-meteo.com`
+- **主要方法**:
+  - `WeatherForecast getForecast(Double latitude, Double longitude, Boolean currentWeather)`: 查询指定经纬度的天气信息。
+- **使用示例**:
+```java
+@RestController
+public class WeatherController {
+
+    @Autowired
+    private OpenMeteoClient openMeteoClient;
+
+    @GetMapping("/weather")
+    public WeatherForecast getWeather(@RequestParam Double lat, @RequestParam Double lon) {
+        // 请求经纬度天气，并返回当前天气信息
+        return openMeteoClient.getForecast(lat, lon, true);
+    }
+}
+```
+
+#### 3) ipify IP 获取服务 (`IpifyClient`)
+简单好用的公共 IP 地址获取服务。
+- **默认服务地址**: `https://api.ipify.org`
+- **主要方法**:
+  - `IpResponse getIp(String format)`: 获取公网 IP (当参数 `format="json"` 时返回 DTO 响应)。
+- **使用示例**:
+```java
+@RestController
+public class IpController {
+
+    @Autowired
+    private IpifyClient ipifyClient;
+
+    @GetMapping("/myip")
+    public IpResponse getIp() {
+        // 获取 JSON 格式的客户端外网公网 IP
+        return ipifyClient.getIp("json");
+    }
+}
+```
+
+#### 4) Official Joke API 随机笑话服务 (`JokeClient`)
+随机获取英文幽默、编程段子等笑话的免 Key API。
+- **默认服务地址**: `https://official-joke-api.appspot.com`
+- **主要方法**:
+  - `Joke getRandomJoke()`: 随机返回笑话。
+- **使用示例**:
+```java
+@RestController
+public class JokeController {
+
+    @Autowired
+    private JokeClient jokeClient;
+
+    @GetMapping("/joke")
+    public Joke getRandomJoke() {
+        return jokeClient.getRandomJoke();
+    }
+}
+```
+
+---
+
 ## 🧪 单元测试
 
 主项目中配置了多个 JUnit 5 测试案例，用以验证各种场景下的行为：
@@ -176,3 +295,7 @@ public class AdvancedAiService {
 - `MainTest`: 验证在启用 AOP 参数校验 (`miniapis.check.enabled=true`) 时拦截与异常抛出情况。
 - `Main2Test`: 验证 Mock 切面与 Stub 条件下的接口调用测试。
 - `Main3Test`: 验证当手动关闭参数校验 (`miniapis.check.enabled=false`) 时，切面能够正确放行。
+- `PlaceholderTest`: 验证 `JsonPlaceholderClient` 调用，涵盖获取单个/全部帖子以及获取评论列表接口。
+- `WeatherTest`: 验证 `OpenMeteoClient` 调用，查询经纬度天气预测数据。
+- `IpifyTest`: 验证 `IpifyClient` 调用，获取当前客户端公网 IP 地址。
+- `JokeTest`: 验证 `JokeClient` 调用，获取随机笑话。
