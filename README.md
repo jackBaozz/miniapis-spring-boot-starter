@@ -21,7 +21,7 @@
 <dependency>
     <groupId>com.baozhizhi.miniapis</groupId>
     <artifactId>miniapis-spring-boot-starter</artifactId>
-    <version>0.0.2-SHAPSHOT</version>
+    <version>0.1.0-SHAPSHOT</version>
 </dependency>
 ```
 

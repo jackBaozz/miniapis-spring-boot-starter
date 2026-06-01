@@ -30,7 +30,7 @@
     <groupId>com.baozhizhi.miniapis</groupId>
     <artifactId>miniapis-spring-boot-starter</artifactId>
     <name>${project.artifactId}</name>
-    <version>0.0.2-SHAPSHOT</version>
+    <version>0.1.0-SHAPSHOT</version>
     <packaging>jar</packaging>
     <description>all of ai-apis</description>
 
