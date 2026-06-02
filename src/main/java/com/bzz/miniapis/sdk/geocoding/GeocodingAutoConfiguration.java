@@ -23,7 +23,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         BattutaProperties.class,
         BdapisProperties.class,
         BigdatacloudProperties.class,
-        BingMapsProperties.class,
         Bng2LatlongProperties.class,
         CartesIoProperties.class,
         CepLaProperties.class,
@@ -36,7 +35,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         GeocodIoProperties.class,
         GeocodeXyzProperties.class,
         GeocodifyComProperties.class,
-        GeodataGovGrProperties.class,
         GeodatasourceProperties.class,
         GeodbCitiesProperties.class,
         GeographqlProperties.class,
@@ -86,10 +84,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         PostalcodesProperties.class,
         QueimadasInpeProperties.class,
         RestCountriesProperties.class,
-        RoadgoatCitiesProperties.class,
         RwandaLocationsProperties.class,
         SlfProperties.class,
-        SpotsenseProperties.class,
         TelizeProperties.class,
         TomtomProperties.class,
         UebermapsProperties.class,
@@ -103,7 +99,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         ZiptasticProperties.class
 })
 public class GeocodingAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -180,13 +175,6 @@ public class GeocodingAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.geocoding.bigdatacloud.enabled", havingValue = "true", matchIfMissing = true)
     public BigdatacloudClient bigdatacloudClient(BigdatacloudProperties properties) {
         return createClient(BigdatacloudClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.geocoding.bingmaps.enabled", havingValue = "true", matchIfMissing = true)
-    public BingMapsClient bingmapsClient(BingMapsProperties properties) {
-        return createClient(BingMapsClient.class, properties.getUrl());
     }
 
     @Bean
@@ -271,13 +259,6 @@ public class GeocodingAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.geocoding.geocodifycom.enabled", havingValue = "true", matchIfMissing = true)
     public GeocodifyComClient geocodifycomClient(GeocodifyComProperties properties) {
         return createClient(GeocodifyComClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.geocoding.geodatagovgr.enabled", havingValue = "true", matchIfMissing = true)
-    public GeodataGovGrClient geodatagovgrClient(GeodataGovGrProperties properties) {
-        return createClient(GeodataGovGrClient.class, properties.getUrl());
     }
 
     @Bean
@@ -625,13 +606,6 @@ public class GeocodingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.geocoding.roadgoatcities.enabled", havingValue = "true", matchIfMissing = true)
-    public RoadgoatCitiesClient roadgoatcitiesClient(RoadgoatCitiesProperties properties) {
-        return createClient(RoadgoatCitiesClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.geocoding.rwandalocations.enabled", havingValue = "true", matchIfMissing = true)
     public RwandaLocationsClient rwandalocationsClient(RwandaLocationsProperties properties) {
         return createClient(RwandaLocationsClient.class, properties.getUrl());
@@ -642,13 +616,6 @@ public class GeocodingAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.geocoding.slf.enabled", havingValue = "true", matchIfMissing = true)
     public SlfClient slfClient(SlfProperties properties) {
         return createClient(SlfClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.geocoding.spotsense.enabled", havingValue = "true", matchIfMissing = true)
-    public SpotsenseClient spotsenseClient(SpotsenseProperties properties) {
-        return createClient(SpotsenseClient.class, properties.getUrl());
     }
 
     @Bean

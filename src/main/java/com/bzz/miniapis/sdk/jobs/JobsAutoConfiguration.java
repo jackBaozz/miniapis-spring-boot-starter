@@ -19,7 +19,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         CareerjetProperties.class,
         DevitjobsUkProperties.class,
         FindworkProperties.class,
-        GraphqlJobsProperties.class,
         HerohuntPeopleSearchProperties.class,
         Jobs2CareersProperties.class,
         JoobleProperties.class,
@@ -33,7 +32,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         ZiprecruiterProperties.class
 })
 public class JobsAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -82,13 +80,6 @@ public class JobsAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.jobs.findwork.enabled", havingValue = "true", matchIfMissing = true)
     public FindworkClient findworkClient(FindworkProperties properties) {
         return createClient(FindworkClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.jobs.graphqljobs.enabled", havingValue = "true", matchIfMissing = true)
-    public GraphqlJobsClient graphqljobsClient(GraphqlJobsProperties properties) {
-        return createClient(GraphqlJobsClient.class, properties.getUrl());
     }
 
     @Bean

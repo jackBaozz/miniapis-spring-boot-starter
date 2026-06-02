@@ -18,7 +18,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         DropmailProperties.class,
         EmailjsProperties.class,
         EmailValidationProperties.class,
-        EvaProperties.class,
         GuerrillaMailProperties.class,
         ImprovmxProperties.class,
         KickboxProperties.class,
@@ -33,7 +32,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         VerifierProperties.class
 })
 public class EmailAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -75,13 +73,6 @@ public class EmailAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.email.emailvalidation.enabled", havingValue = "true", matchIfMissing = true)
     public EmailValidationClient emailvalidationClient(EmailValidationProperties properties) {
         return createClient(EmailValidationClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.email.eva.enabled", havingValue = "true", matchIfMissing = true)
-    public EvaClient evaClient(EvaProperties properties) {
-        return createClient(EvaClient.class, properties.getUrl());
     }
 
     @Bean

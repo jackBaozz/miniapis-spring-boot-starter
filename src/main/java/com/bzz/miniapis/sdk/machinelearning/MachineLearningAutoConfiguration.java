@@ -24,13 +24,11 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         HuggingFaceProperties.class,
         ImaggaProperties.class,
         InferdoProperties.class,
-        IpsOnlineProperties.class,
         IrisnetProperties.class,
         KeenIoProperties.class,
         MachinetutorsProperties.class,
         MessengerxIoProperties.class,
         NlpCloudProperties.class,
-        OpenvisionapiProperties.class,
         PerspectiveProperties.class,
         RoboflowUniverseProperties.class,
         SkybiometryProperties.class,
@@ -40,7 +38,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         WolframalphaProperties.class
 })
 public class MachineLearningAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -128,13 +125,6 @@ public class MachineLearningAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.machinelearning.ipsonline.enabled", havingValue = "true", matchIfMissing = true)
-    public IpsOnlineClient ipsonlineClient(IpsOnlineProperties properties) {
-        return createClient(IpsOnlineClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.machinelearning.irisnet.enabled", havingValue = "true", matchIfMissing = true)
     public IrisnetClient irisnetClient(IrisnetProperties properties) {
         return createClient(IrisnetClient.class, properties.getUrl());
@@ -166,13 +156,6 @@ public class MachineLearningAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.machinelearning.nlpcloud.enabled", havingValue = "true", matchIfMissing = true)
     public NlpCloudClient nlpcloudClient(NlpCloudProperties properties) {
         return createClient(NlpCloudClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.machinelearning.openvisionapi.enabled", havingValue = "true", matchIfMissing = true)
-    public OpenvisionapiClient openvisionapiClient(OpenvisionapiProperties properties) {
-        return createClient(OpenvisionapiClient.class, properties.getUrl());
     }
 
     @Bean

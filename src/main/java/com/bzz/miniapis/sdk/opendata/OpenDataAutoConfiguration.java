@@ -42,7 +42,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         RecreationInformationDatabaseProperties.class,
         ScoopItProperties.class,
         SocrataProperties.class,
-        TeleportProperties.class,
         UmeOpenDataProperties.class,
         UniversitiesListProperties.class,
         UniversityOfOsloProperties.class,
@@ -54,7 +53,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         YelpProperties.class
 })
 public class OpenDataAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -264,13 +262,6 @@ public class OpenDataAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.opendata.socrata.enabled", havingValue = "true", matchIfMissing = true)
     public SocrataClient socrataClient(SocrataProperties properties) {
         return createClient(SocrataClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.opendata.teleport.enabled", havingValue = "true", matchIfMissing = true)
-    public TeleportClient teleportClient(TeleportProperties properties) {
-        return createClient(TeleportClient.class, properties.getUrl());
     }
 
     @Bean

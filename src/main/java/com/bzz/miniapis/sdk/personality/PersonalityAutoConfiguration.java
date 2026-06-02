@@ -13,44 +13,31 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @ConditionalOnProperty(value = "miniapis.enabled", havingValue = "true")
 @EnableConfigurationProperties({
         AdviceSlipProperties.class,
-        BiriyaniAsAServiceProperties.class,
         DevToProperties.class,
         DictumProperties.class,
         FavqsComProperties.class,
         FoaasProperties.class,
-        ForismaticProperties.class,
         IcanhazdadjokeProperties.class,
-        InspirationProperties.class,
         KanyeRestProperties.class,
         KimiquotesProperties.class,
         MediumProperties.class,
         ProgrammingQuotesProperties.class,
         QuotableQuotesProperties.class,
-        QuoteGardenProperties.class,
         QuoteclearProperties.class,
         QuotesOnDesignProperties.class,
         StoicismQuoteProperties.class,
         TheySaidSoQuotesProperties.class,
         TraitifyProperties.class,
         UdemyInstructorProperties.class,
-        VadiveluHttpCodesProperties.class,
         ZenQuotesProperties.class
 })
 public class PersonalityAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.personality.adviceslip.enabled", havingValue = "true", matchIfMissing = true)
     public AdviceSlipClient adviceslipClient(AdviceSlipProperties properties) {
         return createClient(AdviceSlipClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.personality.biriyaniasaservice.enabled", havingValue = "true", matchIfMissing = true)
-    public BiriyaniAsAServiceClient biriyaniasaserviceClient(BiriyaniAsAServiceProperties properties) {
-        return createClient(BiriyaniAsAServiceClient.class, properties.getUrl());
     }
 
     @Bean
@@ -83,23 +70,9 @@ public class PersonalityAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.personality.forismatic.enabled", havingValue = "true", matchIfMissing = true)
-    public ForismaticClient forismaticClient(ForismaticProperties properties) {
-        return createClient(ForismaticClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.personality.icanhazdadjoke.enabled", havingValue = "true", matchIfMissing = true)
     public IcanhazdadjokeClient icanhazdadjokeClient(IcanhazdadjokeProperties properties) {
         return createClient(IcanhazdadjokeClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.personality.inspiration.enabled", havingValue = "true", matchIfMissing = true)
-    public InspirationClient inspirationClient(InspirationProperties properties) {
-        return createClient(InspirationClient.class, properties.getUrl());
     }
 
     @Bean
@@ -135,13 +108,6 @@ public class PersonalityAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.personality.quotablequotes.enabled", havingValue = "true", matchIfMissing = true)
     public QuotableQuotesClient quotablequotesClient(QuotableQuotesProperties properties) {
         return createClient(QuotableQuotesClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.personality.quotegarden.enabled", havingValue = "true", matchIfMissing = true)
-    public QuoteGardenClient quotegardenClient(QuoteGardenProperties properties) {
-        return createClient(QuoteGardenClient.class, properties.getUrl());
     }
 
     @Bean
@@ -184,13 +150,6 @@ public class PersonalityAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.personality.udemyinstructor.enabled", havingValue = "true", matchIfMissing = true)
     public UdemyInstructorClient udemyinstructorClient(UdemyInstructorProperties properties) {
         return createClient(UdemyInstructorClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.personality.vadiveluhttpcodes.enabled", havingValue = "true", matchIfMissing = true)
-    public VadiveluHttpCodesClient vadiveluhttpcodesClient(VadiveluHttpCodesProperties properties) {
-        return createClient(VadiveluHttpCodesClient.class, properties.getUrl());
     }
 
     @Bean

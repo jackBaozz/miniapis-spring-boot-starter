@@ -19,14 +19,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         FeedbinProperties.class,
         FloridaManProperties.class,
         GnewsProperties.class,
-        GraphsForCoronavirusProperties.class,
         InshortsNewsProperties.class,
         MarketauxProperties.class,
         NewYorkTimesProperties.class,
         NewsProperties.class,
         NewsdataProperties.class,
         NewsxProperties.class,
-        NprOneProperties.class,
         SpaceflightNewsProperties.class,
         TheGuardianProperties.class,
         TheOldReaderProperties.class,
@@ -34,7 +32,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         TroveProperties.class
 })
 public class NewsAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -87,13 +84,6 @@ public class NewsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.news.graphsforcoronavirus.enabled", havingValue = "true", matchIfMissing = true)
-    public GraphsForCoronavirusClient graphsforcoronavirusClient(GraphsForCoronavirusProperties properties) {
-        return createClient(GraphsForCoronavirusClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.news.inshortsnews.enabled", havingValue = "true", matchIfMissing = true)
     public InshortsNewsClient inshortsnewsClient(InshortsNewsProperties properties) {
         return createClient(InshortsNewsClient.class, properties.getUrl());
@@ -132,13 +122,6 @@ public class NewsAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.news.newsx.enabled", havingValue = "true", matchIfMissing = true)
     public NewsxClient newsxClient(NewsxProperties properties) {
         return createClient(NewsxClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.news.nprone.enabled", havingValue = "true", matchIfMissing = true)
-    public NprOneClient nproneClient(NprOneProperties properties) {
-        return createClient(NprOneClient.class, properties.getUrl());
     }
 
     @Bean

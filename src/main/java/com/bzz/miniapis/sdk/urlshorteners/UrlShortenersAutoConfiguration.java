@@ -15,14 +15,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         Api1PtProperties.class,
         BitlyProperties.class,
         CleanuriProperties.class,
-        ClickmeterProperties.class,
         ClicoProperties.class,
         CuttLyProperties.class,
         DrivetUrlShortenerProperties.class,
         FreeUrlShortenerProperties.class,
         GitIoProperties.class,
         GotinyProperties.class,
-        KuttProperties.class,
         MgnetMeProperties.class,
         OwoProperties.class,
         RebrandlyProperties.class,
@@ -34,7 +32,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         UrlbaeProperties.class
 })
 public class UrlShortenersAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -55,13 +52,6 @@ public class UrlShortenersAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.urlshorteners.cleanuri.enabled", havingValue = "true", matchIfMissing = true)
     public CleanuriClient cleanuriClient(CleanuriProperties properties) {
         return createClient(CleanuriClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.urlshorteners.clickmeter.enabled", havingValue = "true", matchIfMissing = true)
-    public ClickmeterClient clickmeterClient(ClickmeterProperties properties) {
-        return createClient(ClickmeterClient.class, properties.getUrl());
     }
 
     @Bean
@@ -104,13 +94,6 @@ public class UrlShortenersAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.urlshorteners.gotiny.enabled", havingValue = "true", matchIfMissing = true)
     public GotinyClient gotinyClient(GotinyProperties properties) {
         return createClient(GotinyClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.urlshorteners.kutt.enabled", havingValue = "true", matchIfMissing = true)
-    public KuttClient kuttClient(KuttProperties properties) {
-        return createClient(KuttClient.class, properties.getUrl());
     }
 
     @Bean

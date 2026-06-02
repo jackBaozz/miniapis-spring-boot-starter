@@ -21,17 +21,13 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         GrNstromindexProperties.class,
         IqairProperties.class,
         LuchtmeetnetProperties.class,
-        NationalGridEsoProperties.class,
         OpenaqProperties.class,
         Pm25OpenDataPortalProperties.class,
-        Pm25InProperties.class,
-        PvwattsProperties.class,
         SrpEnergyProperties.class,
         UkCarbonIntensityProperties.class,
         WebsiteCarbonProperties.class
 })
 public class EnvironmentAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -98,13 +94,6 @@ public class EnvironmentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.environment.nationalgrideso.enabled", havingValue = "true", matchIfMissing = true)
-    public NationalGridEsoClient nationalgridesoClient(NationalGridEsoProperties properties) {
-        return createClient(NationalGridEsoClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.environment.openaq.enabled", havingValue = "true", matchIfMissing = true)
     public OpenaqClient openaqClient(OpenaqProperties properties) {
         return createClient(OpenaqClient.class, properties.getUrl());
@@ -115,20 +104,6 @@ public class EnvironmentAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.environment.pm25opendataportal.enabled", havingValue = "true", matchIfMissing = true)
     public Pm25OpenDataPortalClient pm25opendataportalClient(Pm25OpenDataPortalProperties properties) {
         return createClient(Pm25OpenDataPortalClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.environment.pm25in.enabled", havingValue = "true", matchIfMissing = true)
-    public Pm25InClient pm25inClient(Pm25InProperties properties) {
-        return createClient(Pm25InClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.environment.pvwatts.enabled", havingValue = "true", matchIfMissing = true)
-    public PvwattsClient pvwattsClient(PvwattsProperties properties) {
-        return createClient(PvwattsClient.class, properties.getUrl());
     }
 
     @Bean

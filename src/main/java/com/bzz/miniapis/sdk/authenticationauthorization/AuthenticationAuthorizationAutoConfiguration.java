@@ -16,12 +16,10 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         GetotpProperties.class,
         MicroUserServiceProperties.class,
         MojoauthProperties.class,
-        SawoLabsProperties.class,
         StytchProperties.class,
         WarrantProperties.class
 })
 public class AuthenticationAuthorizationAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -49,13 +47,6 @@ public class AuthenticationAuthorizationAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.authenticationauthorization.mojoauth.enabled", havingValue = "true", matchIfMissing = true)
     public MojoauthClient mojoauthClient(MojoauthProperties properties) {
         return createClient(MojoauthClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.authenticationauthorization.sawolabs.enabled", havingValue = "true", matchIfMissing = true)
-    public SawoLabsClient sawolabsClient(SawoLabsProperties properties) {
-        return createClient(SawoLabsClient.class, properties.getUrl());
     }
 
     @Bean

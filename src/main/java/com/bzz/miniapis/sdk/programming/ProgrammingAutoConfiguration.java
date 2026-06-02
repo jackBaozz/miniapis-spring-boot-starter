@@ -15,11 +15,9 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         CodeforcesProperties.class,
         HackerearthProperties.class,
         Judge0CeProperties.class,
-        KontestsProperties.class,
         MintlifyProperties.class
 })
 public class ProgrammingAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -40,13 +38,6 @@ public class ProgrammingAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.programming.judge0ce.enabled", havingValue = "true", matchIfMissing = true)
     public Judge0CeClient judge0ceClient(Judge0CeProperties properties) {
         return createClient(Judge0CeClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.programming.kontests.enabled", havingValue = "true", matchIfMissing = true)
-    public KontestsClient kontestsClient(KontestsProperties properties) {
-        return createClient(KontestsClient.class, properties.getUrl());
     }
 
     @Bean

@@ -28,11 +28,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         IlovepdfProperties.class,
         JiraProperties.class,
         MattermostProperties.class,
-        MercuryProperties.class,
-        MondayProperties.class,
         NotionProperties.class,
         PandadocProperties.class,
-        PocketProperties.class,
         PodioProperties.class,
         PrexviewProperties.class,
         RenderlyProperties.class,
@@ -45,7 +42,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         ZubeProperties.class
 })
 public class DocumentsProductivityAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -161,20 +157,6 @@ public class DocumentsProductivityAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.documentsproductivity.mercury.enabled", havingValue = "true", matchIfMissing = true)
-    public MercuryClient mercuryClient(MercuryProperties properties) {
-        return createClient(MercuryClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.documentsproductivity.monday.enabled", havingValue = "true", matchIfMissing = true)
-    public MondayClient mondayClient(MondayProperties properties) {
-        return createClient(MondayClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.documentsproductivity.notion.enabled", havingValue = "true", matchIfMissing = true)
     public NotionClient notionClient(NotionProperties properties) {
         return createClient(NotionClient.class, properties.getUrl());
@@ -185,13 +167,6 @@ public class DocumentsProductivityAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.documentsproductivity.pandadoc.enabled", havingValue = "true", matchIfMissing = true)
     public PandadocClient pandadocClient(PandadocProperties properties) {
         return createClient(PandadocClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.documentsproductivity.pocket.enabled", havingValue = "true", matchIfMissing = true)
-    public PocketClient pocketClient(PocketProperties properties) {
-        return createClient(PocketClient.class, properties.getUrl());
     }
 
     @Bean

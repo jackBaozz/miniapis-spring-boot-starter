@@ -14,11 +14,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @EnableConfigurationProperties({
         ABBliaDigitalProperties.class,
         AmanahSunnahProperties.class,
-        BhagavadGitaProperties.class,
-        BhagavadGitaProperties.class,
         BhagavadGitaTeluguProperties.class,
         BibleApiProperties.class,
-        BritishNationalBibliographyProperties.class,
         CrossrefMetadataSearchProperties.class,
         GanjoorProperties.class,
         GoogleBooksProperties.class,
@@ -41,7 +38,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 })
 public class BooksAutoConfiguration {
 
-
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.abbliadigital.enabled", havingValue = "true", matchIfMissing = true)
@@ -58,20 +54,6 @@ public class BooksAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.bhagavadgita.enabled", havingValue = "true", matchIfMissing = true)
-    public BhagavadGitaClient bhagavadgitaClient(BhagavadGitaProperties properties) {
-        return createClient(BhagavadGitaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.bhagavadgita2.enabled", havingValue = "true", matchIfMissing = true)
-    public BhagavadGitaClient bhagavadgita2Client(BhagavadGitaProperties properties) {
-        return createClient(BhagavadGitaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.bhagavadgitatelugu.enabled", havingValue = "true", matchIfMissing = true)
     public BhagavadGitaTeluguClient bhagavadgitateluguClient(BhagavadGitaTeluguProperties properties) {
         return createClient(BhagavadGitaTeluguClient.class, properties.getUrl());
@@ -82,13 +64,6 @@ public class BooksAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.books.bibleapi.enabled", havingValue = "true", matchIfMissing = true)
     public BibleApiClient bibleapiClient(BibleApiProperties properties) {
         return createClient(BibleApiClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.britishnationalbibliography.enabled", havingValue = "true", matchIfMissing = true)
-    public BritishNationalBibliographyClient britishnationalbibliographyClient(BritishNationalBibliographyProperties properties) {
-        return createClient(BritishNationalBibliographyClient.class, properties.getUrl());
     }
 
     @Bean

@@ -15,9 +15,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         BestBuyProperties.class,
         DigiKeyProperties.class,
         DummyProductsProperties.class,
-        EbayProperties.class,
         EtsyProperties.class,
-        FlipkartMarketplaceProperties.class,
         LazadaProperties.class,
         MercadolibreProperties.class,
         OctopartProperties.class,
@@ -28,7 +26,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         WoocommerceProperties.class
 })
 public class ShoppingAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -53,23 +50,9 @@ public class ShoppingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.shopping.ebay.enabled", havingValue = "true", matchIfMissing = true)
-    public EbayClient ebayClient(EbayProperties properties) {
-        return createClient(EbayClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.shopping.etsy.enabled", havingValue = "true", matchIfMissing = true)
     public EtsyClient etsyClient(EtsyProperties properties) {
         return createClient(EtsyClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.shopping.flipkartmarketplace.enabled", havingValue = "true", matchIfMissing = true)
-    public FlipkartMarketplaceClient flipkartmarketplaceClient(FlipkartMarketplaceProperties properties) {
-        return createClient(FlipkartMarketplaceClient.class, properties.getUrl());
     }
 
     @Bean

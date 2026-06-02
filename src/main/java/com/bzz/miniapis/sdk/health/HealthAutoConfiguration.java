@@ -16,8 +16,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         CoronavirusProperties.class,
         CoronavirusInTheUkProperties.class,
         CovidTrackingProjectProperties.class,
-        Covid19Properties.class,
-        Covid19Properties.class,
         Covid19DatenhubProperties.class,
         Covid19GovernmentResponseProperties.class,
         Covid19IndiaProperties.class,
@@ -26,7 +24,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         Covid19PhilippinesProperties.class,
         Covid19TrackerCanadaProperties.class,
         Covid19TrackerSriLankaProperties.class,
-        CovidIdProperties.class,
         DataflowKitCovid19Properties.class,
         EdamamProperties.class,
         FooddataCentralProperties.class,
@@ -43,11 +40,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         OpenDataNhsScotlandProperties.class,
         OpenDiseaseProperties.class,
         OpenfdaProperties.class,
-        OrionHealthProperties.class,
-        QuarantineProperties.class
-})
+        OrionHealthProperties.class})
 public class HealthAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -75,20 +69,6 @@ public class HealthAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.health.covidtrackingproject.enabled", havingValue = "true", matchIfMissing = true)
     public CovidTrackingProjectClient covidtrackingprojectClient(CovidTrackingProjectProperties properties) {
         return createClient(CovidTrackingProjectClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.health.covid19.enabled", havingValue = "true", matchIfMissing = true)
-    public Covid19Client covid19Client(Covid19Properties properties) {
-        return createClient(Covid19Client.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.health.covid192.enabled", havingValue = "true", matchIfMissing = true)
-    public Covid19Client covid192Client(Covid19Properties properties) {
-        return createClient(Covid19Client.class, properties.getUrl());
     }
 
     @Bean
@@ -145,13 +125,6 @@ public class HealthAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.health.covid19trackersrilanka.enabled", havingValue = "true", matchIfMissing = true)
     public Covid19TrackerSriLankaClient covid19trackersrilankaClient(Covid19TrackerSriLankaProperties properties) {
         return createClient(Covid19TrackerSriLankaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.health.covidid.enabled", havingValue = "true", matchIfMissing = true)
-    public CovidIdClient covididClient(CovidIdProperties properties) {
-        return createClient(CovidIdClient.class, properties.getUrl());
     }
 
     @Bean
@@ -271,13 +244,6 @@ public class HealthAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.health.orionhealth.enabled", havingValue = "true", matchIfMissing = true)
     public OrionHealthClient orionhealthClient(OrionHealthProperties properties) {
         return createClient(OrionHealthClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.health.quarantine.enabled", havingValue = "true", matchIfMissing = true)
-    public QuarantineClient quarantineClient(QuarantineProperties properties) {
-        return createClient(QuarantineClient.class, properties.getUrl());
     }
 
     private <T> T createClient(Class<T> clientClass, String baseUrl) {

@@ -21,13 +21,9 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         ApisGuruProperties.class,
         AzureDevopsProperties.class,
         BaseProperties.class,
-        BeeceptorProperties.class,
         BitbucketProperties.class,
-        BlagueXyzProperties.class,
         BlitappProperties.class,
         BlynkCloudProperties.class,
-        BoredProperties.class,
-        BrainshopAiProperties.class,
         BrewpageProperties.class,
         BrowshotProperties.class,
         CdnjsProperties.class,
@@ -37,7 +33,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         CodexProperties.class,
         ContentfulImagesProperties.class,
         CorsProxyProperties.class,
-        CountapiProperties.class,
         DatabricksProperties.class,
         DigitaloceanStatusProperties.class,
         DockerHubProperties.class,
@@ -49,8 +44,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         GhostProperties.class,
         GithubProperties.class,
         GitlabProperties.class,
-        GitterProperties.class,
-        GlitterlyProperties.class,
         GoogleDocsProperties.class,
         GoogleFirebaseProperties.class,
         GoogleFontsProperties.class,
@@ -85,7 +78,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         KrokiProperties.class,
         LicenseApiProperties.class,
         LogsToProperties.class,
-        LuaDecompilerProperties.class,
         MacAddressVendorLookupProperties.class,
         MicroDbProperties.class,
         MicroenvProperties.class,
@@ -99,7 +91,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         OpenPageRankProperties.class,
         OpenapihubProperties.class,
         OpengraphrProperties.class,
-        OyyiProperties.class,
         PagecdnProperties.class,
         PostmanProperties.class,
         ProxycrawlProperties.class,
@@ -110,8 +101,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         QrCodeProperties.class,
         QrcodeMonkeyProperties.class,
         QuickchartProperties.class,
-        RandomStuffProperties.class,
-        RejaxProperties.class,
         ReqresProperties.class,
         RssFeedToJsonProperties.class,
         SavepageIoProperties.class,
@@ -141,7 +130,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         ZenrowsProperties.class
 })
 public class DevelopmentAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -208,23 +196,9 @@ public class DevelopmentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.beeceptor.enabled", havingValue = "true", matchIfMissing = true)
-    public BeeceptorClient beeceptorClient(BeeceptorProperties properties) {
-        return createClient(BeeceptorClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.development.bitbucket.enabled", havingValue = "true", matchIfMissing = true)
     public BitbucketClient bitbucketClient(BitbucketProperties properties) {
         return createClient(BitbucketClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.blaguexyz.enabled", havingValue = "true", matchIfMissing = true)
-    public BlagueXyzClient blaguexyzClient(BlagueXyzProperties properties) {
-        return createClient(BlagueXyzClient.class, properties.getUrl());
     }
 
     @Bean
@@ -239,20 +213,6 @@ public class DevelopmentAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.development.blynkcloud.enabled", havingValue = "true", matchIfMissing = true)
     public BlynkCloudClient blynkcloudClient(BlynkCloudProperties properties) {
         return createClient(BlynkCloudClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.bored.enabled", havingValue = "true", matchIfMissing = true)
-    public BoredClient boredClient(BoredProperties properties) {
-        return createClient(BoredClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.brainshopai.enabled", havingValue = "true", matchIfMissing = true)
-    public BrainshopAiClient brainshopaiClient(BrainshopAiProperties properties) {
-        return createClient(BrainshopAiClient.class, properties.getUrl());
     }
 
     @Bean
@@ -316,13 +276,6 @@ public class DevelopmentAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.development.corsproxy.enabled", havingValue = "true", matchIfMissing = true)
     public CorsProxyClient corsproxyClient(CorsProxyProperties properties) {
         return createClient(CorsProxyClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.countapi.enabled", havingValue = "true", matchIfMissing = true)
-    public CountapiClient countapiClient(CountapiProperties properties) {
-        return createClient(CountapiClient.class, properties.getUrl());
     }
 
     @Bean
@@ -400,20 +353,6 @@ public class DevelopmentAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.development.gitlab.enabled", havingValue = "true", matchIfMissing = true)
     public GitlabClient gitlabClient(GitlabProperties properties) {
         return createClient(GitlabClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.gitter.enabled", havingValue = "true", matchIfMissing = true)
-    public GitterClient gitterClient(GitterProperties properties) {
-        return createClient(GitterClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.glitterly.enabled", havingValue = "true", matchIfMissing = true)
-    public GlitterlyClient glitterlyClient(GlitterlyProperties properties) {
-        return createClient(GlitterlyClient.class, properties.getUrl());
     }
 
     @Bean
@@ -656,13 +595,6 @@ public class DevelopmentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.luadecompiler.enabled", havingValue = "true", matchIfMissing = true)
-    public LuaDecompilerClient luadecompilerClient(LuaDecompilerProperties properties) {
-        return createClient(LuaDecompilerClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.development.macaddressvendorlookup.enabled", havingValue = "true", matchIfMissing = true)
     public MacAddressVendorLookupClient macaddressvendorlookupClient(MacAddressVendorLookupProperties properties) {
         return createClient(MacAddressVendorLookupClient.class, properties.getUrl());
@@ -754,13 +686,6 @@ public class DevelopmentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.oyyi.enabled", havingValue = "true", matchIfMissing = true)
-    public OyyiClient oyyiClient(OyyiProperties properties) {
-        return createClient(OyyiClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.development.pagecdn.enabled", havingValue = "true", matchIfMissing = true)
     public PagecdnClient pagecdnClient(PagecdnProperties properties) {
         return createClient(PagecdnClient.class, properties.getUrl());
@@ -827,20 +752,6 @@ public class DevelopmentAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.development.quickchart.enabled", havingValue = "true", matchIfMissing = true)
     public QuickchartClient quickchartClient(QuickchartProperties properties) {
         return createClient(QuickchartClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.randomstuff.enabled", havingValue = "true", matchIfMissing = true)
-    public RandomStuffClient randomstuffClient(RandomStuffProperties properties) {
-        return createClient(RandomStuffClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.development.rejax.enabled", havingValue = "true", matchIfMissing = true)
-    public RejaxClient rejaxClient(RejaxProperties properties) {
-        return createClient(RejaxClient.class, properties.getUrl());
     }
 
     @Bean

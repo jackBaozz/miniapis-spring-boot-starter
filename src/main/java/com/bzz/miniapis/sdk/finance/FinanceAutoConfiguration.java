@@ -27,13 +27,10 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         FedTreasuryProperties.class,
         FinageProperties.class,
         FinancialModelingPrepProperties.class,
-        FinnhubProperties.class,
-        FredProperties.class,
         FrontAccountingApisProperties.class,
         HeliumProperties.class,
         HotstoksProperties.class,
         IbanforgeProperties.class,
-        IexCloudProperties.class,
         IgProperties.class,
         IndianMutualFundProperties.class,
         IntrinioProperties.class,
@@ -41,14 +38,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         MercadopagoProperties.class,
         MonoProperties.class,
         MoovProperties.class,
-        NordigenProperties.class,
         OpenfigiProperties.class,
         PlaidProperties.class,
         PolygonProperties.class,
         PortfolioOptimizerProperties.class,
         RazorpayIfscProperties.class,
         RealTimeFinanceProperties.class,
-        SecEdgarDataProperties.class,
         SmartapiProperties.class,
         StockdataProperties.class,
         StyvioProperties.class,
@@ -57,12 +52,10 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         TwelveDataProperties.class,
         VatValidationProperties.class,
         WallstreetbetsProperties.class,
-        YahooFinanceProperties.class,
         YnabProperties.class,
         ZohoBooksProperties.class
 })
 public class FinanceAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -171,20 +164,6 @@ public class FinanceAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.finance.finnhub.enabled", havingValue = "true", matchIfMissing = true)
-    public FinnhubClient finnhubClient(FinnhubProperties properties) {
-        return createClient(FinnhubClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.finance.fred.enabled", havingValue = "true", matchIfMissing = true)
-    public FredClient fredClient(FredProperties properties) {
-        return createClient(FredClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.finance.frontaccountingapis.enabled", havingValue = "true", matchIfMissing = true)
     public FrontAccountingApisClient frontaccountingapisClient(FrontAccountingApisProperties properties) {
         return createClient(FrontAccountingApisClient.class, properties.getUrl());
@@ -209,13 +188,6 @@ public class FinanceAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.finance.ibanforge.enabled", havingValue = "true", matchIfMissing = true)
     public IbanforgeClient ibanforgeClient(IbanforgeProperties properties) {
         return createClient(IbanforgeClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.finance.iexcloud.enabled", havingValue = "true", matchIfMissing = true)
-    public IexCloudClient iexcloudClient(IexCloudProperties properties) {
-        return createClient(IexCloudClient.class, properties.getUrl());
     }
 
     @Bean
@@ -269,13 +241,6 @@ public class FinanceAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.finance.nordigen.enabled", havingValue = "true", matchIfMissing = true)
-    public NordigenClient nordigenClient(NordigenProperties properties) {
-        return createClient(NordigenClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.finance.openfigi.enabled", havingValue = "true", matchIfMissing = true)
     public OpenfigiClient openfigiClient(OpenfigiProperties properties) {
         return createClient(OpenfigiClient.class, properties.getUrl());
@@ -314,13 +279,6 @@ public class FinanceAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.finance.realtimefinance.enabled", havingValue = "true", matchIfMissing = true)
     public RealTimeFinanceClient realtimefinanceClient(RealTimeFinanceProperties properties) {
         return createClient(RealTimeFinanceClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.finance.secedgardata.enabled", havingValue = "true", matchIfMissing = true)
-    public SecEdgarDataClient secedgardataClient(SecEdgarDataProperties properties) {
-        return createClient(SecEdgarDataClient.class, properties.getUrl());
     }
 
     @Bean
@@ -377,13 +335,6 @@ public class FinanceAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.finance.wallstreetbets.enabled", havingValue = "true", matchIfMissing = true)
     public WallstreetbetsClient wallstreetbetsClient(WallstreetbetsProperties properties) {
         return createClient(WallstreetbetsClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.finance.yahoofinance.enabled", havingValue = "true", matchIfMissing = true)
-    public YahooFinanceClient yahoofinanceClient(YahooFinanceProperties properties) {
-        return createClient(YahooFinanceClient.class, properties.getUrl());
     }
 
     @Bean

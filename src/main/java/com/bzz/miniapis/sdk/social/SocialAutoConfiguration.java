@@ -18,10 +18,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         BloggerProperties.class,
         BlueskyProperties.class,
         CiscoSparkProperties.class,
-        DangerousDiscordDatabaseProperties.class,
         DiscordProperties.class,
         DisqusProperties.class,
-        DogeMemeProperties.class,
         FacebookProperties.class,
         FoursquareProperties.class,
         FuckOffAsAServiceProperties.class,
@@ -56,7 +54,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         VkProperties.class
 })
 public class SocialAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -102,13 +99,6 @@ public class SocialAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.social.dangerousdiscorddatabase.enabled", havingValue = "true", matchIfMissing = true)
-    public DangerousDiscordDatabaseClient dangerousdiscorddatabaseClient(DangerousDiscordDatabaseProperties properties) {
-        return createClient(DangerousDiscordDatabaseClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.social.discord.enabled", havingValue = "true", matchIfMissing = true)
     public DiscordClient discordClient(DiscordProperties properties) {
         return createClient(DiscordClient.class, properties.getUrl());
@@ -119,13 +109,6 @@ public class SocialAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.social.disqus.enabled", havingValue = "true", matchIfMissing = true)
     public DisqusClient disqusClient(DisqusProperties properties) {
         return createClient(DisqusClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.social.dogememe.enabled", havingValue = "true", matchIfMissing = true)
-    public DogeMemeClient dogememeClient(DogeMemeProperties properties) {
-        return createClient(DogeMemeClient.class, properties.getUrl());
     }
 
     @Bean

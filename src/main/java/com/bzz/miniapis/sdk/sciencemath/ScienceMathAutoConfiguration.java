@@ -38,8 +38,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         PurpleAirProperties.class,
         RemoteCalcProperties.class,
         ShareProperties.class,
-        SpacexProperties.class,
-        SpacexProperties.class,
         SunriseAndSunsetProperties.class,
         TimesAdderProperties.class,
         TleProperties.class,
@@ -49,7 +47,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         XmathProperties.class
 })
 public class ScienceMathAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -231,20 +228,6 @@ public class ScienceMathAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.sciencemath.share.enabled", havingValue = "true", matchIfMissing = true)
     public ShareClient shareClient(ShareProperties properties) {
         return createClient(ShareClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.sciencemath.spacex.enabled", havingValue = "true", matchIfMissing = true)
-    public SpacexClient spacexClient(SpacexProperties properties) {
-        return createClient(SpacexClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.sciencemath.spacex2.enabled", havingValue = "true", matchIfMissing = true)
-    public SpacexClient spacex2Client(SpacexProperties properties) {
-        return createClient(SpacexClient.class, properties.getUrl());
     }
 
     @Bean

@@ -21,25 +21,19 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         GeneradordniProperties.class,
         ItsthisforthatProperties.class,
         JsonplaceholderProperties.class,
-        LoripsumProperties.class,
         MailsacProperties.class,
-        MetaphorsumProperties.class,
         MockarooProperties.class,
-        QuickmockerProperties.class,
-        RandomDataProperties.class,
         RandommerProperties.class,
         RandomuserProperties.class,
         RobohashProperties.class,
         SpanishRandomNamesProperties.class,
         SpanishRandomWordsProperties.class,
         ThisPersonDoesNotExistProperties.class,
-        ToolcartonProperties.class,
         UuidGeneratorProperties.class,
         WhatTheCommitProperties.class,
         YesNoProperties.class
 })
 public class TestDataAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -106,13 +100,6 @@ public class TestDataAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.testdata.loripsum.enabled", havingValue = "true", matchIfMissing = true)
-    public LoripsumClient loripsumClient(LoripsumProperties properties) {
-        return createClient(LoripsumClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.testdata.mailsac.enabled", havingValue = "true", matchIfMissing = true)
     public MailsacClient mailsacClient(MailsacProperties properties) {
         return createClient(MailsacClient.class, properties.getUrl());
@@ -120,30 +107,9 @@ public class TestDataAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.testdata.metaphorsum.enabled", havingValue = "true", matchIfMissing = true)
-    public MetaphorsumClient metaphorsumClient(MetaphorsumProperties properties) {
-        return createClient(MetaphorsumClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.testdata.mockaroo.enabled", havingValue = "true", matchIfMissing = true)
     public MockarooClient mockarooClient(MockarooProperties properties) {
         return createClient(MockarooClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.testdata.quickmocker.enabled", havingValue = "true", matchIfMissing = true)
-    public QuickmockerClient quickmockerClient(QuickmockerProperties properties) {
-        return createClient(QuickmockerClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.testdata.randomdata.enabled", havingValue = "true", matchIfMissing = true)
-    public RandomDataClient randomdataClient(RandomDataProperties properties) {
-        return createClient(RandomDataClient.class, properties.getUrl());
     }
 
     @Bean
@@ -186,13 +152,6 @@ public class TestDataAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.testdata.thispersondoesnotexist.enabled", havingValue = "true", matchIfMissing = true)
     public ThisPersonDoesNotExistClient thispersondoesnotexistClient(ThisPersonDoesNotExistProperties properties) {
         return createClient(ThisPersonDoesNotExistClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.testdata.toolcarton.enabled", havingValue = "true", matchIfMissing = true)
-    public ToolcartonClient toolcartonClient(ToolcartonProperties properties) {
-        return createClient(ToolcartonClient.class, properties.getUrl());
     }
 
     @Bean

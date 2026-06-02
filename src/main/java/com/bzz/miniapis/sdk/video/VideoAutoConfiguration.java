@@ -13,19 +13,14 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @ConditionalOnProperty(value = "miniapis.enabled", havingValue = "true")
 @EnableConfigurationProperties({
         AnApiOfIceAndFireProperties.class,
-        BobSBurgersProperties.class,
-        BreakingBadProperties.class,
         BreakingBadQuotesProperties.class,
-        CatalogopolisProperties.class,
         CatchTheShowProperties.class,
-        CzechTelevisionProperties.class,
         DailymotionProperties.class,
         DuneProperties.class,
         FinalSpaceProperties.class,
         GameOfThronesQuotesProperties.class,
         HarryPotterCharactesProperties.class,
         HyperserveProperties.class,
-        ImdbApiProperties.class,
         ImdbotProperties.class,
         Json2VideoProperties.class,
         LuciferQuotesProperties.class,
@@ -59,26 +54,11 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 })
 public class VideoAutoConfiguration {
 
-
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.video.anapioficeandfire.enabled", havingValue = "true", matchIfMissing = true)
     public AnApiOfIceAndFireClient anapioficeandfireClient(AnApiOfIceAndFireProperties properties) {
         return createClient(AnApiOfIceAndFireClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.video.bobsburgers.enabled", havingValue = "true", matchIfMissing = true)
-    public BobSBurgersClient bobsburgersClient(BobSBurgersProperties properties) {
-        return createClient(BobSBurgersClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.video.breakingbad.enabled", havingValue = "true", matchIfMissing = true)
-    public BreakingBadClient breakingbadClient(BreakingBadProperties properties) {
-        return createClient(BreakingBadClient.class, properties.getUrl());
     }
 
     @Bean
@@ -90,23 +70,9 @@ public class VideoAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.video.catalogopolis.enabled", havingValue = "true", matchIfMissing = true)
-    public CatalogopolisClient catalogopolisClient(CatalogopolisProperties properties) {
-        return createClient(CatalogopolisClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.video.catchtheshow.enabled", havingValue = "true", matchIfMissing = true)
     public CatchTheShowClient catchtheshowClient(CatchTheShowProperties properties) {
         return createClient(CatchTheShowClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.video.czechtelevision.enabled", havingValue = "true", matchIfMissing = true)
-    public CzechTelevisionClient czechtelevisionClient(CzechTelevisionProperties properties) {
-        return createClient(CzechTelevisionClient.class, properties.getUrl());
     }
 
     @Bean
@@ -149,13 +115,6 @@ public class VideoAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.video.hyperserve.enabled", havingValue = "true", matchIfMissing = true)
     public HyperserveClient hyperserveClient(HyperserveProperties properties) {
         return createClient(HyperserveClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.video.imdbapi.enabled", havingValue = "true", matchIfMissing = true)
-    public ImdbApiClient imdbapiClient(ImdbApiProperties properties) {
-        return createClient(ImdbApiClient.class, properties.getUrl());
     }
 
     @Bean

@@ -19,8 +19,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         AlphaMosslandProperties.class,
         BinanceProperties.class,
         BitcambioProperties.class,
-        BitcoinaverageProperties.class,
-        BitcoinchartsProperties.class,
         BitfinexProperties.class,
         BitmexProperties.class,
         BittrexProperties.class,
@@ -35,7 +33,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         CoinbaseProProperties.class,
         CoincapProperties.class,
         CoindcxProperties.class,
-        CoindeskProperties.class,
         CoingeckoProperties.class,
         CoinigyProperties.class,
         CoinlibProperties.class,
@@ -48,8 +45,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         CryptapiProperties.class,
         CryptingupProperties.class,
         CryptocompareProperties.class,
-        CryptomarketProperties.class,
-        CryptonatorProperties.class,
         DydxProperties.class,
         EthplorerProperties.class,
         ExmoProperties.class,
@@ -68,9 +63,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         MercadobitcoinProperties.class,
         MessariProperties.class,
         NexchangeProperties.class,
-        NomicsProperties.class,
         NovadaxProperties.class,
-        OkexProperties.class,
         PoloniexProperties.class,
         PumpfundataProperties.class,
         SolanaJsonRpcProperties.class,
@@ -80,7 +73,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         ZmokProperties.class
 })
 public class CryptocurrencyAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -129,20 +121,6 @@ public class CryptocurrencyAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.cryptocurrency.bitcambio.enabled", havingValue = "true", matchIfMissing = true)
     public BitcambioClient bitcambioClient(BitcambioProperties properties) {
         return createClient(BitcambioClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.cryptocurrency.bitcoinaverage.enabled", havingValue = "true", matchIfMissing = true)
-    public BitcoinaverageClient bitcoinaverageClient(BitcoinaverageProperties properties) {
-        return createClient(BitcoinaverageClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.cryptocurrency.bitcoincharts.enabled", havingValue = "true", matchIfMissing = true)
-    public BitcoinchartsClient bitcoinchartsClient(BitcoinchartsProperties properties) {
-        return createClient(BitcoinchartsClient.class, properties.getUrl());
     }
 
     @Bean
@@ -245,13 +223,6 @@ public class CryptocurrencyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.cryptocurrency.coindesk.enabled", havingValue = "true", matchIfMissing = true)
-    public CoindeskClient coindeskClient(CoindeskProperties properties) {
-        return createClient(CoindeskClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.cryptocurrency.coingecko.enabled", havingValue = "true", matchIfMissing = true)
     public CoingeckoClient coingeckoClient(CoingeckoProperties properties) {
         return createClient(CoingeckoClient.class, properties.getUrl());
@@ -332,20 +303,6 @@ public class CryptocurrencyAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.cryptocurrency.cryptocompare.enabled", havingValue = "true", matchIfMissing = true)
     public CryptocompareClient cryptocompareClient(CryptocompareProperties properties) {
         return createClient(CryptocompareClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.cryptocurrency.cryptomarket.enabled", havingValue = "true", matchIfMissing = true)
-    public CryptomarketClient cryptomarketClient(CryptomarketProperties properties) {
-        return createClient(CryptomarketClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.cryptocurrency.cryptonator.enabled", havingValue = "true", matchIfMissing = true)
-    public CryptonatorClient cryptonatorClient(CryptonatorProperties properties) {
-        return createClient(CryptonatorClient.class, properties.getUrl());
     }
 
     @Bean
@@ -476,23 +433,9 @@ public class CryptocurrencyAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.cryptocurrency.nomics.enabled", havingValue = "true", matchIfMissing = true)
-    public NomicsClient nomicsClient(NomicsProperties properties) {
-        return createClient(NomicsClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.cryptocurrency.novadax.enabled", havingValue = "true", matchIfMissing = true)
     public NovadaxClient novadaxClient(NovadaxProperties properties) {
         return createClient(NovadaxClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.cryptocurrency.okex.enabled", havingValue = "true", matchIfMissing = true)
-    public OkexClient okexClient(OkexProperties properties) {
-        return createClient(OkexClient.class, properties.getUrl());
     }
 
     @Bean

@@ -21,11 +21,9 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         NownodesProperties.class,
         SteemProperties.class,
         TheGraphProperties.class,
-        WalltimeProperties.class,
         WatchdataProperties.class
 })
 public class BlockchainAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -88,13 +86,6 @@ public class BlockchainAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.blockchain.thegraph.enabled", havingValue = "true", matchIfMissing = true)
     public TheGraphClient thegraphClient(TheGraphProperties properties) {
         return createClient(TheGraphClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.blockchain.walltime.enabled", havingValue = "true", matchIfMissing = true)
-    public WalltimeClient walltimeClient(WalltimeProperties properties) {
-        return createClient(WalltimeClient.class, properties.getUrl());
     }
 
     @Bean

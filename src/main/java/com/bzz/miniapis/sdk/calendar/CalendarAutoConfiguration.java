@@ -14,9 +14,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @EnableConfigurationProperties({
         CalendarificProperties.class,
         CheckidayNationalHolidayProperties.class,
-        ChurchCalendarProperties.class,
         CzechNamedaysCalendarProperties.class,
-        FestivoPublicHolidaysProperties.class,
         GoogleCalendarProperties.class,
         HebrewCalendarProperties.class,
         HolidaysProperties.class,
@@ -30,7 +28,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         UkBankHolidaysProperties.class
 })
 public class CalendarAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -48,23 +45,9 @@ public class CalendarAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.calendar.churchcalendar.enabled", havingValue = "true", matchIfMissing = true)
-    public ChurchCalendarClient churchcalendarClient(ChurchCalendarProperties properties) {
-        return createClient(ChurchCalendarClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.calendar.czechnamedayscalendar.enabled", havingValue = "true", matchIfMissing = true)
     public CzechNamedaysCalendarClient czechnamedayscalendarClient(CzechNamedaysCalendarProperties properties) {
         return createClient(CzechNamedaysCalendarClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.calendar.festivopublicholidays.enabled", havingValue = "true", matchIfMissing = true)
-    public FestivoPublicHolidaysClient festivopublicholidaysClient(FestivoPublicHolidaysProperties properties) {
-        return createClient(FestivoPublicHolidaysClient.class, properties.getUrl());
     }
 
     @Bean

@@ -19,14 +19,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         BattleNetProperties.class,
         BoardGameGeekProperties.class,
         BrawlStarsProperties.class,
-        BugsnaxProperties.class,
         CheapsharkProperties.class,
         ChessComProperties.class,
         ChuckNorrisDatabaseProperties.class,
         ClashOfClansProperties.class,
         ClashRoyaleProperties.class,
         ComicVineProperties.class,
-        CrafatarProperties.class,
         CrossUniverseProperties.class,
         DeckOfCardsProperties.class,
         DestinyTheGameProperties.class,
@@ -38,10 +36,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         DungeonsAndDragonsAlternateProperties.class,
         EveOnlineProperties.class,
         FfxivCollectProperties.class,
-        FifaUltimateTeamProperties.class,
         FinalFantasyXivProperties.class,
         FortniteProperties.class,
-        ForzaProperties.class,
         FreetogameProperties.class,
         FunFactsProperties.class,
         FuntranslationsProperties.class,
@@ -63,7 +59,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         IgdbComProperties.class,
         JokeapiProperties.class,
         JokesOneProperties.class,
-        JserviceProperties.class,
         LichessProperties.class,
         MagicTheGatheringProperties.class,
         MarioKartTourProperties.class,
@@ -71,7 +66,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         MinecraftServerStatusProperties.class,
         MmoGamesProperties.class,
         ModIoProperties.class,
-        MojangProperties.class,
         MonsterHunterWorldProperties.class,
         OpenTriviaProperties.class,
         PandascoreProperties.class,
@@ -109,7 +103,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         YuGiOhProperties.class
 })
 public class GamesComicsAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -162,13 +155,6 @@ public class GamesComicsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.gamescomics.bugsnax.enabled", havingValue = "true", matchIfMissing = true)
-    public BugsnaxClient bugsnaxClient(BugsnaxProperties properties) {
-        return createClient(BugsnaxClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.gamescomics.cheapshark.enabled", havingValue = "true", matchIfMissing = true)
     public CheapsharkClient cheapsharkClient(CheapsharkProperties properties) {
         return createClient(CheapsharkClient.class, properties.getUrl());
@@ -207,13 +193,6 @@ public class GamesComicsAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.gamescomics.comicvine.enabled", havingValue = "true", matchIfMissing = true)
     public ComicVineClient comicvineClient(ComicVineProperties properties) {
         return createClient(ComicVineClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.gamescomics.crafatar.enabled", havingValue = "true", matchIfMissing = true)
-    public CrafatarClient crafatarClient(CrafatarProperties properties) {
-        return createClient(CrafatarClient.class, properties.getUrl());
     }
 
     @Bean
@@ -295,13 +274,6 @@ public class GamesComicsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.gamescomics.fifaultimateteam.enabled", havingValue = "true", matchIfMissing = true)
-    public FifaUltimateTeamClient fifaultimateteamClient(FifaUltimateTeamProperties properties) {
-        return createClient(FifaUltimateTeamClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.gamescomics.finalfantasyxiv.enabled", havingValue = "true", matchIfMissing = true)
     public FinalFantasyXivClient finalfantasyxivClient(FinalFantasyXivProperties properties) {
         return createClient(FinalFantasyXivClient.class, properties.getUrl());
@@ -312,13 +284,6 @@ public class GamesComicsAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.gamescomics.fortnite.enabled", havingValue = "true", matchIfMissing = true)
     public FortniteClient fortniteClient(FortniteProperties properties) {
         return createClient(FortniteClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.gamescomics.forza.enabled", havingValue = "true", matchIfMissing = true)
-    public ForzaClient forzaClient(ForzaProperties properties) {
-        return createClient(ForzaClient.class, properties.getUrl());
     }
 
     @Bean
@@ -470,13 +435,6 @@ public class GamesComicsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.gamescomics.jservice.enabled", havingValue = "true", matchIfMissing = true)
-    public JserviceClient jserviceClient(JserviceProperties properties) {
-        return createClient(JserviceClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.gamescomics.lichess.enabled", havingValue = "true", matchIfMissing = true)
     public LichessClient lichessClient(LichessProperties properties) {
         return createClient(LichessClient.class, properties.getUrl());
@@ -522,13 +480,6 @@ public class GamesComicsAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.gamescomics.modio.enabled", havingValue = "true", matchIfMissing = true)
     public ModIoClient modioClient(ModIoProperties properties) {
         return createClient(ModIoClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.gamescomics.mojang.enabled", havingValue = "true", matchIfMissing = true)
-    public MojangClient mojangClient(MojangProperties properties) {
-        return createClient(MojangClient.class, properties.getUrl());
     }
 
     @Bean

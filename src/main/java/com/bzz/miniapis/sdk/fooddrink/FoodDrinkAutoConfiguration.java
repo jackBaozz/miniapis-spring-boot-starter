@@ -20,14 +20,11 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         FoodishProperties.class,
         FruityviceProperties.class,
         KrogerProperties.class,
-        LcboProperties.class,
         OpenBreweryDbProperties.class,
         OpenFoodFactsProperties.class,
-        PunkapiProperties.class,
         RecipeapiProperties.class,
         RustybeerProperties.class,
         SpoonacularProperties.class,
-        SystembolagetProperties.class,
         TacofancyProperties.class,
         TastyProperties.class,
         TheReportOfTheWeekProperties.class,
@@ -39,7 +36,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         ZestfulProperties.class
 })
 public class FoodDrinkAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -99,13 +95,6 @@ public class FoodDrinkAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.fooddrink.lcbo.enabled", havingValue = "true", matchIfMissing = true)
-    public LcboClient lcboClient(LcboProperties properties) {
-        return createClient(LcboClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.fooddrink.openbrewerydb.enabled", havingValue = "true", matchIfMissing = true)
     public OpenBreweryDbClient openbrewerydbClient(OpenBreweryDbProperties properties) {
         return createClient(OpenBreweryDbClient.class, properties.getUrl());
@@ -116,13 +105,6 @@ public class FoodDrinkAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.fooddrink.openfoodfacts.enabled", havingValue = "true", matchIfMissing = true)
     public OpenFoodFactsClient openfoodfactsClient(OpenFoodFactsProperties properties) {
         return createClient(OpenFoodFactsClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.fooddrink.punkapi.enabled", havingValue = "true", matchIfMissing = true)
-    public PunkapiClient punkapiClient(PunkapiProperties properties) {
-        return createClient(PunkapiClient.class, properties.getUrl());
     }
 
     @Bean
@@ -144,13 +126,6 @@ public class FoodDrinkAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.fooddrink.spoonacular.enabled", havingValue = "true", matchIfMissing = true)
     public SpoonacularClient spoonacularClient(SpoonacularProperties properties) {
         return createClient(SpoonacularClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.fooddrink.systembolaget.enabled", havingValue = "true", matchIfMissing = true)
-    public SystembolagetClient systembolagetClient(SystembolagetProperties properties) {
-        return createClient(SystembolagetClient.class, properties.getUrl());
     }
 
     @Bean

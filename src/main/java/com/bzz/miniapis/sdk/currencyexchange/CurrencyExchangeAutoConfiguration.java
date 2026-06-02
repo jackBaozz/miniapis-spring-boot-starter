@@ -26,13 +26,11 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         EconomiaAwesomeProperties.class,
         ExchangerateApiProperties.class,
         FrankfurterProperties.class,
-        FreeforexapiProperties.class,
         NationalBankOfPolandProperties.class,
         ParaleloBoProperties.class,
         VatcomplyComProperties.class
 })
 public class CurrencyExchangeAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -130,13 +128,6 @@ public class CurrencyExchangeAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.currencyexchange.frankfurter.enabled", havingValue = "true", matchIfMissing = true)
     public FrankfurterClient frankfurterClient(FrankfurterProperties properties) {
         return createClient(FrankfurterClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.currencyexchange.freeforexapi.enabled", havingValue = "true", matchIfMissing = true)
-    public FreeforexapiClient freeforexapiClient(FreeforexapiProperties properties) {
-        return createClient(FreeforexapiClient.class, properties.getUrl());
     }
 
     @Bean

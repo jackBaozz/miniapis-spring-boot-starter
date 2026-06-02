@@ -20,12 +20,10 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         AqicnProperties.class,
         AviationweatherProperties.class,
         ColorfulcloudsProperties.class,
-        EuskalmetProperties.class,
         ForecaProperties.class,
         HgWeatherProperties.class,
         HongKongObervatoryProperties.class,
         IpmaProperties.class,
-        MetaweatherProperties.class,
         MeteorologiskInstituttProperties.class,
         MicroWeatherProperties.class,
         OdweatherProperties.class,
@@ -40,14 +38,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         StormGlassProperties.class,
         TomorrowProperties.class,
         UsWeatherProperties.class,
-        VisualCrossingProperties.class,
         WeatherApiProperties.class,
         WeatherbitProperties.class,
         WttrInProperties.class,
         YandexWeatherProperties.class
 })
 public class WeatherAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -107,13 +103,6 @@ public class WeatherAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.weather.euskalmet.enabled", havingValue = "true", matchIfMissing = true)
-    public EuskalmetClient euskalmetClient(EuskalmetProperties properties) {
-        return createClient(EuskalmetClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.weather.foreca.enabled", havingValue = "true", matchIfMissing = true)
     public ForecaClient forecaClient(ForecaProperties properties) {
         return createClient(ForecaClient.class, properties.getUrl());
@@ -138,13 +127,6 @@ public class WeatherAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.weather.ipma.enabled", havingValue = "true", matchIfMissing = true)
     public IpmaClient ipmaClient(IpmaProperties properties) {
         return createClient(IpmaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.weather.metaweather.enabled", havingValue = "true", matchIfMissing = true)
-    public MetaweatherClient metaweatherClient(MetaweatherProperties properties) {
-        return createClient(MetaweatherClient.class, properties.getUrl());
     }
 
     @Bean
@@ -243,13 +225,6 @@ public class WeatherAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.weather.usweather.enabled", havingValue = "true", matchIfMissing = true)
     public UsWeatherClient usweatherClient(UsWeatherProperties properties) {
         return createClient(UsWeatherClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.weather.visualcrossing.enabled", havingValue = "true", matchIfMissing = true)
-    public VisualCrossingClient visualcrossingClient(VisualCrossingProperties properties) {
-        return createClient(VisualCrossingClient.class, properties.getUrl());
     }
 
     @Bean

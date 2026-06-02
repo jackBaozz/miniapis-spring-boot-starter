@@ -23,21 +23,14 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         MailchimpProperties.class,
         MailjetProperties.class,
         MarkerapiProperties.class,
-        OrbIntelligenceProperties.class,
         RedashProperties.class,
         SmartsheetProperties.class,
         SquareProperties.class,
         SwiftkanbanProperties.class,
-        TendersInHungaryProperties.class,
-        TendersInPolandProperties.class,
-        TendersInRomaniaProperties.class,
-        TendersInSpainProperties.class,
-        TendersInUkraineProperties.class,
         TombaEmailFinderProperties.class,
         TrelloProperties.class
 })
 public class BusinessAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -118,13 +111,6 @@ public class BusinessAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.business.orbintelligence.enabled", havingValue = "true", matchIfMissing = true)
-    public OrbIntelligenceClient orbintelligenceClient(OrbIntelligenceProperties properties) {
-        return createClient(OrbIntelligenceClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.business.redash.enabled", havingValue = "true", matchIfMissing = true)
     public RedashClient redashClient(RedashProperties properties) {
         return createClient(RedashClient.class, properties.getUrl());
@@ -149,41 +135,6 @@ public class BusinessAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.business.swiftkanban.enabled", havingValue = "true", matchIfMissing = true)
     public SwiftkanbanClient swiftkanbanClient(SwiftkanbanProperties properties) {
         return createClient(SwiftkanbanClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.business.tendersinhungary.enabled", havingValue = "true", matchIfMissing = true)
-    public TendersInHungaryClient tendersinhungaryClient(TendersInHungaryProperties properties) {
-        return createClient(TendersInHungaryClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.business.tendersinpoland.enabled", havingValue = "true", matchIfMissing = true)
-    public TendersInPolandClient tendersinpolandClient(TendersInPolandProperties properties) {
-        return createClient(TendersInPolandClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.business.tendersinromania.enabled", havingValue = "true", matchIfMissing = true)
-    public TendersInRomaniaClient tendersinromaniaClient(TendersInRomaniaProperties properties) {
-        return createClient(TendersInRomaniaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.business.tendersinspain.enabled", havingValue = "true", matchIfMissing = true)
-    public TendersInSpainClient tendersinspainClient(TendersInSpainProperties properties) {
-        return createClient(TendersInSpainClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.business.tendersinukraine.enabled", havingValue = "true", matchIfMissing = true)
-    public TendersInUkraineClient tendersinukraineClient(TendersInUkraineProperties properties) {
-        return createClient(TendersInUkraineClient.class, properties.getUrl());
     }
 
     @Bean

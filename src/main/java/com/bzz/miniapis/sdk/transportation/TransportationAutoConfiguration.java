@@ -18,7 +18,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         AmadeusForDevelopersProperties.class,
         ApilayerAviationstackProperties.class,
         ApimetroProperties.class,
-        AviationapiProperties.class,
         Az511Properties.class,
         BayAreaRapidTransitProperties.class,
         BcFerriesProperties.class,
@@ -31,7 +30,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         GrabProperties.class,
         GraphhopperProperties.class,
         IcelandicApisProperties.class,
-        ImpalaHotelBookingsProperties.class,
         IziProperties.class,
         LandTransportAuthorityDatamallSingaporeProperties.class,
         MetroLisboaProperties.class,
@@ -52,10 +50,8 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         TransportForBordeauxFranceProperties.class,
         TransportForBudapestHungaryProperties.class,
         TransportForChicagoUsProperties.class,
-        TransportForCzechRepublicProperties.class,
         TransportForDenverUsProperties.class,
         TransportForFinlandProperties.class,
-        TransportForGermanyProperties.class,
         TransportForGrenobleFranceProperties.class,
         TransportForHessenGermanyProperties.class,
         TransportForHonoluluUsProperties.class,
@@ -85,7 +81,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         VelibMetropolisParisFranceProperties.class
 })
 public class TransportationAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -127,13 +122,6 @@ public class TransportationAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.transportation.apimetro.enabled", havingValue = "true", matchIfMissing = true)
     public ApimetroClient apimetroClient(ApimetroProperties properties) {
         return createClient(ApimetroClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.transportation.aviationapi.enabled", havingValue = "true", matchIfMissing = true)
-    public AviationapiClient aviationapiClient(AviationapiProperties properties) {
-        return createClient(AviationapiClient.class, properties.getUrl());
     }
 
     @Bean
@@ -218,13 +206,6 @@ public class TransportationAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.transportation.icelandicapis.enabled", havingValue = "true", matchIfMissing = true)
     public IcelandicApisClient icelandicapisClient(IcelandicApisProperties properties) {
         return createClient(IcelandicApisClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.transportation.impalahotelbookings.enabled", havingValue = "true", matchIfMissing = true)
-    public ImpalaHotelBookingsClient impalahotelbookingsClient(ImpalaHotelBookingsProperties properties) {
-        return createClient(ImpalaHotelBookingsClient.class, properties.getUrl());
     }
 
     @Bean
@@ -369,13 +350,6 @@ public class TransportationAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.transportation.transportforczechrepublic.enabled", havingValue = "true", matchIfMissing = true)
-    public TransportForCzechRepublicClient transportforczechrepublicClient(TransportForCzechRepublicProperties properties) {
-        return createClient(TransportForCzechRepublicClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.transportation.transportfordenverus.enabled", havingValue = "true", matchIfMissing = true)
     public TransportForDenverUsClient transportfordenverusClient(TransportForDenverUsProperties properties) {
         return createClient(TransportForDenverUsClient.class, properties.getUrl());
@@ -386,13 +360,6 @@ public class TransportationAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.transportation.transportforfinland.enabled", havingValue = "true", matchIfMissing = true)
     public TransportForFinlandClient transportforfinlandClient(TransportForFinlandProperties properties) {
         return createClient(TransportForFinlandClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.transportation.transportforgermany.enabled", havingValue = "true", matchIfMissing = true)
-    public TransportForGermanyClient transportforgermanyClient(TransportForGermanyProperties properties) {
-        return createClient(TransportForGermanyClient.class, properties.getUrl());
     }
 
     @Bean

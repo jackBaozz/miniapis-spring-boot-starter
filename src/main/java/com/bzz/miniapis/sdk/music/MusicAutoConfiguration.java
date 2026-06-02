@@ -23,17 +23,14 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         GaanaProperties.class,
         GeniusProperties.class,
         GenrenatorProperties.class,
-        ItunesSearchProperties.class,
         JamendoProperties.class,
         JiosaavnProperties.class,
         KkboxProperties.class,
-        KsoftSiLyricsProperties.class,
         LastfmProperties.class,
         LyricsOvhProperties.class,
         MixcloudProperties.class,
         MusicbrainzProperties.class,
         MusixmatchProperties.class,
-        NapsterProperties.class,
         OpenwhydProperties.class,
         PhishinProperties.class,
         RadioBrowserProperties.class,
@@ -45,11 +42,9 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         SunorProperties.class,
         TastediveProperties.class,
         TheaudiodbProperties.class,
-        VagalumeProperties.class,
         VeromeProperties.class
 })
 public class MusicAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -130,13 +125,6 @@ public class MusicAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.itunessearch.enabled", havingValue = "true", matchIfMissing = true)
-    public ItunesSearchClient itunessearchClient(ItunesSearchProperties properties) {
-        return createClient(ItunesSearchClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.jamendo.enabled", havingValue = "true", matchIfMissing = true)
     public JamendoClient jamendoClient(JamendoProperties properties) {
         return createClient(JamendoClient.class, properties.getUrl());
@@ -154,13 +142,6 @@ public class MusicAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.music.kkbox.enabled", havingValue = "true", matchIfMissing = true)
     public KkboxClient kkboxClient(KkboxProperties properties) {
         return createClient(KkboxClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.ksoftsilyrics.enabled", havingValue = "true", matchIfMissing = true)
-    public KsoftSiLyricsClient ksoftsilyricsClient(KsoftSiLyricsProperties properties) {
-        return createClient(KsoftSiLyricsClient.class, properties.getUrl());
     }
 
     @Bean
@@ -196,13 +177,6 @@ public class MusicAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.music.musixmatch.enabled", havingValue = "true", matchIfMissing = true)
     public MusixmatchClient musixmatchClient(MusixmatchProperties properties) {
         return createClient(MusixmatchClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.napster.enabled", havingValue = "true", matchIfMissing = true)
-    public NapsterClient napsterClient(NapsterProperties properties) {
-        return createClient(NapsterClient.class, properties.getUrl());
     }
 
     @Bean
@@ -280,13 +254,6 @@ public class MusicAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.music.theaudiodb.enabled", havingValue = "true", matchIfMissing = true)
     public TheaudiodbClient theaudiodbClient(TheaudiodbProperties properties) {
         return createClient(TheaudiodbClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.vagalume.enabled", havingValue = "true", matchIfMissing = true)
-    public VagalumeClient vagalumeClient(VagalumeProperties properties) {
-        return createClient(VagalumeClient.class, properties.getUrl());
     }
 
     @Bean

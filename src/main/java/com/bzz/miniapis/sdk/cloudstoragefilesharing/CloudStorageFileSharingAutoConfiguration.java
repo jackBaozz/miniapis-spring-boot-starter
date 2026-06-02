@@ -12,8 +12,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @Configuration
 @ConditionalOnProperty(value = "miniapis.enabled", havingValue = "true")
 @EnableConfigurationProperties({
-        AnonfilesProperties.class,
-        BayfilesProperties.class,
         BoxProperties.class,
         DdownloadProperties.class,
         DropboxProperties.class,
@@ -34,21 +32,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         Web3StorageProperties.class
 })
 public class CloudStorageFileSharingAutoConfiguration {
-
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.cloudstoragefilesharing.anonfiles.enabled", havingValue = "true", matchIfMissing = true)
-    public AnonfilesClient anonfilesClient(AnonfilesProperties properties) {
-        return createClient(AnonfilesClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.cloudstoragefilesharing.bayfiles.enabled", havingValue = "true", matchIfMissing = true)
-    public BayfilesClient bayfilesClient(BayfilesProperties properties) {
-        return createClient(BayfilesClient.class, properties.getUrl());
-    }
 
     @Bean
     @ConditionalOnMissingBean

@@ -23,24 +23,20 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         FishwatchProperties.class,
         HttpCatProperties.class,
         HttpDogProperties.class,
-        IucnProperties.class,
         MeowfactsProperties.class,
         MovebankProperties.class,
         PetfinderProperties.class,
         PlacebearProperties.class,
         PlacedogProperties.class,
-        PlacekittenProperties.class,
         RandomdogProperties.class,
         RandomduckProperties.class,
         RandomfoxProperties.class,
         RescuegroupsProperties.class,
-        ShibeOnlineProperties.class,
         TheDogProperties.class,
         XenoCantoProperties.class,
         ZooAnimalsProperties.class
 })
 public class AnimalsAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -121,13 +117,6 @@ public class AnimalsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.animals.iucn.enabled", havingValue = "true", matchIfMissing = true)
-    public IucnClient iucnClient(IucnProperties properties) {
-        return createClient(IucnClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.animals.meowfacts.enabled", havingValue = "true", matchIfMissing = true)
     public MeowfactsClient meowfactsClient(MeowfactsProperties properties) {
         return createClient(MeowfactsClient.class, properties.getUrl());
@@ -163,13 +152,6 @@ public class AnimalsAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.animals.placekitten.enabled", havingValue = "true", matchIfMissing = true)
-    public PlacekittenClient placekittenClient(PlacekittenProperties properties) {
-        return createClient(PlacekittenClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.animals.randomdog.enabled", havingValue = "true", matchIfMissing = true)
     public RandomdogClient randomdogClient(RandomdogProperties properties) {
         return createClient(RandomdogClient.class, properties.getUrl());
@@ -194,13 +176,6 @@ public class AnimalsAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.animals.rescuegroups.enabled", havingValue = "true", matchIfMissing = true)
     public RescuegroupsClient rescuegroupsClient(RescuegroupsProperties properties) {
         return createClient(RescuegroupsClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.animals.shibeonline.enabled", havingValue = "true", matchIfMissing = true)
-    public ShibeOnlineClient shibeonlineClient(ShibeOnlineProperties properties) {
-        return createClient(ShibeOnlineClient.class, properties.getUrl());
     }
 
     @Bean

@@ -12,7 +12,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @Configuration
 @ConditionalOnProperty(value = "miniapis.enabled", havingValue = "true")
 @EnableConfigurationProperties({
-        AmThysteProperties.class,
         ArtInstituteOfChicagoProperties.class,
         ColormindProperties.class,
         ColourloversProperties.class,
@@ -34,14 +33,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         XcolorsProperties.class
 })
 public class ArtDesignAutoConfiguration {
-
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.artdesign.amthyste.enabled", havingValue = "true", matchIfMissing = true)
-    public AmThysteClient amthysteClient(AmThysteProperties properties) {
-        return createClient(AmThysteClient.class, properties.getUrl());
-    }
 
     @Bean
     @ConditionalOnMissingBean

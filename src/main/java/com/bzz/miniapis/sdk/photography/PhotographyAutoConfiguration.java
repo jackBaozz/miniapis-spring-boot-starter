@@ -14,14 +14,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @EnableConfigurationProperties({
         ScreenshotlayerProperties.class,
         ApitemplateIoProperties.class,
-        BruzuProperties.class,
         CheetahoProperties.class,
         DagpiProperties.class,
         DuplyProperties.class,
         DynapicturesProperties.class,
         FlickrProperties.class,
         GettyImagesProperties.class,
-        GfycatProperties.class,
         GiphyProperties.class,
         GooglePhotosProperties.class,
         ImageUploadProperties.class,
@@ -35,7 +33,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         PlacekeanuProperties.class,
         ReadmeTypingSvgProperties.class,
         RemoveBgProperties.class,
-        ResmushItProperties.class,
         ShutterstockProperties.class,
         SirvProperties.class,
         UnsplashProperties.class,
@@ -43,7 +40,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         WebdamProperties.class
 })
 public class PhotographyAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -57,13 +53,6 @@ public class PhotographyAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.photography.apitemplateio.enabled", havingValue = "true", matchIfMissing = true)
     public ApitemplateIoClient apitemplateioClient(ApitemplateIoProperties properties) {
         return createClient(ApitemplateIoClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.photography.bruzu.enabled", havingValue = "true", matchIfMissing = true)
-    public BruzuClient bruzuClient(BruzuProperties properties) {
-        return createClient(BruzuClient.class, properties.getUrl());
     }
 
     @Bean
@@ -106,13 +95,6 @@ public class PhotographyAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.photography.gettyimages.enabled", havingValue = "true", matchIfMissing = true)
     public GettyImagesClient gettyimagesClient(GettyImagesProperties properties) {
         return createClient(GettyImagesClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.photography.gfycat.enabled", havingValue = "true", matchIfMissing = true)
-    public GfycatClient gfycatClient(GfycatProperties properties) {
-        return createClient(GfycatClient.class, properties.getUrl());
     }
 
     @Bean
@@ -204,13 +186,6 @@ public class PhotographyAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.photography.removebg.enabled", havingValue = "true", matchIfMissing = true)
     public RemoveBgClient removebgClient(RemoveBgProperties properties) {
         return createClient(RemoveBgClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.photography.resmushit.enabled", havingValue = "true", matchIfMissing = true)
-    public ResmushItClient resmushitClient(ResmushItProperties properties) {
-        return createClient(ResmushItClient.class, properties.getUrl());
     }
 
     @Bean

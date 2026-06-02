@@ -20,14 +20,12 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         CensysProperties.class,
         ClassifyProperties.class,
         CompleteCriminalChecksProperties.class,
-        CrxcavatorProperties.class,
         DeadDropProperties.class,
         DehashLtProperties.class,
         EmailrepProperties.class,
         EscapeProperties.class,
         FilterlistsProperties.class,
         FingerprintjsProProperties.class,
-        FraudlabsProProperties.class,
         FullhuntProperties.class,
         GitguardianProperties.class,
         GreynoiseProperties.class,
@@ -48,13 +46,10 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         SecuritytrailsProperties.class,
         ShodanProperties.class,
         SpyseProperties.class,
-        ThreatJammerProperties.class,
         UkPoliceProperties.class,
-        VirusheeProperties.class,
         VuldbProperties.class
 })
 public class SecurityAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -114,13 +109,6 @@ public class SecurityAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.security.crxcavator.enabled", havingValue = "true", matchIfMissing = true)
-    public CrxcavatorClient crxcavatorClient(CrxcavatorProperties properties) {
-        return createClient(CrxcavatorClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.security.deaddrop.enabled", havingValue = "true", matchIfMissing = true)
     public DeadDropClient deaddropClient(DeadDropProperties properties) {
         return createClient(DeadDropClient.class, properties.getUrl());
@@ -159,13 +147,6 @@ public class SecurityAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.security.fingerprintjspro.enabled", havingValue = "true", matchIfMissing = true)
     public FingerprintjsProClient fingerprintjsproClient(FingerprintjsProProperties properties) {
         return createClient(FingerprintjsProClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.security.fraudlabspro.enabled", havingValue = "true", matchIfMissing = true)
-    public FraudlabsProClient fraudlabsproClient(FraudlabsProProperties properties) {
-        return createClient(FraudlabsProClient.class, properties.getUrl());
     }
 
     @Bean
@@ -310,23 +291,9 @@ public class SecurityAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.security.threatjammer.enabled", havingValue = "true", matchIfMissing = true)
-    public ThreatJammerClient threatjammerClient(ThreatJammerProperties properties) {
-        return createClient(ThreatJammerClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.security.ukpolice.enabled", havingValue = "true", matchIfMissing = true)
     public UkPoliceClient ukpoliceClient(UkPoliceProperties properties) {
         return createClient(UkPoliceClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.security.virushee.enabled", havingValue = "true", matchIfMissing = true)
-    public VirusheeClient virusheeClient(VirusheeProperties properties) {
-        return createClient(VirusheeClient.class, properties.getUrl());
     }
 
     @Bean

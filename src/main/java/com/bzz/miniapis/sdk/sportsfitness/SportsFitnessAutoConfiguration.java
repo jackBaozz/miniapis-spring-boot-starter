@@ -15,7 +15,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         ApiFootballProperties.class,
         ApimedicProperties.class,
         BalldontlieProperties.class,
-        CanadianFootballLeagueCflProperties.class,
         CityBikesProperties.class,
         CloudbetProperties.class,
         CollegefootballdataComProperties.class,
@@ -36,21 +35,16 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         PremierLeagueStandingsProperties.class,
         RacinghubProperties.class,
         SportDataProperties.class,
-        SportListDataProperties.class,
-        SportPlacesProperties.class,
-        SportVisionProperties.class,
         SportmonksCricketProperties.class,
         SportmonksFootballProperties.class,
         SquiggleProperties.class,
         StravaProperties.class,
-        SuredbitsProperties.class,
         ThesportsdbProperties.class,
         TourneyradarProperties.class,
         TredictProperties.class,
         WgerProperties.class
 })
 public class SportsFitnessAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -71,13 +65,6 @@ public class SportsFitnessAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.sportsfitness.balldontlie.enabled", havingValue = "true", matchIfMissing = true)
     public BalldontlieClient balldontlieClient(BalldontlieProperties properties) {
         return createClient(BalldontlieClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.sportsfitness.canadianfootballleaguecfl.enabled", havingValue = "true", matchIfMissing = true)
-    public CanadianFootballLeagueCflClient canadianfootballleaguecflClient(CanadianFootballLeagueCflProperties properties) {
-        return createClient(CanadianFootballLeagueCflClient.class, properties.getUrl());
     }
 
     @Bean
@@ -222,27 +209,6 @@ public class SportsFitnessAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.sportsfitness.sportlistdata.enabled", havingValue = "true", matchIfMissing = true)
-    public SportListDataClient sportlistdataClient(SportListDataProperties properties) {
-        return createClient(SportListDataClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.sportsfitness.sportplaces.enabled", havingValue = "true", matchIfMissing = true)
-    public SportPlacesClient sportplacesClient(SportPlacesProperties properties) {
-        return createClient(SportPlacesClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.sportsfitness.sportvision.enabled", havingValue = "true", matchIfMissing = true)
-    public SportVisionClient sportvisionClient(SportVisionProperties properties) {
-        return createClient(SportVisionClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.sportsfitness.sportmonkscricket.enabled", havingValue = "true", matchIfMissing = true)
     public SportmonksCricketClient sportmonkscricketClient(SportmonksCricketProperties properties) {
         return createClient(SportmonksCricketClient.class, properties.getUrl());
@@ -267,13 +233,6 @@ public class SportsFitnessAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.sportsfitness.strava.enabled", havingValue = "true", matchIfMissing = true)
     public StravaClient stravaClient(StravaProperties properties) {
         return createClient(StravaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.sportsfitness.suredbits.enabled", havingValue = "true", matchIfMissing = true)
-    public SuredbitsClient suredbitsClient(SuredbitsProperties properties) {
-        return createClient(SuredbitsClient.class, properties.getUrl());
     }
 
     @Bean

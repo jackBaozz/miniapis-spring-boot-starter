@@ -44,7 +44,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         GazetteDataUkProperties.class,
         GunPolicyProperties.class,
         IndianPincodeProperties.class,
-        IneiProperties.class,
         InterpolRedNoticesProperties.class,
         IstanbulBbOpenDataProperties.class,
         LocalgovJpProperties.class,
@@ -58,7 +57,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         OpenGovernmentColombiaProperties.class,
         OpenGovernmentCyprusProperties.class,
         OpenGovernmentCzechRepublicProperties.class,
-        OpenGovernmentDenmarkProperties.class,
         OpenGovernmentEstoniaProperties.class,
         OpenGovernmentFinlandProperties.class,
         OpenGovernmentFranceProperties.class,
@@ -67,7 +65,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         OpenGovernmentIndiaProperties.class,
         OpenGovernmentIrelandProperties.class,
         OpenGovernmentItalyProperties.class,
-        OpenGovernmentKoreaProperties.class,
         OpenGovernmentLithuaniaProperties.class,
         OpenGovernmentLuxembourgProperties.class,
         OpenGovernmentMexicoProperties.class,
@@ -80,10 +77,7 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         OpenGovernmentPolandProperties.class,
         OpenGovernmentPortugalProperties.class,
         OpenGovernmentQueenslandGovernmentProperties.class,
-        OpenGovernmentRomaniaProperties.class,
-        OpenGovernmentSaudiArabiaProperties.class,
         OpenGovernmentSingaporeProperties.class,
-        OpenGovernmentSlovakiaProperties.class,
         OpenGovernmentSloveniaProperties.class,
         OpenGovernmentSouthAustralianGovernmentProperties.class,
         OpenGovernmentSpainProperties.class,
@@ -95,8 +89,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         OpenGovernmentUsaProperties.class,
         OpenGovernmentVictoriaStateGovernmentProperties.class,
         OpenGovernmentWestAustraliaProperties.class,
-        OpenregistryProperties.class,
-        PrcExamScheduleProperties.class,
         RepresentByOpenNorthProperties.class,
         UkCompaniesHouseProperties.class,
         UsPresidentialElectionDataByTogatechProperties.class,
@@ -104,7 +96,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         UsaspendingGovProperties.class
 })
 public class GovernmentAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -332,13 +323,6 @@ public class GovernmentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.government.inei.enabled", havingValue = "true", matchIfMissing = true)
-    public IneiClient ineiClient(IneiProperties properties) {
-        return createClient(IneiClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.government.interpolrednotices.enabled", havingValue = "true", matchIfMissing = true)
     public InterpolRedNoticesClient interpolrednoticesClient(InterpolRedNoticesProperties properties) {
         return createClient(InterpolRedNoticesClient.class, properties.getUrl());
@@ -430,13 +414,6 @@ public class GovernmentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.government.opengovernmentdenmark.enabled", havingValue = "true", matchIfMissing = true)
-    public OpenGovernmentDenmarkClient opengovernmentdenmarkClient(OpenGovernmentDenmarkProperties properties) {
-        return createClient(OpenGovernmentDenmarkClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.government.opengovernmentestonia.enabled", havingValue = "true", matchIfMissing = true)
     public OpenGovernmentEstoniaClient opengovernmentestoniaClient(OpenGovernmentEstoniaProperties properties) {
         return createClient(OpenGovernmentEstoniaClient.class, properties.getUrl());
@@ -489,13 +466,6 @@ public class GovernmentAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.government.opengovernmentitaly.enabled", havingValue = "true", matchIfMissing = true)
     public OpenGovernmentItalyClient opengovernmentitalyClient(OpenGovernmentItalyProperties properties) {
         return createClient(OpenGovernmentItalyClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.government.opengovernmentkorea.enabled", havingValue = "true", matchIfMissing = true)
-    public OpenGovernmentKoreaClient opengovernmentkoreaClient(OpenGovernmentKoreaProperties properties) {
-        return createClient(OpenGovernmentKoreaClient.class, properties.getUrl());
     }
 
     @Bean
@@ -584,30 +554,9 @@ public class GovernmentAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.government.opengovernmentromania.enabled", havingValue = "true", matchIfMissing = true)
-    public OpenGovernmentRomaniaClient opengovernmentromaniaClient(OpenGovernmentRomaniaProperties properties) {
-        return createClient(OpenGovernmentRomaniaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.government.opengovernmentsaudiarabia.enabled", havingValue = "true", matchIfMissing = true)
-    public OpenGovernmentSaudiArabiaClient opengovernmentsaudiarabiaClient(OpenGovernmentSaudiArabiaProperties properties) {
-        return createClient(OpenGovernmentSaudiArabiaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.government.opengovernmentsingapore.enabled", havingValue = "true", matchIfMissing = true)
     public OpenGovernmentSingaporeClient opengovernmentsingaporeClient(OpenGovernmentSingaporeProperties properties) {
         return createClient(OpenGovernmentSingaporeClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.government.opengovernmentslovakia.enabled", havingValue = "true", matchIfMissing = true)
-    public OpenGovernmentSlovakiaClient opengovernmentslovakiaClient(OpenGovernmentSlovakiaProperties properties) {
-        return createClient(OpenGovernmentSlovakiaClient.class, properties.getUrl());
     }
 
     @Bean
@@ -685,20 +634,6 @@ public class GovernmentAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.government.opengovernmentwestaustralia.enabled", havingValue = "true", matchIfMissing = true)
     public OpenGovernmentWestAustraliaClient opengovernmentwestaustraliaClient(OpenGovernmentWestAustraliaProperties properties) {
         return createClient(OpenGovernmentWestAustraliaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.government.openregistry.enabled", havingValue = "true", matchIfMissing = true)
-    public OpenregistryClient openregistryClient(OpenregistryProperties properties) {
-        return createClient(OpenregistryClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.government.prcexamschedule.enabled", havingValue = "true", matchIfMissing = true)
-    public PrcExamScheduleClient prcexamscheduleClient(PrcExamScheduleProperties properties) {
-        return createClient(PrcExamScheduleClient.class, properties.getUrl());
     }
 
     @Bean

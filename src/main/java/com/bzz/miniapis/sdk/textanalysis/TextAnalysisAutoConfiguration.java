@@ -14,7 +14,6 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 @EnableConfigurationProperties({
         CodeDetectionProperties.class,
         ApilayerLanguagelayerProperties.class,
-        AylienTextAnalysisProperties.class,
         AudexumProperties.class,
         CloudmersiveNaturalLanguageProcessingProperties.class,
         DetectLanguageProperties.class,
@@ -26,12 +25,10 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         LectoTranslationProperties.class,
         LibretranslateProperties.class,
         SemantriaProperties.class,
-        SentimentAnalysisProperties.class,
         TisaneProperties.class,
         WatsonNaturalLanguageUnderstandingProperties.class
 })
 public class TextAnalysisAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -45,13 +42,6 @@ public class TextAnalysisAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.textanalysis.apilayerlanguagelayer.enabled", havingValue = "true", matchIfMissing = true)
     public ApilayerLanguagelayerClient apilayerlanguagelayerClient(ApilayerLanguagelayerProperties properties) {
         return createClient(ApilayerLanguagelayerClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.textanalysis.aylientextanalysis.enabled", havingValue = "true", matchIfMissing = true)
-    public AylienTextAnalysisClient aylientextanalysisClient(AylienTextAnalysisProperties properties) {
-        return createClient(AylienTextAnalysisClient.class, properties.getUrl());
     }
 
     @Bean
@@ -129,13 +119,6 @@ public class TextAnalysisAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.textanalysis.semantria.enabled", havingValue = "true", matchIfMissing = true)
     public SemantriaClient semantriaClient(SemantriaProperties properties) {
         return createClient(SemantriaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.textanalysis.sentimentanalysis.enabled", havingValue = "true", matchIfMissing = true)
-    public SentimentAnalysisClient sentimentanalysisClient(SentimentAnalysisProperties properties) {
-        return createClient(SentimentAnalysisClient.class, properties.getUrl());
     }
 
     @Bean

@@ -18,13 +18,11 @@ import org.springframework.web.service.invoker.HttpServiceProxyFactory;
         PostalpincodeProperties.class,
         PostmonProperties.class,
         PostnordProperties.class,
-        UpsProperties.class,
         WecantrackProperties.class,
         WhatpulseProperties.class,
         WhereparcelProperties.class
 })
 public class TrackingAutoConfiguration {
-
 
     @Bean
     @ConditionalOnMissingBean
@@ -66,13 +64,6 @@ public class TrackingAutoConfiguration {
     @ConditionalOnProperty(value = "miniapis.tracking.postnord.enabled", havingValue = "true", matchIfMissing = true)
     public PostnordClient postnordClient(PostnordProperties properties) {
         return createClient(PostnordClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.tracking.ups.enabled", havingValue = "true", matchIfMissing = true)
-    public UpsClient upsClient(UpsProperties properties) {
-        return createClient(UpsClient.class, properties.getUrl());
     }
 
     @Bean
