@@ -1,15 +1,57 @@
 # Miniapis Spring Boot Starter
 
-`miniapis-spring-boot-starter` 是一个专为 Spring Boot 3.x 深度定制的通用 API 快速集成 Starter 组件。它旨在通过开箱即用的方式提供两大核心功能：
-1. **轻量级声明式参数校验**（基于 AOP，避免繁琐的手动验证逻辑）。
+`miniapis-spring-boot-starter` 是一个专为 **Spring Boot 3.x (推荐 3.3.x)** 和 **Java 21** 深度定制的高效、通用的第三方 API 快速集成 Starter 组件。
+
+它开箱即用地集成了三大核心能力：
+1. **轻量级声明式参数校验**（基于 AOP，免去繁琐的手动验证逻辑）。
 2. **多通道 AI API 服务支持**（包括自研的高效无状态 `ChatGPTService` 以及官方 `OpenAiService` SDK 的无缝注入）。
+3. **庞大的外部公共 API 集成能力**：深度整合了来自 `public-apis` 社区的 **51 个分类、共 1,368 个** 活跃公共 API 的声明式客户端。
+
+---
+
+## 📂 项目目录结构与实现原理
+
+本 Starter 的源码结构高度模块化，清晰地划分了核心校验切面、AI 配置以及外部 API 客户端：
+
+```text
+com.bzz.miniapis
+├── aspect
+│   └── DoCheckAspect.java              # AOP 参数校验切面实现
+├── config
+│   ├── MiniapisAutoConfiguration.java  # 核心自动装配类（AI 客户端与基础配置）
+│   ├── AgifyProperties.java            # 手动优化的 API 属性配置类
+│   ├── CatFactProperties.java
+│   ├── CoinDeskProperties.java
+│   └── DogfactsProperties.java
+├── enums
+│   └── Check.java                      # 参数校验支持的类型枚举（Email、Phone 等）
+├── sdk                                 # 51 个分类的第三方 API SDK（通过声明式客户端自动生成）
+│   ├── animals                         # 动物分类包
+│   │   ├── AnimalsAutoConfiguration.java # 动物分类 Bean 注册中心
+│   │   ├── AxolotlClient.java           # 声明式 HTTP 客户端接口 (@HttpExchange)
+│   │   ├── AxolotlProperties.java       # 每个 API 的可配 URL 和开关属性
+│   │   └── ...
+│   ├── geocoding                       # 地理编码包
+│   ├── weather                         # 气象天气包
+│   └── ...
+├── service                             # AI 接口服务
+│   ├── ChatGPTService.java             # 自研 ChatGPT 服务接口
+│   └── ChatGPTServiceImpl.java         # 基于 RestClient 的 ChatGPT 实现
+└── utils
+    └── CheckUtil.java                  # 核心正则和逻辑校验工具类
+```
+
+### 💡 核心实现原理：
+* **参数校验 AOP**：在 Controller 层方法上标注 `@DoCheck`。切面类 `DoCheckAspect` 会在方法执行前拦截，并读取参数通过 `CheckUtil` 进行规则校验，校验失败直接抛出异常。
+* **声明式 HTTP 接口**：自 Spring Boot 3.x 起，引入了内置的 HTTP Interfaces。所有 `Client` 接口（例如 `AxolotlClient`）都使用 `@HttpExchange` 进行方法声明。
+* **分包自动配置**：由于 API 数量极为庞大，为了避免单个配置类臃肿，SDK 为每个分类设计了独立的自动配置类（如 `AnimalsAutoConfiguration`），各自分管该类目下的 API 注入。所有的配置类均通过 [AutoConfiguration.imports](file:///Users/bao/work/idea_workspace/miniapis-spring-boot-starter/src/main/resources/META-INF/spring/org.springframework.boot.autoconfigure.AutoConfiguration.imports) 自动注册并向主应用暴露。
 
 ---
 
 ## 🛠️ 环境要求
 
-- **Java**: 21
-- **Spring Boot**: 3.3.0 (支持 Spring Boot 3.x 规范)
+* **Java**: 21
+* **Spring Boot**: 3.3.0+ (支持 Spring Boot 3.x 规范)
 
 ---
 
@@ -27,261 +69,103 @@
 
 ---
 
-## ⚙️ 配置文件
+## 📊 API 能力分类与认证说明
 
-在主项目的 `application.yml` 或 `application.properties` 中添加以下配置项：
+本 Starter 在后台通过**代理环境（全球网络连通）**对所有的第三方 API 进行了连通性测试，剔除了失效的 130 个下线接口，最终保留了 **1,368 个在线的公共 API**。
 
-```yaml
-miniapis:
-  # 全局启用开关，默认为 true
-  enabled: true
-  
-  check:
-    # AOP参数校验开关，默认为 true
-    enabled: true
-    
-  chatgpt:
-    # ChatGPT 自研客户端开关，默认为 true
-    enabled: true
-    # 您的 OpenAI API Key
-    api-key: "your-chatgpt-api-key"
-    # 自定义中转接口或官方请求地址，默认为 https://api.openai.com/v1/chat/completions
-    api-url: "https://api.openai.com/v1/chat/completions"
-    
-  openai:
-    # OpenAI 官方 SDK 自动装配，只要配置了该 key，会自动向 Spring 容器中注入官方的 OpenAiService 实例
-    api-key: "your-openai-sdk-api-key"
+按照认证机制，集成的服务主要划分为两大类：
+1. **🟢 免 Key 认证服务 (No Auth)**：共计 **637** 个。此类服务开箱即用，不需要注册或提供任何 API Key，即可直接发起调用。
+2. **🔴 需要认证服务 (apiKey / OAuth)**：共计 **731** 个。此类服务必须在其官方网站申请对应的授权 Token 或 API Key，并在配置项中指定后方能正常调用。
 
-  # ==========================================
-  # 以下为集成的 public-apis 免 Key API SDK 配置 (均为可选，默认启用)
-  # ==========================================
-  placeholder:
-    # JSONPlaceholder 客户端开关，默认为 true
-    enabled: true
-    # 接口地址，默认为 https://jsonplaceholder.typicode.com
-    url: "https://jsonplaceholder.typicode.com"
-
-  weather:
-    # Open-Meteo 天气接口开关，默认为 true
-    enabled: true
-    # 接口地址，默认为 https://api.open-meteo.com
-    url: "https://api.open-meteo.com"
-
-  ipify:
-    # ipify IP获取接口开关，默认为 true
-    enabled: true
-    # 接口地址，默认为 https://api.ipify.org
-    url: "https://api.ipify.org"
-
-  joke:
-    # Official Joke API 接口开关，默认为 true
-    enabled: true
-    # 接口地址，默认为 https://official-joke-api.appspot.com
-    url: "https://official-joke-api.appspot.com"
-``````
+### 🏷️ 51 个 API 能力分类与分布
+详细分类及具体接口说明请直接查看 [docs/api_overview.md](file:///Users/bao/work/idea_workspace/miniapis-spring-boot-starter/docs/api_overview.md)。以下是主要的前五大热门分类：
+* **Development (开发与工具)**：116 个客户端 (com.bzz.miniapis.sdk.development)
+* **Games & Comics (游戏与漫画)**：89 个客户端 (com.bzz.miniapis.sdk.gamescomics)
+* **Geocoding (地理定位与 IP)**：86 个客户端 (com.bzz.miniapis.sdk.geocoding)
+* **Government (政府与公共事务)**：82 个客户端 (com.bzz.miniapis.sdk.government)
+* **Transportation (交通与航空航天)**：67 个客户端 (com.bzz.miniapis.sdk.transportation)
 
 ---
 
-## 🚀 核心功能使用指南
+## ⚙️ 统一启用与配置
+
+您可以在主项目的配置文件中自由对各个模块、分类甚至单个 API 进行开启/关闭，或者重写它们的接口请求地址（例如配置国内中转或局域网代理代理地址）：
+
+```yaml
+miniapis:
+  enabled: true       # 全局启用开关，默认 true
+  
+  check:
+    enabled: true     # AOP 参数验证开关，默认 true
+    
+  chatgpt:
+    enabled: true     # 自研 ChatGPT 客户端开关
+    api-key: "sk-xxxx" # 您的 OpenAI API Key
+    api-url: "https://api.openai.com/v1/chat/completions" # 请求端点
+    
+  openai:
+    api-key: "sk-xxxx" # 配置此项后，会自动向 Spring 容器注入官方 OpenAiService 实例
+
+  # ==========================================
+  # 各分类包 API 配置（可选，默认启用免 Key 接口）
+  # ==========================================
+  animals:
+    axolotl:
+      enabled: true   # 🟢 免 Key 客户端开关
+      url: "https://theaxolotlapi.netlify.app/"
+  geocoding:
+    googlemaps:
+      enabled: true   # 🔴 需要认证的客户端，需自行配置 url
+      url: "https://maps.googleapis.com"
+```
+
+---
+
+## 🚀 核心使用指南
 
 ### 1. 声明式参数校验 (`@DoCheck`)
-
-通过在 Controller 方法上标注 `@DoCheck` 即可快速对指定入参进行校验。校验不通过时，会抛出 `MiniapisIllegalParametersException`（继承自 `RuntimeException`），可配合全局异常处理器（`@ControllerAdvice`）统一返回错误格式。
-
-#### 定义接口与切面配置：
+标注在 Controller 控制器的方法入参上。
 ```java
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
-    // 指定校验方式为 Email，校验的参数名为 email
     @DoCheck(value = Check.Email, arg = "email", msg = "邮箱格式不合法！")
     @GetMapping("/register")
     public R<String> register(@RequestParam("email") String email) {
-        return R.success("注册链接已发送至: " + email);
+        return R.success("激活邮件已发送！");
     }
 }
 ```
 
-#### 可扩展校验逻辑：
-校验类型是通过 `com.bzz.miniapis.enums.Check` 枚举与 `com.bzz.miniapis.utils.CheckUtil` 工具类绑定的。如有新的正则或验证逻辑，可以直接扩展这两个类。
-
----
-
-### 2. Spring 托管的 `ChatGPTService`（自研轻量级客户端）
-
-本组件提供了一个**线程安全且无状态**的 `ChatGPTService` 接口，在项目启动时会根据您的配置自动向 Spring 容器注入。支持同步和异步调用：
-
-#### 同步调用示例 (Sync)：
+### 2. 轻量无状态 `ChatGPTService`
+支持同步和异步调用：
 ```java
-@RestController
-public class ChatController {
+@Autowired
+private ChatGPTService chatGPTService;
 
-    @Autowired
-    private ChatGPTService chatGPTService;
-
-    @GetMapping("/chat")
-    public String chat(@RequestParam("prompt") String prompt) {
-        ChatGPTRequest request = new ChatGPTRequest();
-        request.setMessages(new MessageModel[]{ new MessageModel("user", prompt) });
-        
-        // 核心请求：会自动套用全局配置中的 api-key 和 api-url
-        ChatGPTResponse response = chatGPTService.getResponse(request);
-        
-        return response.getChoices().get(0).getMessage().getContent();
-    }
+public void chatSync() {
+    ChatGPTRequest request = new ChatGPTRequest();
+    request.setMessages(new MessageModel[]{ new MessageModel("user", "你好！") });
+    
+    ChatGPTResponse response = chatGPTService.getResponse(request);
+    System.out.println(response.getChoices().get(0).getMessage().getContent());
 }
 ```
 
-#### 异步调用示例 (Async)：
-```java
-@RestController
-public class AsyncChatController {
-
-    @Autowired
-    private ChatGPTService chatGPTService;
-
-    @GetMapping("/chat/async")
-    public void chatAsync(@RequestParam("prompt") String prompt) {
-        ChatGPTRequest request = new ChatGPTRequest();
-        request.setMessages(new MessageModel[]{ new MessageModel("user", prompt) });
-
-        chatGPTService.getResponseAsync(request, new ChatGPTApiCallback() {
-            @Override
-            public void onSuccess(ChatGPTResponse response) {
-                System.out.println("AI 回复: " + response.getChoices().get(0).getMessage().getContent());
-            }
-
-            @Override
-            public void onFailure(String errorMessage) {
-                System.err.println("调用失败: " + errorMessage);
-            }
-
-            @Override
-            public void onFailure(CommonResponse response) {
-                System.err.println("API 错误: " + response.getResponse());
-            }
-        });
-    }
-}
-```
-
----
-
-### 3. OpenAI 官方 SDK 自动注入 (`OpenAiService`)
-
-如果您更倾向于使用官方或社区流行的底层 SDK（`com.theokanning.openai-gpt3-java`），一旦您在配置文件中填入了 `miniapis.openai.api-key`，本 Starter 会自动为您配置并向容器中注入 `OpenAiService` 实例。
-
-直接装配并使用：
-```java
-@Service
-public class AdvancedAiService {
-
-    @Autowired
-    private OpenAiService openAiService; // 官方 SDK 直接注入
-
-    public void generateText() {
-        CompletionRequest completionRequest = CompletionRequest.builder()
-                .prompt("Somebody once told me")
-                .model("gpt-3.5-turbo-instruct")
-                .echo(true)
-                .build();
-                
-        openAiService.createCompletion(completionRequest)
-                .getChoices()
-                .forEach(System.out::println);
-    }
-}
-```
-
----
-
-### 4. 多通道第三方 API 声明式 SDK 支持 (基于 Spring Boot 3.3.0 HTTP Interfaces)
-
-本组件基于 Spring Boot 3.3.x 提供的声明式 HTTP Interfaces (`@HttpExchange` 配合 `RestClient`)，集成了多个来自 `public-apis` 的优质、无需 Key 的公用 API 服务。所有客户端都具备：
-- **可复用/可配置性**：支持在配置文件中一键开启/关闭，并支持自由重写接口的 Base URL；
-- **声明式接口设计**：摒弃传统繁琐的手动 HTTP 请求拼接，完全面向接口及 DTO 开发。
-
-#### 1) JSONPlaceholder 模拟数据服务 (`JsonPlaceholderClient`)
-用于测试及快速演示的 Mock 资源（如文章 posts、评论 comments 等）。
-- **默认服务地址**: `https://jsonplaceholder.typicode.com`
-- **主要方法**:
-  - `Post getPost(Integer id)`: 获取单篇帖子。
-  - `List<Post> getPosts()`: 获取全部帖子。
-  - `List<Comment> getCommentsByPostId(Integer id)`: 获取某帖子的所有评论。
-- **使用示例**:
+### 3. 调用集成的第三方 API
+在需要使用的类中直接 `@Autowired` 注入对应的客户端接口（Client）即可，客户端底层使用 JSON 反序列化：
 ```java
 @RestController
 public class DemoController {
 
+    // 🟢 调用免 Key 的随机狗图片服务
     @Autowired
-    private JsonPlaceholderClient jsonPlaceholderClient;
+    private RandomdogClient randomdogClient;
 
-    @GetMapping("/posts")
-    public List<Post> getPosts() {
-        return jsonPlaceholderClient.getPosts();
-    }
-}
-```
-
-#### 2) Open-Meteo 天气预报服务 (`OpenMeteoClient`)
-免费且免 Key 的全球天气预报 API 服务。
-- **默认服务地址**: `https://api.open-meteo.com`
-- **主要方法**:
-  - `WeatherForecast getForecast(Double latitude, Double longitude, Boolean currentWeather)`: 查询指定经纬度的天气信息。
-- **使用示例**:
-```java
-@RestController
-public class WeatherController {
-
-    @Autowired
-    private OpenMeteoClient openMeteoClient;
-
-    @GetMapping("/weather")
-    public WeatherForecast getWeather(@RequestParam Double lat, @RequestParam Double lon) {
-        // 请求经纬度天气，并返回当前天气信息
-        return openMeteoClient.getForecast(lat, lon, true);
-    }
-}
-```
-
-#### 3) ipify IP 获取服务 (`IpifyClient`)
-简单好用的公共 IP 地址获取服务。
-- **默认服务地址**: `https://api.ipify.org`
-- **主要方法**:
-  - `IpResponse getIp(String format)`: 获取公网 IP (当参数 `format="json"` 时返回 DTO 响应)。
-- **使用示例**:
-```java
-@RestController
-public class IpController {
-
-    @Autowired
-    private IpifyClient ipifyClient;
-
-    @GetMapping("/myip")
-    public IpResponse getIp() {
-        // 获取 JSON 格式的客户端外网公网 IP
-        return ipifyClient.getIp("json");
-    }
-}
-```
-
-#### 4) Official Joke API 随机笑话服务 (`JokeClient`)
-随机获取英文幽默、编程段子等笑话的免 Key API。
-- **默认服务地址**: `https://official-joke-api.appspot.com`
-- **主要方法**:
-  - `Joke getRandomJoke()`: 随机返回笑话。
-- **使用示例**:
-```java
-@RestController
-public class JokeController {
-
-    @Autowired
-    private JokeClient jokeClient;
-
-    @GetMapping("/joke")
-    public Joke getRandomJoke() {
-        return jokeClient.getRandomJoke();
+    @GetMapping("/dog")
+    public Object getDog() {
+        return randomdogClient.execute(); // 返回狗相关的 JSON 实体模型
     }
 }
 ```
@@ -290,12 +174,7 @@ public class JokeController {
 
 ## 🧪 单元测试
 
-主项目中配置了多个 JUnit 5 测试案例，用以验证各种场景下的行为：
-- `ChatGPTTest`: 验证注入的 `ChatGPTService` 的异步回调请求行为。
-- `MainTest`: 验证在启用 AOP 参数校验 (`miniapis.check.enabled=true`) 时拦截与异常抛出情况。
-- `Main2Test`: 验证 Mock 切面与 Stub 条件下的接口调用测试。
-- `Main3Test`: 验证当手动关闭参数校验 (`miniapis.check.enabled=false`) 时，切面能够正确放行。
-- `PlaceholderTest`: 验证 `JsonPlaceholderClient` 调用，涵盖获取单个/全部帖子以及获取评论列表接口。
-- `WeatherTest`: 验证 `OpenMeteoClient` 调用，查询经纬度天气预测数据。
-- `IpifyTest`: 验证 `IpifyClient` 调用，获取当前客户端公网 IP 地址。
-- `JokeTest`: 验证 `JokeClient` 调用，获取随机笑话。
+项目内置了详尽的单元测试类（JUnit 5），涵盖以下核心验证：
+* `ChatGPTTest`：验证自研的 `ChatGPTService` 异步回调与请求逻辑。
+* `MainTest` & `Main3Test`：验证 `@DoCheck` 参数校验拦截与关闭开关。
+* `CatFactTest`、`AgifyTest`、`DogfactsTest`：验证批量外部 API 的装配和网络请求连通性。
