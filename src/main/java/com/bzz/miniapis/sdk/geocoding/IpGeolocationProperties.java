@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "miniapis.geocoding.ipgeolocation")
 public class IpGeolocationProperties {
     private boolean enabled = true;
-    private String url = "https://ipgeolocation.io/";
+    private String url = "https://www.abstractapi.com/ip-geolocation-api";
     public boolean isEnabled() { return enabled; }
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public String getUrl() { return url; }

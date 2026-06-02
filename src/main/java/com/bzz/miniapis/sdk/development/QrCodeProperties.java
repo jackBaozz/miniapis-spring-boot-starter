@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "miniapis.development.qrcode")
 public class QrCodeProperties {
     private boolean enabled = true;
-    private String url = "http://goqr.me/api/";
+    private String url = "https://www.qrtag.net/api/";
     public boolean isEnabled() { return enabled; }
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public String getUrl() { return url; }

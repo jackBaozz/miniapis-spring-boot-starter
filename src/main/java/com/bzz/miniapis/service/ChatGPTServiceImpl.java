@@ -28,7 +28,7 @@ import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.annotation.PreDestroy;
+import org.springframework.beans.factory.DisposableBean;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -44,7 +44,7 @@ import java.util.concurrent.Executors;
  *
  * @author bzz
  */
-public class ChatGPTServiceImpl implements ChatGPTService {
+public class ChatGPTServiceImpl implements ChatGPTService, DisposableBean {
 
     private final Logger log = LoggerFactory.getLogger(ChatGPTServiceImpl.class);
 
@@ -110,8 +110,8 @@ public class ChatGPTServiceImpl implements ChatGPTService {
     /**
      * 关闭服务，释放线程池资源
      */
-    @PreDestroy
-    public void shutdown() {
+    @Override
+    public void destroy() {
         if (executorService != null && !executorService.isShutdown()) {
             executorService.shutdown();
         }

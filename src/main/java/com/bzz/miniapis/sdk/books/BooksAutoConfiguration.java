@@ -5,204 +5,204 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.client.support.RestClientAdapter;
-import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 @ConditionalOnProperty(value = "miniapis.enabled", havingValue = "true")
 @EnableConfigurationProperties({
-        ABBliaDigitalProperties.class,
-        AmanahSunnahProperties.class,
-        BhagavadGitaTeluguProperties.class,
-        BibleApiProperties.class,
         CrossrefMetadataSearchProperties.class,
-        GanjoorProperties.class,
-        GoogleBooksProperties.class,
         GurbaninowProperties.class,
-        GutendexProperties.class,
-        OpenLibraryProperties.class,
-        PenguinPublishingProperties.class,
         PoetrydbProperties.class,
-        QuranProperties.class,
-        QuranCloudProperties.class,
         QuranApiProperties.class,
-        RigVedaProperties.class,
+        AmanahSunnahProperties.class,
         RunyankoleBibleProperties.class,
+        OpenLibraryProperties.class,
         TheBibleProperties.class,
-        ThirukkuralProperties.class,
-        UrantiaPapersProperties.class,
+        GoogleBooksProperties.class,
+        BibleApiProperties.class,
         VedicSocietyProperties.class,
+        ThirukkuralProperties.class,
+        GanjoorProperties.class,
+        RigVedaProperties.class,
+        GutendexProperties.class,
         WizardWorldProperties.class,
-        WolneLekturyProperties.class
+        UrantiaPapersProperties.class,
+        BhagavadGitaProperties.class,
+        ABBliaDigitalProperties.class,
+        BhagavadGitaTeluguProperties.class,
+        PenguinPublishingProperties.class,
+        WolneLekturyProperties.class,
+        QuranCloudProperties.class,
+        QuranProperties.class
 })
 public class BooksAutoConfiguration {
 
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.abbliadigital.enabled", havingValue = "true", matchIfMissing = true)
-    public ABBliaDigitalClient abbliadigitalClient(ABBliaDigitalProperties properties) {
-        return createClient(ABBliaDigitalClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.amanahsunnah.enabled", havingValue = "true", matchIfMissing = true)
-    public AmanahSunnahClient amanahsunnahClient(AmanahSunnahProperties properties) {
-        return createClient(AmanahSunnahClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.bhagavadgitatelugu.enabled", havingValue = "true", matchIfMissing = true)
-    public BhagavadGitaTeluguClient bhagavadgitateluguClient(BhagavadGitaTeluguProperties properties) {
-        return createClient(BhagavadGitaTeluguClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.bibleapi.enabled", havingValue = "true", matchIfMissing = true)
-    public BibleApiClient bibleapiClient(BibleApiProperties properties) {
-        return createClient(BibleApiClient.class, properties.getUrl());
-    }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.crossrefmetadatasearch.enabled", havingValue = "true", matchIfMissing = true)
     public CrossrefMetadataSearchClient crossrefmetadatasearchClient(CrossrefMetadataSearchProperties properties) {
-        return createClient(CrossrefMetadataSearchClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.ganjoor.enabled", havingValue = "true", matchIfMissing = true)
-    public GanjoorClient ganjoorClient(GanjoorProperties properties) {
-        return createClient(GanjoorClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.googlebooks.enabled", havingValue = "true", matchIfMissing = true)
-    public GoogleBooksClient googlebooksClient(GoogleBooksProperties properties) {
-        return createClient(GoogleBooksClient.class, properties.getUrl());
+        return new CrossrefMetadataSearchClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.gurbaninow.enabled", havingValue = "true", matchIfMissing = true)
     public GurbaninowClient gurbaninowClient(GurbaninowProperties properties) {
-        return createClient(GurbaninowClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.gutendex.enabled", havingValue = "true", matchIfMissing = true)
-    public GutendexClient gutendexClient(GutendexProperties properties) {
-        return createClient(GutendexClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.openlibrary.enabled", havingValue = "true", matchIfMissing = true)
-    public OpenLibraryClient openlibraryClient(OpenLibraryProperties properties) {
-        return createClient(OpenLibraryClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.penguinpublishing.enabled", havingValue = "true", matchIfMissing = true)
-    public PenguinPublishingClient penguinpublishingClient(PenguinPublishingProperties properties) {
-        return createClient(PenguinPublishingClient.class, properties.getUrl());
+        return new GurbaninowClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.poetrydb.enabled", havingValue = "true", matchIfMissing = true)
     public PoetrydbClient poetrydbClient(PoetrydbProperties properties) {
-        return createClient(PoetrydbClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.quran.enabled", havingValue = "true", matchIfMissing = true)
-    public QuranClient quranClient(QuranProperties properties) {
-        return createClient(QuranClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.qurancloud.enabled", havingValue = "true", matchIfMissing = true)
-    public QuranCloudClient qurancloudClient(QuranCloudProperties properties) {
-        return createClient(QuranCloudClient.class, properties.getUrl());
+        return new PoetrydbClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.quranapi.enabled", havingValue = "true", matchIfMissing = true)
     public QuranApiClient quranapiClient(QuranApiProperties properties) {
-        return createClient(QuranApiClient.class, properties.getUrl());
+        return new QuranApiClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.rigveda.enabled", havingValue = "true", matchIfMissing = true)
-    public RigVedaClient rigvedaClient(RigVedaProperties properties) {
-        return createClient(RigVedaClient.class, properties.getUrl());
+    @ConditionalOnProperty(value = "miniapis.books.amanahsunnah.enabled", havingValue = "true", matchIfMissing = true)
+    public AmanahSunnahClient amanahsunnahClient(AmanahSunnahProperties properties) {
+        return new AmanahSunnahClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.runyankolebible.enabled", havingValue = "true", matchIfMissing = true)
     public RunyankoleBibleClient runyankolebibleClient(RunyankoleBibleProperties properties) {
-        return createClient(RunyankoleBibleClient.class, properties.getUrl());
+        return new RunyankoleBibleClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.openlibrary.enabled", havingValue = "true", matchIfMissing = true)
+    public OpenLibraryClient openlibraryClient(OpenLibraryProperties properties) {
+        return new OpenLibraryClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.thebible.enabled", havingValue = "true", matchIfMissing = true)
     public TheBibleClient thebibleClient(TheBibleProperties properties) {
-        return createClient(TheBibleClient.class, properties.getUrl());
+        return new TheBibleClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.thirukkural.enabled", havingValue = "true", matchIfMissing = true)
-    public ThirukkuralClient thirukkuralClient(ThirukkuralProperties properties) {
-        return createClient(ThirukkuralClient.class, properties.getUrl());
+    @ConditionalOnProperty(value = "miniapis.books.googlebooks.enabled", havingValue = "true", matchIfMissing = true)
+    public GoogleBooksClient googlebooksClient(GoogleBooksProperties properties) {
+        return new GoogleBooksClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.books.urantiapapers.enabled", havingValue = "true", matchIfMissing = true)
-    public UrantiaPapersClient urantiapapersClient(UrantiaPapersProperties properties) {
-        return createClient(UrantiaPapersClient.class, properties.getUrl());
+    @ConditionalOnProperty(value = "miniapis.books.bibleapi.enabled", havingValue = "true", matchIfMissing = true)
+    public BibleApiClient bibleapiClient(BibleApiProperties properties) {
+        return new BibleApiClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.vedicsociety.enabled", havingValue = "true", matchIfMissing = true)
     public VedicSocietyClient vedicsocietyClient(VedicSocietyProperties properties) {
-        return createClient(VedicSocietyClient.class, properties.getUrl());
+        return new VedicSocietyClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.thirukkural.enabled", havingValue = "true", matchIfMissing = true)
+    public ThirukkuralClient thirukkuralClient(ThirukkuralProperties properties) {
+        return new ThirukkuralClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.ganjoor.enabled", havingValue = "true", matchIfMissing = true)
+    public GanjoorClient ganjoorClient(GanjoorProperties properties) {
+        return new GanjoorClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.rigveda.enabled", havingValue = "true", matchIfMissing = true)
+    public RigVedaClient rigvedaClient(RigVedaProperties properties) {
+        return new RigVedaClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.gutendex.enabled", havingValue = "true", matchIfMissing = true)
+    public GutendexClient gutendexClient(GutendexProperties properties) {
+        return new GutendexClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.wizardworld.enabled", havingValue = "true", matchIfMissing = true)
     public WizardWorldClient wizardworldClient(WizardWorldProperties properties) {
-        return createClient(WizardWorldClient.class, properties.getUrl());
+        return new WizardWorldClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.urantiapapers.enabled", havingValue = "true", matchIfMissing = true)
+    public UrantiaPapersClient urantiapapersClient(UrantiaPapersProperties properties) {
+        return new UrantiaPapersClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.bhagavadgita.enabled", havingValue = "true", matchIfMissing = true)
+    public BhagavadGitaClient bhagavadgitaClient(BhagavadGitaProperties properties) {
+        return new BhagavadGitaClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.abbliadigital.enabled", havingValue = "true", matchIfMissing = true)
+    public ABBliaDigitalClient abbliadigitalClient(ABBliaDigitalProperties properties) {
+        return new ABBliaDigitalClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.bhagavadgitatelugu.enabled", havingValue = "true", matchIfMissing = true)
+    public BhagavadGitaTeluguClient bhagavadgitateluguClient(BhagavadGitaTeluguProperties properties) {
+        return new BhagavadGitaTeluguClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.penguinpublishing.enabled", havingValue = "true", matchIfMissing = true)
+    public PenguinPublishingClient penguinpublishingClient(PenguinPublishingProperties properties) {
+        return new PenguinPublishingClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.books.wolnelektury.enabled", havingValue = "true", matchIfMissing = true)
     public WolneLekturyClient wolnelekturyClient(WolneLekturyProperties properties) {
-        return createClient(WolneLekturyClient.class, properties.getUrl());
+        return new WolneLekturyClient(properties.getUrl());
     }
 
-    private <T> T createClient(Class<T> clientClass, String baseUrl) {
-        RestClient restClient = RestClient.builder().baseUrl(baseUrl).build();
-        RestClientAdapter adapter = RestClientAdapter.create(restClient);
-        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
-        return factory.createClient(clientClass);
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.qurancloud.enabled", havingValue = "true", matchIfMissing = true)
+    public QuranCloudClient qurancloudClient(QuranCloudProperties properties) {
+        return new QuranCloudClient(properties.getUrl());
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.books.quran.enabled", havingValue = "true", matchIfMissing = true)
+    public QuranClient quranClient(QuranProperties properties) {
+        return new QuranClient(properties.getUrl());
+    }
+
 }

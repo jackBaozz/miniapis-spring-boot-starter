@@ -5,268 +5,260 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.client.support.RestClientAdapter;
-import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 @ConditionalOnProperty(value = "miniapis.enabled", havingValue = "true")
 @EnableConfigurationProperties({
-        Api7DigitalProperties.class,
-        AiMasteringProperties.class,
-        AudiomackProperties.class,
-        BandcampProperties.class,
-        BandsintownProperties.class,
-        DeezerProperties.class,
-        DiscogsProperties.class,
-        FreesoundProperties.class,
         GaanaProperties.class,
-        GeniusProperties.class,
-        GenrenatorProperties.class,
-        JamendoProperties.class,
         JiosaavnProperties.class,
+        GeniusProperties.class,
+        BandcampProperties.class,
         KkboxProperties.class,
+        JamendoProperties.class,
+        DiscogsProperties.class,
         LastfmProperties.class,
         LyricsOvhProperties.class,
+        AiMasteringProperties.class,
         MixcloudProperties.class,
-        MusicbrainzProperties.class,
-        MusixmatchProperties.class,
         OpenwhydProperties.class,
-        PhishinProperties.class,
-        RadioBrowserProperties.class,
-        SongkickProperties.class,
-        SonglinkOdesliProperties.class,
-        SongsterrProperties.class,
-        SoundcloudProperties.class,
-        SpotifyProperties.class,
-        SunorProperties.class,
         TastediveProperties.class,
+        SonglinkOdesliProperties.class,
+        FreesoundProperties.class,
+        SongkickProperties.class,
+        SoundcloudProperties.class,
+        VeromeProperties.class,
+        RadioBrowserProperties.class,
+        DeezerProperties.class,
+        SongsterrProperties.class,
+        GenrenatorProperties.class,
+        MusicbrainzProperties.class,
         TheaudiodbProperties.class,
-        VeromeProperties.class
+        AudiomackProperties.class,
+        SunorProperties.class,
+        Api7DigitalProperties.class,
+        MusixmatchProperties.class,
+        SpotifyProperties.class,
+        PhishinProperties.class,
+        BandsintownProperties.class
 })
 public class MusicAutoConfiguration {
 
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.api7digital.enabled", havingValue = "true", matchIfMissing = true)
-    public Api7DigitalClient api7digitalClient(Api7DigitalProperties properties) {
-        return createClient(Api7DigitalClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.aimastering.enabled", havingValue = "true", matchIfMissing = true)
-    public AiMasteringClient aimasteringClient(AiMasteringProperties properties) {
-        return createClient(AiMasteringClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.audiomack.enabled", havingValue = "true", matchIfMissing = true)
-    public AudiomackClient audiomackClient(AudiomackProperties properties) {
-        return createClient(AudiomackClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.bandcamp.enabled", havingValue = "true", matchIfMissing = true)
-    public BandcampClient bandcampClient(BandcampProperties properties) {
-        return createClient(BandcampClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.bandsintown.enabled", havingValue = "true", matchIfMissing = true)
-    public BandsintownClient bandsintownClient(BandsintownProperties properties) {
-        return createClient(BandsintownClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.deezer.enabled", havingValue = "true", matchIfMissing = true)
-    public DeezerClient deezerClient(DeezerProperties properties) {
-        return createClient(DeezerClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.discogs.enabled", havingValue = "true", matchIfMissing = true)
-    public DiscogsClient discogsClient(DiscogsProperties properties) {
-        return createClient(DiscogsClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.freesound.enabled", havingValue = "true", matchIfMissing = true)
-    public FreesoundClient freesoundClient(FreesoundProperties properties) {
-        return createClient(FreesoundClient.class, properties.getUrl());
-    }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.gaana.enabled", havingValue = "true", matchIfMissing = true)
     public GaanaClient gaanaClient(GaanaProperties properties) {
-        return createClient(GaanaClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.genius.enabled", havingValue = "true", matchIfMissing = true)
-    public GeniusClient geniusClient(GeniusProperties properties) {
-        return createClient(GeniusClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.genrenator.enabled", havingValue = "true", matchIfMissing = true)
-    public GenrenatorClient genrenatorClient(GenrenatorProperties properties) {
-        return createClient(GenrenatorClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.jamendo.enabled", havingValue = "true", matchIfMissing = true)
-    public JamendoClient jamendoClient(JamendoProperties properties) {
-        return createClient(JamendoClient.class, properties.getUrl());
+        return new GaanaClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.jiosaavn.enabled", havingValue = "true", matchIfMissing = true)
     public JiosaavnClient jiosaavnClient(JiosaavnProperties properties) {
-        return createClient(JiosaavnClient.class, properties.getUrl());
+        return new JiosaavnClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.genius.enabled", havingValue = "true", matchIfMissing = true)
+    public GeniusClient geniusClient(GeniusProperties properties) {
+        return new GeniusClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.bandcamp.enabled", havingValue = "true", matchIfMissing = true)
+    public BandcampClient bandcampClient(BandcampProperties properties) {
+        return new BandcampClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.kkbox.enabled", havingValue = "true", matchIfMissing = true)
     public KkboxClient kkboxClient(KkboxProperties properties) {
-        return createClient(KkboxClient.class, properties.getUrl());
+        return new KkboxClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.jamendo.enabled", havingValue = "true", matchIfMissing = true)
+    public JamendoClient jamendoClient(JamendoProperties properties) {
+        return new JamendoClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.discogs.enabled", havingValue = "true", matchIfMissing = true)
+    public DiscogsClient discogsClient(DiscogsProperties properties) {
+        return new DiscogsClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.lastfm.enabled", havingValue = "true", matchIfMissing = true)
     public LastfmClient lastfmClient(LastfmProperties properties) {
-        return createClient(LastfmClient.class, properties.getUrl());
+        return new LastfmClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.lyricsovh.enabled", havingValue = "true", matchIfMissing = true)
     public LyricsOvhClient lyricsovhClient(LyricsOvhProperties properties) {
-        return createClient(LyricsOvhClient.class, properties.getUrl());
+        return new LyricsOvhClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.aimastering.enabled", havingValue = "true", matchIfMissing = true)
+    public AiMasteringClient aimasteringClient(AiMasteringProperties properties) {
+        return new AiMasteringClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.mixcloud.enabled", havingValue = "true", matchIfMissing = true)
     public MixcloudClient mixcloudClient(MixcloudProperties properties) {
-        return createClient(MixcloudClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.musicbrainz.enabled", havingValue = "true", matchIfMissing = true)
-    public MusicbrainzClient musicbrainzClient(MusicbrainzProperties properties) {
-        return createClient(MusicbrainzClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.musixmatch.enabled", havingValue = "true", matchIfMissing = true)
-    public MusixmatchClient musixmatchClient(MusixmatchProperties properties) {
-        return createClient(MusixmatchClient.class, properties.getUrl());
+        return new MixcloudClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.openwhyd.enabled", havingValue = "true", matchIfMissing = true)
     public OpenwhydClient openwhydClient(OpenwhydProperties properties) {
-        return createClient(OpenwhydClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.phishin.enabled", havingValue = "true", matchIfMissing = true)
-    public PhishinClient phishinClient(PhishinProperties properties) {
-        return createClient(PhishinClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.radiobrowser.enabled", havingValue = "true", matchIfMissing = true)
-    public RadioBrowserClient radiobrowserClient(RadioBrowserProperties properties) {
-        return createClient(RadioBrowserClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.songkick.enabled", havingValue = "true", matchIfMissing = true)
-    public SongkickClient songkickClient(SongkickProperties properties) {
-        return createClient(SongkickClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.songlinkodesli.enabled", havingValue = "true", matchIfMissing = true)
-    public SonglinkOdesliClient songlinkodesliClient(SonglinkOdesliProperties properties) {
-        return createClient(SonglinkOdesliClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.songsterr.enabled", havingValue = "true", matchIfMissing = true)
-    public SongsterrClient songsterrClient(SongsterrProperties properties) {
-        return createClient(SongsterrClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.soundcloud.enabled", havingValue = "true", matchIfMissing = true)
-    public SoundcloudClient soundcloudClient(SoundcloudProperties properties) {
-        return createClient(SoundcloudClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.spotify.enabled", havingValue = "true", matchIfMissing = true)
-    public SpotifyClient spotifyClient(SpotifyProperties properties) {
-        return createClient(SpotifyClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.sunor.enabled", havingValue = "true", matchIfMissing = true)
-    public SunorClient sunorClient(SunorProperties properties) {
-        return createClient(SunorClient.class, properties.getUrl());
+        return new OpenwhydClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.tastedive.enabled", havingValue = "true", matchIfMissing = true)
     public TastediveClient tastediveClient(TastediveProperties properties) {
-        return createClient(TastediveClient.class, properties.getUrl());
+        return new TastediveClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.music.theaudiodb.enabled", havingValue = "true", matchIfMissing = true)
-    public TheaudiodbClient theaudiodbClient(TheaudiodbProperties properties) {
-        return createClient(TheaudiodbClient.class, properties.getUrl());
+    @ConditionalOnProperty(value = "miniapis.music.songlinkodesli.enabled", havingValue = "true", matchIfMissing = true)
+    public SonglinkOdesliClient songlinkodesliClient(SonglinkOdesliProperties properties) {
+        return new SonglinkOdesliClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.freesound.enabled", havingValue = "true", matchIfMissing = true)
+    public FreesoundClient freesoundClient(FreesoundProperties properties) {
+        return new FreesoundClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.songkick.enabled", havingValue = "true", matchIfMissing = true)
+    public SongkickClient songkickClient(SongkickProperties properties) {
+        return new SongkickClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.soundcloud.enabled", havingValue = "true", matchIfMissing = true)
+    public SoundcloudClient soundcloudClient(SoundcloudProperties properties) {
+        return new SoundcloudClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.music.verome.enabled", havingValue = "true", matchIfMissing = true)
     public VeromeClient veromeClient(VeromeProperties properties) {
-        return createClient(VeromeClient.class, properties.getUrl());
+        return new VeromeClient(properties.getUrl());
     }
 
-    private <T> T createClient(Class<T> clientClass, String baseUrl) {
-        RestClient restClient = RestClient.builder().baseUrl(baseUrl).build();
-        RestClientAdapter adapter = RestClientAdapter.create(restClient);
-        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
-        return factory.createClient(clientClass);
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.radiobrowser.enabled", havingValue = "true", matchIfMissing = true)
+    public RadioBrowserClient radiobrowserClient(RadioBrowserProperties properties) {
+        return new RadioBrowserClient(properties.getUrl());
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.deezer.enabled", havingValue = "true", matchIfMissing = true)
+    public DeezerClient deezerClient(DeezerProperties properties) {
+        return new DeezerClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.songsterr.enabled", havingValue = "true", matchIfMissing = true)
+    public SongsterrClient songsterrClient(SongsterrProperties properties) {
+        return new SongsterrClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.genrenator.enabled", havingValue = "true", matchIfMissing = true)
+    public GenrenatorClient genrenatorClient(GenrenatorProperties properties) {
+        return new GenrenatorClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.musicbrainz.enabled", havingValue = "true", matchIfMissing = true)
+    public MusicbrainzClient musicbrainzClient(MusicbrainzProperties properties) {
+        return new MusicbrainzClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.theaudiodb.enabled", havingValue = "true", matchIfMissing = true)
+    public TheaudiodbClient theaudiodbClient(TheaudiodbProperties properties) {
+        return new TheaudiodbClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.audiomack.enabled", havingValue = "true", matchIfMissing = true)
+    public AudiomackClient audiomackClient(AudiomackProperties properties) {
+        return new AudiomackClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.sunor.enabled", havingValue = "true", matchIfMissing = true)
+    public SunorClient sunorClient(SunorProperties properties) {
+        return new SunorClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.api7digital.enabled", havingValue = "true", matchIfMissing = true)
+    public Api7DigitalClient api7digitalClient(Api7DigitalProperties properties) {
+        return new Api7DigitalClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.musixmatch.enabled", havingValue = "true", matchIfMissing = true)
+    public MusixmatchClient musixmatchClient(MusixmatchProperties properties) {
+        return new MusixmatchClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.spotify.enabled", havingValue = "true", matchIfMissing = true)
+    public SpotifyClient spotifyClient(SpotifyProperties properties) {
+        return new SpotifyClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.phishin.enabled", havingValue = "true", matchIfMissing = true)
+    public PhishinClient phishinClient(PhishinProperties properties) {
+        return new PhishinClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.music.bandsintown.enabled", havingValue = "true", matchIfMissing = true)
+    public BandsintownClient bandsintownClient(BandsintownProperties properties) {
+        return new BandsintownClient(properties.getUrl());
+    }
+
 }

@@ -5,7 +5,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 @ConfigurationProperties(prefix = "miniapis.video.swapi")
 public class SwapiProperties {
     private boolean enabled = true;
-    private String url = "https://www.swapi.tech";
+    private String url = "https://swapi.dev/";
     public boolean isEnabled() { return enabled; }
     public void setEnabled(boolean enabled) { this.enabled = enabled; }
     public String getUrl() { return url; }

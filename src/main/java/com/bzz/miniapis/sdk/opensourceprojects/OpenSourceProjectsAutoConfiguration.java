@@ -5,93 +5,84 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.client.support.RestClientAdapter;
-import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 
 @Configuration
 @ConditionalOnProperty(value = "miniapis.enabled", havingValue = "true")
 @EnableConfigurationProperties({
-        CountlyProperties.class,
-        CreativeCommonsCatalogProperties.class,
-        DatamuseProperties.class,
-        DrupalOrgProperties.class,
-        EvilInsultGeneratorProperties.class,
-        GithubContributionChartGeneratorProperties.class,
         GithubReadmeStatsProperties.class,
+        GithubContributionChartGeneratorProperties.class,
+        DrupalOrgProperties.class,
+        ShieldsProperties.class,
+        CountlyProperties.class,
+        EvilInsultGeneratorProperties.class,
         MetabaseProperties.class,
-        ShieldsProperties.class
+        DatamuseProperties.class,
+        CreativeCommonsCatalogProperties.class
 })
 public class OpenSourceProjectsAutoConfiguration {
 
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.opensourceprojects.countly.enabled", havingValue = "true", matchIfMissing = true)
-    public CountlyClient countlyClient(CountlyProperties properties) {
-        return createClient(CountlyClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.opensourceprojects.creativecommonscatalog.enabled", havingValue = "true", matchIfMissing = true)
-    public CreativeCommonsCatalogClient creativecommonscatalogClient(CreativeCommonsCatalogProperties properties) {
-        return createClient(CreativeCommonsCatalogClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.opensourceprojects.datamuse.enabled", havingValue = "true", matchIfMissing = true)
-    public DatamuseClient datamuseClient(DatamuseProperties properties) {
-        return createClient(DatamuseClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.opensourceprojects.drupalorg.enabled", havingValue = "true", matchIfMissing = true)
-    public DrupalOrgClient drupalorgClient(DrupalOrgProperties properties) {
-        return createClient(DrupalOrgClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.opensourceprojects.evilinsultgenerator.enabled", havingValue = "true", matchIfMissing = true)
-    public EvilInsultGeneratorClient evilinsultgeneratorClient(EvilInsultGeneratorProperties properties) {
-        return createClient(EvilInsultGeneratorClient.class, properties.getUrl());
+    @ConditionalOnProperty(value = "miniapis.opensourceprojects.githubreadmestats.enabled", havingValue = "true", matchIfMissing = true)
+    public GithubReadmeStatsClient githubreadmestatsClient(GithubReadmeStatsProperties properties) {
+        return new GithubReadmeStatsClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.opensourceprojects.githubcontributionchartgenerator.enabled", havingValue = "true", matchIfMissing = true)
     public GithubContributionChartGeneratorClient githubcontributionchartgeneratorClient(GithubContributionChartGeneratorProperties properties) {
-        return createClient(GithubContributionChartGeneratorClient.class, properties.getUrl());
+        return new GithubContributionChartGeneratorClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.opensourceprojects.githubreadmestats.enabled", havingValue = "true", matchIfMissing = true)
-    public GithubReadmeStatsClient githubreadmestatsClient(GithubReadmeStatsProperties properties) {
-        return createClient(GithubReadmeStatsClient.class, properties.getUrl());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.opensourceprojects.metabase.enabled", havingValue = "true", matchIfMissing = true)
-    public MetabaseClient metabaseClient(MetabaseProperties properties) {
-        return createClient(MetabaseClient.class, properties.getUrl());
+    @ConditionalOnProperty(value = "miniapis.opensourceprojects.drupalorg.enabled", havingValue = "true", matchIfMissing = true)
+    public DrupalOrgClient drupalorgClient(DrupalOrgProperties properties) {
+        return new DrupalOrgClient(properties.getUrl());
     }
 
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(value = "miniapis.opensourceprojects.shields.enabled", havingValue = "true", matchIfMissing = true)
     public ShieldsClient shieldsClient(ShieldsProperties properties) {
-        return createClient(ShieldsClient.class, properties.getUrl());
+        return new ShieldsClient(properties.getUrl());
     }
 
-    private <T> T createClient(Class<T> clientClass, String baseUrl) {
-        RestClient restClient = RestClient.builder().baseUrl(baseUrl).build();
-        RestClientAdapter adapter = RestClientAdapter.create(restClient);
-        HttpServiceProxyFactory factory = HttpServiceProxyFactory.builderFor(adapter).build();
-        return factory.createClient(clientClass);
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.opensourceprojects.countly.enabled", havingValue = "true", matchIfMissing = true)
+    public CountlyClient countlyClient(CountlyProperties properties) {
+        return new CountlyClient(properties.getUrl());
     }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.opensourceprojects.evilinsultgenerator.enabled", havingValue = "true", matchIfMissing = true)
+    public EvilInsultGeneratorClient evilinsultgeneratorClient(EvilInsultGeneratorProperties properties) {
+        return new EvilInsultGeneratorClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.opensourceprojects.metabase.enabled", havingValue = "true", matchIfMissing = true)
+    public MetabaseClient metabaseClient(MetabaseProperties properties) {
+        return new MetabaseClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.opensourceprojects.datamuse.enabled", havingValue = "true", matchIfMissing = true)
+    public DatamuseClient datamuseClient(DatamuseProperties properties) {
+        return new DatamuseClient(properties.getUrl());
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    @ConditionalOnProperty(value = "miniapis.opensourceprojects.creativecommonscatalog.enabled", havingValue = "true", matchIfMissing = true)
+    public CreativeCommonsCatalogClient creativecommonscatalogClient(CreativeCommonsCatalogProperties properties) {
+        return new CreativeCommonsCatalogClient(properties.getUrl());
+    }
+
 }
