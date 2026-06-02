@@ -24,7 +24,6 @@ import com.bzz.miniapis.entity.CommonResponse;
 import com.bzz.miniapis.entity.chatgpt.ChatGPTRequest;
 import com.bzz.miniapis.entity.chatgpt.ChatGPTResponse;
 import com.bzz.miniapis.entity.chatgpt.MessageModel;
-import com.bzz.miniapis.service.ChatGPTServiceImpl;
 import com.bzz.miniapis.web.TestController;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;

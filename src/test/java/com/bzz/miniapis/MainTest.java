@@ -17,7 +17,6 @@
 package com.bzz.miniapis;
 
 
-import com.bzz.miniapis.aop.DoCheckPoint;
 import com.bzz.miniapis.config.MiniapisAutoConfiguration;
 import com.bzz.miniapis.web.GlobalExceptionHandler;
 import com.bzz.miniapis.web.R;
@@ -101,7 +100,8 @@ public class MainTest {
     @Test
     public void mockTesk() {
         // mock creation 创建mock对象
-        List mockedList = mock(List.class);
+        @SuppressWarnings("unchecked")
+        List<String> mockedList = mock(List.class);
 
         //using mock object 使用mock对象
         mockedList.add("one");
@@ -122,8 +122,8 @@ public class MainTest {
         verifyNoMoreInteractions(mockedList);
 
 
-        List list = new LinkedList();
-        List spy = spy(list);
+        List<String> list = new LinkedList<>();
+        List<String> spy = spy(list);
 
 
         doReturn("foo").when(spy).get(0);
