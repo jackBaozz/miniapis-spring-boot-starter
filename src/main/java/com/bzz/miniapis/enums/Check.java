@@ -45,16 +45,24 @@ public enum Check {
     // 数字校验方式
     Numeric("参数应为数字", CheckUtil::isNumeric);
 
-    public String msg;
+    private final String msg;
 
     /**
      * 函数式接口.Object:传入参数类型,Boolean:返回类型
      */
-    public Function<Object, Boolean> function;
+    private final Function<Object, Boolean> function;
 
     Check(String msg, Function<Object, Boolean> function) {
         this.msg = msg;
         this.function = function;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public Function<Object, Boolean> getFunction() {
+        return function;
     }
 
 }

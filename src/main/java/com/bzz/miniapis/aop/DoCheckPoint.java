@@ -79,7 +79,7 @@ public class DoCheckPoint {
 
         // 判断是否未配置msg,未配置则直接使用枚举类的固定提示
         if ("".equals(msg)) {
-            msg = value.msg;
+            msg = value.getMsg();
         }
 
         // 获取需要校验的参数值
@@ -94,7 +94,7 @@ public class DoCheckPoint {
         }
 
         // 通过函数式接口传入需要校验的值， 内部会调用工具类的isEmail方法进行校验
-        Boolean res = value.function.apply(argValue);
+        Boolean res = value.getFunction().apply(argValue);
         if (res) {
             // 校验成功则放行
             return jp.proceed();

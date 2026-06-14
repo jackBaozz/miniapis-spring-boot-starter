@@ -36,7 +36,14 @@ import org.springframework.context.annotation.Configuration;
 })
 public class MiniapisAutoConfiguration {
 
+    private final ProxyProperties proxyProperties;
+
     public MiniapisAutoConfiguration(ProxyProperties proxyProperties) {
+        this.proxyProperties = proxyProperties;
+    }
+
+    @javax.annotation.PostConstruct
+    public void init() {
         ProxyConfigHolder.initialize(proxyProperties);
     }
 

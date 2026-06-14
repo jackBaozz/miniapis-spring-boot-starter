@@ -26,6 +26,11 @@ import java.util.regex.Pattern;
  */
 public class CheckUtil {
 
+    private static final Pattern EMAIL_PATTERN = Pattern.compile("^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$");
+    private static final Pattern PHONE_PATTERN = Pattern.compile("^1[3-9]\\d{9}$");
+    private static final Pattern URL_PATTERN = Pattern.compile("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]$");
+    private static final Pattern NUMERIC_PATTERN = Pattern.compile("^\\d+$");
+
     /**
      * 使用正则表达式判断是否是邮箱格式
      */
@@ -34,9 +39,7 @@ public class CheckUtil {
             return Boolean.FALSE;
         }
         if (value instanceof String) {
-            String regEx = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-            Pattern p = Pattern.compile(regEx);
-            Matcher m = p.matcher((String) value);
+            Matcher m = EMAIL_PATTERN.matcher((String) value);
             if (m.matches()) {
                 return Boolean.TRUE;
             }
@@ -45,17 +48,15 @@ public class CheckUtil {
     }
 
     /**
-     * 判断是否是手机号格式
+     * 判断是否是手机号格式 (中国大陆)
      */
     public static Boolean isPhone(Object value) {
         if (value == null) {
             return Boolean.FALSE;
         }
         if (value instanceof String) {
-            String regEx = "^1[3-9]\\d{9}$";
-            Pattern p = Pattern.compile(regEx);
-            Matcher m = p.matcher((String) value);
-            return m.matches();
+            Matcher m = PHONE_PATTERN.matcher((String) value);
+            return m.matches() ? Boolean.TRUE : Boolean.FALSE;
         }
         return Boolean.FALSE;
     }
@@ -68,10 +69,8 @@ public class CheckUtil {
             return Boolean.FALSE;
         }
         if (value instanceof String) {
-            String regEx = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]$";
-            Pattern p = Pattern.compile(regEx);
-            Matcher m = p.matcher((String) value);
-            return m.matches();
+            Matcher m = URL_PATTERN.matcher((String) value);
+            return m.matches() ? Boolean.TRUE : Boolean.FALSE;
         }
         return Boolean.FALSE;
     }
@@ -103,7 +102,7 @@ public class CheckUtil {
      * 判断是否不能为 null
      */
     public static Boolean isNotNull(Object value) {
-        return value != null;
+        return value != null ? Boolean.TRUE : Boolean.FALSE;
     }
 
     /**
@@ -114,7 +113,8 @@ public class CheckUtil {
             return Boolean.FALSE;
         }
         if (value instanceof String) {
-            return ((String) value).matches("\\d+");
+            Matcher m = NUMERIC_PATTERN.matcher((String) value);
+            return m.matches() ? Boolean.TRUE : Boolean.FALSE;
         }
         if (value instanceof Number) {
             return Boolean.TRUE;

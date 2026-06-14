@@ -2,10 +2,9 @@
 
 `miniapis-spring-boot-starter` 是一个专为 **Spring Boot 3.x (推荐 3.3.x)** 和 **Java 21** 深度定制的高效、通用的第三方 API 快速集成 Starter 组件。
 
-它开箱即用地集成了三大核心能力：
-1. **轻量级声明式参数校验**（基于 AOP，免去繁琐的手动验证逻辑）。
-2. **多通道 AI API 服务支持**（包括自研的高效无状态 `ChatGPTService` 以及官方 `OpenAiService` SDK 的无缝注入）。
-3. **庞大的外部公共 API 集成能力**：深度整合了来自 `public-apis` 社区的 **51 个分类、共 1,368 个** 活跃公共 API 的声明式客户端。
+它开箱即用地集成了两大核心能力：
+1. **轻量级声明式参数校验**（基于 AOP，免去繁琐的手动验证逻辑，支持完全的 GraalVM Native Image）。
+2. **庞大的外部公共 API 集成能力**：深度整合了来自 `public-apis` 社区的 **51 个分类、共 1,368 个** 活跃公共 API 的声明式客户端，并内置全局代理支持。
 
 ---
 
@@ -18,13 +17,15 @@ com.bzz.miniapis
 ├── aspect
 │   └── DoCheckAspect.java              # AOP 参数校验切面实现
 ├── config
-│   ├── MiniapisAutoConfiguration.java  # 核心自动装配类（AI 客户端与基础配置）
+│   ├── MiniapisAutoConfiguration.java  # 核心自动装配类（基础配置）
+│   ├── ProxyConfigHolder.java          # 全局代理配置持有类
+│   ├── ProxyProperties.java            # 代理属性配置类
 │   ├── AgifyProperties.java            # 手动优化的 API 属性配置类
 │   ├── CatFactProperties.java
 │   ├── CoinDeskProperties.java
 │   └── DogfactsProperties.java
 ├── enums
-│   └── Check.java                      # 参数校验支持的类型枚举（Email、Phone 等）
+│   └── Check.java                      # 参数校验支持的类型枚举（Email、Phone、Url 等）
 ├── sdk                                 # 51 个分类的第三方 API SDK（通过声明式客户端自动生成）
 │   ├── animals                         # 动物分类包
 │   │   ├── AnimalsAutoConfiguration.java # 动物分类 Bean 注册中心
@@ -34,9 +35,6 @@ com.bzz.miniapis
 │   ├── geocoding                       # 地理编码包
 │   ├── weather                         # 气象天气包
 │   └── ...
-├── service                             # AI 接口服务
-│   ├── ChatGPTService.java             # 自研 ChatGPT 服务接口
-│   └── ChatGPTServiceImpl.java         # 基于 RestClient 的 ChatGPT 实现
 └── utils
     └── CheckUtil.java                  # 核心正则和逻辑校验工具类
 ```
@@ -104,15 +102,13 @@ miniapis:
   enabled: true       # 全局启用开关，默认 true
   
   check:
-    enabled: true     # AOP 参数验证开关，默认 true
-    
-  chatgpt:
-    enabled: true     # 自研 ChatGPT 客户端开关
-    api-key: "sk-xxxx" # 您的 OpenAI API Key
-    api-url: "https://api.openai.com/v1/chat/completions" # 请求端点
-    
-  openai:
-    api-key: "sk-xxxx" # 配置此项后，会自动向 Spring 容器注入官方 OpenAiService 实例
+    enabled: false    # AOP 参数验证开关，默认 false
+
+  proxy:
+    enabled: false    # 代理功能开关，默认 false
+    type: "HTTP"      # 代理类型 (HTTP / SOCKS)
+    host: "127.0.0.1" # 代理服务器地址
+    port: 7890        # 代理服务器端口
 
   # ==========================================
   # 各分类包 API 配置（可选，默认启用免 Key 接口）
@@ -146,21 +142,6 @@ public class UserController {
 }
 ```
 
-### 2. 轻量无状态 `ChatGPTService`
-支持同步和异步调用：
-```java
-@Autowired
-private ChatGPTService chatGPTService;
-
-public void chatSync() {
-    ChatGPTRequest request = new ChatGPTRequest();
-    request.setMessages(new MessageModel[]{ new MessageModel("user", "你好！") });
-    
-    ChatGPTResponse response = chatGPTService.getResponse(request);
-    System.out.println(response.getChoices().get(0).getMessage().getContent());
-}
-```
-
 ### 3. 调用集成的第三方 API
 在需要使用的类中直接 `@Autowired` 注入对应的客户端接口（Client）即可，客户端底层使用 JSON 反序列化：
 ```java
@@ -183,6 +164,5 @@ public class DemoController {
 ## 🧪 单元测试
 
 项目内置了详尽的单元测试类（JUnit 5），涵盖以下核心验证：
-* `ChatGPTTest`：验证自研的 `ChatGPTService` 异步回调与请求逻辑。
 * `MainTest` & `Main3Test`：验证 `@DoCheck` 参数校验拦截与关闭开关。
 * `CatFactTest`、`AgifyTest`、`DogfactsTest`：验证批量外部 API 的装配和网络请求连通性。
