@@ -92,32 +92,9 @@ public class CheckUtil {
         if (value instanceof java.util.Map) {
             return !((java.util.Map<?, ?>) value).isEmpty();
         }
-        if (value instanceof Object[]) {
-            return ((Object[]) value).length > 0;
-        }
-        if (value instanceof int[]) {
-            return ((int[]) value).length > 0;
-        }
-        if (value instanceof long[]) {
-            return ((long[]) value).length > 0;
-        }
-        if (value instanceof short[]) {
-            return ((short[]) value).length > 0;
-        }
-        if (value instanceof byte[]) {
-            return ((byte[]) value).length > 0;
-        }
-        if (value instanceof double[]) {
-            return ((double[]) value).length > 0;
-        }
-        if (value instanceof float[]) {
-            return ((float[]) value).length > 0;
-        }
-        if (value instanceof boolean[]) {
-            return ((boolean[]) value).length > 0;
-        }
-        if (value instanceof char[]) {
-            return ((char[]) value).length > 0;
+        Boolean arrayResult = isArrayNotEmpty(value);
+        if (arrayResult != null) {
+            return arrayResult;
         }
         return Boolean.TRUE;
     }
@@ -143,6 +120,22 @@ public class CheckUtil {
             return Boolean.TRUE;
         }
         return Boolean.FALSE;
+    }
+
+    /**
+     * 判断数组是否不为空，若不是数组则返回 null
+     */
+    private static Boolean isArrayNotEmpty(Object value) {
+        if (value instanceof Object[]) return ((Object[]) value).length > 0;
+        if (value instanceof int[]) return ((int[]) value).length > 0;
+        if (value instanceof long[]) return ((long[]) value).length > 0;
+        if (value instanceof short[]) return ((short[]) value).length > 0;
+        if (value instanceof byte[]) return ((byte[]) value).length > 0;
+        if (value instanceof double[]) return ((double[]) value).length > 0;
+        if (value instanceof float[]) return ((float[]) value).length > 0;
+        if (value instanceof boolean[]) return ((boolean[]) value).length > 0;
+        if (value instanceof char[]) return ((char[]) value).length > 0;
+        return null;
     }
 
 }

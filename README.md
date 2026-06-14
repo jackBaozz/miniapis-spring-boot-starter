@@ -55,6 +55,14 @@ com.bzz.miniapis
 
 ---
 
+## ⚡ GraalVM Native Image 支持
+
+本项目已通过全面重构，**移除了所有运行时的 Java 反射依赖**。
+核心特性（如 `DoCheck` AOP 拦截、数组判定等）均已使用 `MethodSignature` 和静态 `instanceof` 原生方案重写。因此，您可以无缝将其接入到基于 GraalVM 的 Ahead-of-Time (AOT) 编译体系中。
+对于参与二次开发的 AI 或开发人员，请严格遵守 [Agents.md](file:///Users/bao/work/idea_workspace/miniapis-spring-boot-starter/Agents.md) 编码规范。
+
+---
+
 ## 📦 依赖引入
 
 在项目的 `pom.xml` 中引入以下 Maven 依赖：
