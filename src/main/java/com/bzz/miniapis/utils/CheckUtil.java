@@ -44,4 +44,81 @@ public class CheckUtil {
         return Boolean.FALSE;
     }
 
+    /**
+     * 判断是否是手机号格式
+     */
+    public static Boolean isPhone(Object value) {
+        if (value == null) {
+            return Boolean.FALSE;
+        }
+        if (value instanceof String) {
+            String regEx = "^1[3-9]\\d{9}$";
+            Pattern p = Pattern.compile(regEx);
+            Matcher m = p.matcher((String) value);
+            return m.matches();
+        }
+        return Boolean.FALSE;
+    }
+
+    /**
+     * 判断是否是URL格式
+     */
+    public static Boolean isUrl(Object value) {
+        if (value == null) {
+            return Boolean.FALSE;
+        }
+        if (value instanceof String) {
+            String regEx = "^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]$";
+            Pattern p = Pattern.compile(regEx);
+            Matcher m = p.matcher((String) value);
+            return m.matches();
+        }
+        return Boolean.FALSE;
+    }
+
+    /**
+     * 判断参数是否不为空 (支持String, Collection, Map, 数组)
+     */
+    public static Boolean isNotEmpty(Object value) {
+        if (value == null) {
+            return Boolean.FALSE;
+        }
+        if (value instanceof String) {
+            return !((String) value).trim().isEmpty();
+        }
+        if (value instanceof java.util.Collection) {
+            return !((java.util.Collection<?>) value).isEmpty();
+        }
+        if (value instanceof java.util.Map) {
+            return !((java.util.Map<?, ?>) value).isEmpty();
+        }
+        if (value.getClass().isArray()) {
+            return java.lang.reflect.Array.getLength(value) > 0;
+        }
+        return Boolean.TRUE;
+    }
+
+    /**
+     * 判断是否不能为 null
+     */
+    public static Boolean isNotNull(Object value) {
+        return value != null;
+    }
+
+    /**
+     * 判断是否为纯数字
+     */
+    public static Boolean isNumeric(Object value) {
+        if (value == null) {
+            return Boolean.FALSE;
+        }
+        if (value instanceof String) {
+            return ((String) value).matches("\\d+");
+        }
+        if (value instanceof Number) {
+            return Boolean.TRUE;
+        }
+        return Boolean.FALSE;
+    }
+
 }

@@ -3,7 +3,9 @@ package com.bzz.miniapis.sdk.books;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.Proxy;
 import java.net.URL;
+import com.bzz.miniapis.config.ProxyConfigHolder;
 
 public class WolneLekturyClient {
     private final String baseUrl;
@@ -16,7 +18,12 @@ public class WolneLekturyClient {
         HttpURLConnection con = null;
         try {
             URL url = new URL(this.baseUrl);
-            con = (HttpURLConnection) url.openConnection();
+            Proxy proxy = ProxyConfigHolder.getProxy();
+            if (proxy != null) {
+                con = (HttpURLConnection) url.openConnection(proxy);
+            } else {
+                con = (HttpURLConnection) url.openConnection();
+            }
             con.setRequestMethod("GET");
             con.setConnectTimeout(5000);
             con.setReadTimeout(5000);

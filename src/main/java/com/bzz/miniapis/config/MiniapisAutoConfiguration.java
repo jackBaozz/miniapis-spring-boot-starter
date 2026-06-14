@@ -17,10 +17,6 @@
 package com.bzz.miniapis.config;
 
 import com.bzz.miniapis.aop.DoCheckPoint;
-import com.bzz.miniapis.service.ChatGPTService;
-import com.bzz.miniapis.service.ChatGPTServiceImpl;
-import com.theokanning.openai.service.OpenAiService;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -36,40 +32,22 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnProperty(value = "miniapis.enabled", havingValue = "true")
 @EnableConfigurationProperties({
         CheckProperties.class,
-        ChatGPTProperties.class,
-        OpenAiProperties.class
+        ProxyProperties.class
 })
 public class MiniapisAutoConfiguration {
+
+    public MiniapisAutoConfiguration(ProxyProperties proxyProperties) {
+        ProxyConfigHolder.initialize(proxyProperties);
+    }
 
     /**
      * 参数校验 AOP 切面
      */
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.check.enabled", havingValue = "true", matchIfMissing = true)
+    @ConditionalOnProperty(value = "miniapis.check.enabled", havingValue = "true")
     public DoCheckPoint point() {
         return new DoCheckPoint();
-    }
-
-    /**
-     * ChatGPT 自研 Service 客户端
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.chatgpt.enabled", havingValue = "true", matchIfMissing = true)
-    public ChatGPTService chatGPTService(ChatGPTProperties chatGPTProperties) {
-        return new ChatGPTServiceImpl(chatGPTProperties);
-    }
-
-    /**
-     * OpenAI 官方 SDK 客户端 Bean
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    @ConditionalOnProperty(value = "miniapis.openai.api-key")
-    @ConditionalOnClass(OpenAiService.class)
-    public OpenAiService openAiService(OpenAiProperties openAiProperties) {
-        return new OpenAiService(openAiProperties.getApiKey());
     }
 
 }

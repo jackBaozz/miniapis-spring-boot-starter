@@ -1,0 +1,38 @@
+{
+  "properties": [
+    {
+      "name": "miniapis.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用 MiniAPIs Starter 自动配置",
+      "defaultValue": true
+    },
+    {
+      "name": "miniapis.check.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用接口参数 AOP 校验开关",
+      "defaultValue": false
+    },
+    {
+      "name": "miniapis.proxy.enabled",
+      "type": "java.lang.Boolean",
+      "description": "是否启用代理配置",
+      "defaultValue": false
+    },
+    {
+      "name": "miniapis.proxy.type",
+      "type": "java.lang.String",
+      "description": "代理类型，支持 HTTP, SOCKS 等",
+      "defaultValue": "HTTP"
+    },
+    {
+      "name": "miniapis.proxy.host",
+      "type": "java.lang.String",
+      "description": "代理服务器主机地址"
+    },
+    {
+      "name": "miniapis.proxy.port",
+      "type": "java.lang.Integer",
+      "description": "代理服务器端口号"
+    }
+  ]
+}

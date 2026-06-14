@@ -28,8 +28,22 @@ import java.util.function.Function;
 public enum Check {
 
     // 邮箱校验方式
-    // Boolean res = annotation.value().function.apply(argValue);
-    Email("参数应为Email地址", CheckUtil::isEmail);
+    Email("参数应为Email地址", CheckUtil::isEmail),
+
+    // 手机号校验方式
+    Phone("参数应为手机号", CheckUtil::isPhone),
+
+    // URL校验方式
+    Url("参数应为URL地址", CheckUtil::isUrl),
+
+    // 非空校验方式
+    NotEmpty("参数不能为空", CheckUtil::isNotEmpty),
+
+    // 非Null校验方式
+    NotNull("参数不能为null", CheckUtil::isNotNull),
+
+    // 数字校验方式
+    Numeric("参数应为数字", CheckUtil::isNumeric);
 
     public String msg;
 

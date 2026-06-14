@@ -25,9 +25,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class CheckProperties {
 
     /**
-     * 默认为true，表示开启校验
+     * 默认为false，表示默认不开启校验
      */
-    private boolean enabled = true;
+    private boolean enabled = false;
 
     public boolean isEnabled() {
         return enabled;
