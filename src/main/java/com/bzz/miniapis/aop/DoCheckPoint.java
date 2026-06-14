@@ -110,10 +110,9 @@ public class DoCheckPoint {
     /**
      * 获取方法信息
      */
-    public Method getMethod(ProceedingJoinPoint jp) throws NoSuchMethodException {
+    public Method getMethod(ProceedingJoinPoint jp) {
         MethodSignature methodSignature = (MethodSignature) jp.getSignature();
-        return jp.getTarget().getClass() // 获取切入点的目标（被修饰方法）的Class对象
-                .getMethod(methodSignature.getName(), methodSignature.getParameterTypes()); // 通过方法名和方法参数类型使用反射获取到方法对象
+        return methodSignature.getMethod();
     }
 
     /**

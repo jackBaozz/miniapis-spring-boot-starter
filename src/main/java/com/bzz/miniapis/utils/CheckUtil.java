@@ -93,7 +93,34 @@ public class CheckUtil {
             return !((java.util.Map<?, ?>) value).isEmpty();
         }
         if (value.getClass().isArray()) {
-            return java.lang.reflect.Array.getLength(value) > 0;
+            if (value instanceof Object[]) {
+                return ((Object[]) value).length > 0;
+            }
+            if (value instanceof int[]) {
+                return ((int[]) value).length > 0;
+            }
+            if (value instanceof long[]) {
+                return ((long[]) value).length > 0;
+            }
+            if (value instanceof short[]) {
+                return ((short[]) value).length > 0;
+            }
+            if (value instanceof byte[]) {
+                return ((byte[]) value).length > 0;
+            }
+            if (value instanceof double[]) {
+                return ((double[]) value).length > 0;
+            }
+            if (value instanceof float[]) {
+                return ((float[]) value).length > 0;
+            }
+            if (value instanceof boolean[]) {
+                return ((boolean[]) value).length > 0;
+            }
+            if (value instanceof char[]) {
+                return ((char[]) value).length > 0;
+            }
+            return false;
         }
         return Boolean.TRUE;
     }
