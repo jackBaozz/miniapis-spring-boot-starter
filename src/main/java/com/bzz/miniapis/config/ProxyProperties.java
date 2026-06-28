@@ -16,12 +16,12 @@
 
 package com.bzz.miniapis.config;
 
-import org.springframework.boot.context.properties.ConfigurationProperties;
+
 
 /**
  * 代理配置属性
  */
-@ConfigurationProperties(prefix = "miniapis.proxy")
+
 public class ProxyProperties {
 
     /**

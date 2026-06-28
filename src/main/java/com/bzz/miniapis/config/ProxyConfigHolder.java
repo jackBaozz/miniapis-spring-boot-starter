@@ -53,14 +53,14 @@ public class ProxyConfigHolder {
             return;
         }
 
-        Proxy.Type type = Proxy.Type.HTTP;
+        
         String typeStr = properties.getType();
-        if (typeStr != null) {
-            typeStr = typeStr.trim().toUpperCase();
-            if (typeStr.contains("SOCKS")) {
-                type = Proxy.Type.SOCKS;
-            }
-        }
+        Proxy.Type type = switch (typeStr != null ? typeStr.trim().toUpperCase() : "") {
+            case "SOCKS", "SOCKS4", "SOCKS5" -> Proxy.Type.SOCKS;
+            case "DIRECT" -> Proxy.Type.DIRECT;
+            default -> Proxy.Type.HTTP;
+        };
+
 
         proxy = new Proxy(type, new InetSocketAddress(properties.getHost().trim(), properties.getPort()));
     }

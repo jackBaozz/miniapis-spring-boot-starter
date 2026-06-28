@@ -1,55 +1,34 @@
 package com.bzz.miniapis.sdk.transportation;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.Proxy;
-import java.net.URL;
-import com.bzz.miniapis.config.ProxyConfigHolder;
-
 public class TransportForTheNetherlandsClient {
-    private final String baseUrl;
-
-    public TransportForTheNetherlandsClient(String baseUrl) {
-        this.baseUrl = baseUrl;
-    }
-
-    public String execute() {
-        HttpURLConnection con = null;
+        public static String execute(String targetUrl) {
         try {
-            URL url = new URL(this.baseUrl);
-            Proxy proxy = ProxyConfigHolder.getProxy();
-            if (proxy != null) {
-                con = (HttpURLConnection) url.openConnection(proxy);
-            } else {
-                con = (HttpURLConnection) url.openConnection();
+            java.net.http.HttpClient.Builder builder = java.net.http.HttpClient.newBuilder()
+                    .connectTimeout(java.time.Duration.ofSeconds(5));
+                    
+            java.net.Proxy proxy = com.bzz.miniapis.config.ProxyConfigHolder.getProxy();
+            if (proxy != null && proxy.type() != java.net.Proxy.Type.DIRECT) {
+                // Java 11 HttpClient uses ProxySelector
+                java.net.InetSocketAddress addr = (java.net.InetSocketAddress) proxy.address();
+                builder.proxy(java.net.ProxySelector.of(addr));
             }
-            con.setRequestMethod("GET");
-            con.setConnectTimeout(5000);
-            con.setReadTimeout(5000);
             
-            // Allow User-Agent header as some APIs block default Java User-Agent
-            con.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)");
-
-            int status = con.getResponseCode();
-            if (status > 299) {
+            java.net.http.HttpClient client = builder.build();
+            
+            java.net.http.HttpRequest request = java.net.http.HttpRequest.newBuilder()
+                    .uri(java.net.URI.create(targetUrl))
+                    .GET()
+                    .header("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36")
+                    .build();
+                    
+            java.net.http.HttpResponse<String> response = client.send(request, java.net.http.HttpResponse.BodyHandlers.ofString());
+            
+            if (response.statusCode() > 299) {
                 return null;
             }
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuilder content = new StringBuilder();
-            while ((inputLine = in.readLine()) != null) {
-                content.append(inputLine);
-            }
-            in.close();
-            return content.toString();
+            return response.body();
         } catch (Exception e) {
             return null;
-        } finally {
-            if (con != null) {
-                con.disconnect();
-            }
         }
-    }
+        }
 }
